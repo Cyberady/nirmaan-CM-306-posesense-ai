@@ -1,0 +1,3324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+  <title>PoseSense — Dashboard</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    /* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+    :root {
+      --bg: #06060B;
+      --surface: rgba(255, 255, 255, .04);
+      --surface2: rgba(255, 255, 255, .07);
+      --border: rgba(255, 255, 255, .09);
+      --border2: rgba(124, 58, 237, .3);
+      --v: #7C3AED;
+      --vl: #A78BFA;
+      --cy: #06B6D4;
+      --gr: #10B981;
+      --am: #F59E0B;
+      --rd: #EF4444;
+      --pk: #EC4899;
+      --tx: #F1F5F9;
+      --mu: rgba(241, 245, 249, .48);
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+      --head: 'Syne', sans-serif;
+      --topbar: 48px;
+      --goalbar: 32px;
+      --rc-width: 300px;
+      /* right column width desktop */
+      --mob-nav: 58px;
+      /* bottom nav height mobile */
+    }
+
+    /* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--tx);
+      font-family: var(--sans);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ═══════════════════════════════════════════════
+   TOP BAR
+═══════════════════════════════════════════════ */
+    .topbar {
+      height: var(--topbar);
+      flex-shrink: 0;
+      background: rgba(6, 6, 11, .97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      z-index: 50;
+    }
+
+    .tb-logo {
+      font-family: var(--head);
+      font-weight: 800;
+      font-size: .9rem;
+      white-space: nowrap;
+      background: linear-gradient(135deg, #A78BFA, #22D3EE);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .tb-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .tb-live {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gr);
+      flex-shrink: 0;
+      box-shadow: 0 0 6px var(--gr);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    .tb-timer {
+      font-family: var(--mono);
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--vl);
+      white-space: nowrap;
+    }
+
+    .tb-badge {
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .4px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .tb-best {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      background: rgba(16, 185, 129, .1);
+      border: 1px solid rgba(16, 185, 129, .25);
+      border-radius: 5px;
+      font-size: .58rem;
+      color: var(--gr);
+      white-space: nowrap;
+    }
+
+    .tb-right {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .tbtn {
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+    }
+
+    .tbtn-g {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--tx);
+    }
+
+    .tbtn-g:hover {
+      border-color: var(--border2);
+      background: var(--surface2);
+    }
+
+    .tbtn-v {
+      background: var(--v);
+      color: #fff;
+    }
+
+    .tbtn-v:hover {
+      background: #6D28D9;
+    }
+
+    .tbtn-am {
+      background: rgba(245, 158, 11, .12);
+      border: 1px solid rgba(245, 158, 11, .28);
+      color: var(--am);
+    }
+
+    .tbtn-gr {
+      background: rgba(16, 185, 129, .12);
+      border: 1px solid rgba(16, 185, 129, .28);
+      color: var(--gr);
+    }
+
+    .tbtn-rd {
+      background: rgba(239, 68, 68, .12);
+      border: 1px solid rgba(239, 68, 68, .28);
+      color: var(--rd);
+    }
+
+    /* hide labels on medium screens, keep icons */
+    .tbtn-lbl {
+      display: inline;
+    }
+
+    @media(max-width:860px) {
+      .tbtn-lbl {
+        display: none;
+      }
+    }
+
+    /* pause banner */
+    .pause-banner {
+      flex-shrink: 0;
+      display: none;
+      background: rgba(245, 158, 11, .1);
+      border-bottom: 1px solid rgba(245, 158, 11, .22);
+      padding: 4px;
+      text-align: center;
+      font-size: .65rem;
+      font-weight: 600;
+      color: var(--am);
+    }
+
+    /* ═══════════════════════════════════════════════
+   GOALS BAR
+═══════════════════════════════════════════════ */
+    .goalbar {
+      height: var(--goalbar);
+      flex-shrink: 0;
+      background: rgba(124, 58, 237, .05);
+      border-bottom: 1px solid rgba(124, 58, 237, .14);
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 9;
+    }
+
+    .goalbar-lbl {
+      font-size: .6rem;
+      color: var(--vl);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .goals-row {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .goals-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .goal-chip {
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: .58rem;
+      font-weight: 600;
+      border: 1px solid;
+      white-space: nowrap;
+      transition: all .3s;
+    }
+
+    .goal-chip.pending {
+      background: rgba(255, 255, 255, .03);
+      border-color: var(--border);
+      color: var(--mu);
+    }
+
+    .goal-chip.hit {
+      background: rgba(16, 185, 129, .16);
+      border-color: rgba(16, 185, 129, .35);
+      color: var(--gr);
+    }
+
+    .goalbar-set {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: .6rem;
+      color: var(--mu);
+      flex-shrink: 0;
+    }
+
+    .goalbar-set input {
+      width: 36px;
+      padding: 1px 4px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--tx);
+      font-family: var(--mono);
+      font-size: .6rem;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════════
+   MAIN GRID  — 2 columns on desktop
+═══════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr var(--rc-width);
+      overflow: hidden;
+    }
+
+    /* ─── LEFT COLUMN ─── */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ─── RIGHT COLUMN ─── */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+   VIDEO ROW  (camera + bio strip side-by-side)
+═══════════════════════════════════════════════ */
+    .video-row {
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      /* camera fixed 220px, rest = metrics */
+      gap: 8px;
+      padding: 8px 10px 6px;
+      align-items: start;
+    }
+
+    /* Camera wrapper */
+    .cam-wrap {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border2);
+      aspect-ratio: 4/3;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .6);
+    }
+
+    .cam-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cam-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, .7));
+    }
+
+    .cam-live {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      padding: 2px 6px;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(239, 68, 68, .5);
+      border-radius: 4px;
+      font-size: .5rem;
+      font-weight: 700;
+      color: var(--rd);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .rec-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--rd);
+      border-radius: 50%;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    .cam-emotion {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 2px 7px;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: .65rem;
+    }
+
+    .cam-paused {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 6, 11, .7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .cam-paused.on {
+      display: flex;
+    }
+
+    .cam-stats {
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      right: 36px;
+      display: flex;
+      gap: 2px;
+    }
+
+    .cstat {
+      flex: 1;
+      padding: 2px 3px;
+      background: rgba(0, 0, 0, .75);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      text-align: center;
+    }
+
+    .cstat-v {
+      font-family: var(--mono);
+      font-size: .6rem;
+      font-weight: 600;
+    }
+
+    .cstat-l {
+      font-size: .38rem;
+      color: var(--mu);
+      margin-top: 1px;
+    }
+
+    .cam-btns {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cbtn {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      background: rgba(0, 0, 0, .75);
+      backdrop-filter: blur(6px);
+      font-size: .72rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+
+    .cbtn:hover {
+      background: rgba(124, 58, 237, .3);
+      border-color: var(--border2);
+    }
+
+    .cbtn.active {
+      background: rgba(239, 68, 68, .3);
+      border-color: rgba(239, 68, 68, .5);
+    }
+
+    .cam-error {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 6, 11, .9);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .cam-error p {
+      color: var(--mu);
+      font-size: .68rem;
+    }
+
+    /* ═══════════════════════════════════════════════
+   METRICS PANEL  (right side of video row)
+═══════════════════════════════════════════════ */
+    .metrics-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    /* 3×2 grid of score cards */
+    .scores-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .score-card {
+      padding: 8px 9px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+
+    .score-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      border-radius: 0 0 9px 9px;
+    }
+
+    .sc-lbl {
+      font-size: .52rem;
+      color: var(--mu);
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .sc-val {
+      font-family: var(--mono);
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .sc-bar {
+      height: 3px;
+      background: rgba(255, 255, 255, .07);
+      border-radius: 2px;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+
+    .sc-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width .9s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* card accent colors */
+    .sc-posture::after {
+      background: linear-gradient(90deg, var(--v), #6D28D9);
+    }
+
+    .sc-movement::after {
+      background: linear-gradient(90deg, var(--cy), #0891B2);
+    }
+
+    .sc-eye::after {
+      background: linear-gradient(90deg, var(--gr), #059669);
+    }
+
+    .sc-nerv::after {
+      background: linear-gradient(90deg, var(--rd), #DC2626);
+    }
+
+    .sc-conf::after {
+      background: linear-gradient(90deg, var(--am), #D97706);
+    }
+
+    .sc-pres::after {
+      background: linear-gradient(90deg, var(--pk), #BE185D);
+    }
+
+    /* Bio strip: blink / head / gesture */
+    .bio-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .bio-card {
+      padding: 6px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bio-icon {
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    .bio-lbl {
+      font-size: .48rem;
+      color: var(--mu);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      font-weight: 700;
+    }
+
+    .bio-val {
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    /* ═══════════════════════════════════════════════
+   CHARTS SECTION  (fills remaining left column)
+═══════════════════════════════════════════════ */
+    .charts-section {
+      flex: 1;
+      min-height: 0;
+      padding: 0 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Chart tab row */
+    .chart-tabs {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .chart-tab {
+      flex: 1;
+      padding: 5px 0;
+      text-align: center;
+      font-size: .62rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--mu);
+      transition: all .2s;
+    }
+
+    .chart-tab.active {
+      background: var(--v);
+      color: #fff;
+    }
+
+    /* Chart card */
+    .chart-card {
+      flex: 1;
+      min-height: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .chart-title {
+      font-family: var(--head);
+      font-weight: 800;
+      font-size: .76rem;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chart-leg-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: .56rem;
+      color: var(--mu);
+    }
+
+    .chart-leg-dot {
+      width: 8px;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .chart-body {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+    }
+
+    /* heatmap */
+    .hm-wrap {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hm-wrap.active {
+      display: flex;
+    }
+
+    #hmC {
+      border-radius: 4px;
+      width: 100%;
+      height: 36px;
+    }
+
+    .hm-legend {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .54rem;
+      color: var(--mu);
+    }
+
+    .hm-grad {
+      width: 80px;
+      height: 4px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #EF4444, #F59E0B, #10B981);
+    }
+
+    .hm-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .hm-stat {
+      text-align: center;
+      padding: 5px;
+      background: rgba(255, 255, 255, .03);
+      border-radius: 6px;
+    }
+
+    .hm-stat-v {
+      font-family: var(--mono);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .hm-stat-l {
+      font-size: .5rem;
+      color: var(--mu);
+      margin-top: 2px;
+    }
+
+    /* radar */
+    .radar-wrap {
+      flex: 1;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .radar-wrap.active {
+      display: flex;
+    }
+
+    /* trend (default visible) */
+    .trend-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .trend-wrap.hidden {
+      display: none;
+    }
+
+    /* ═══════════════════════════════════════════════
+   RIGHT PANEL
+═══════════════════════════════════════════════ */
+    .panel-tabs {
+      display: flex;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6, 6, 11, .6);
+    }
+
+    .panel-tab {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      font-size: .6rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--mu);
+      border-bottom: 2px solid transparent;
+      transition: all .2s;
+      margin-bottom: -1px;
+    }
+
+    .panel-tab.active {
+      color: var(--vl);
+      border-bottom-color: var(--vl);
+    }
+
+    .panel-pane {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    .panel-pane.active {
+      display: flex;
+    }
+
+    .pane-title {
+      font-family: var(--head);
+      font-weight: 800;
+      font-size: .75rem;
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .pane-pill {
+      padding: 1px 7px;
+      background: rgba(124, 58, 237, .14);
+      border: 1px solid rgba(124, 58, 237, .28);
+      border-radius: 100px;
+      font-size: .52rem;
+      color: var(--vl);
+      font-weight: 700;
+    }
+
+    /* ── ALERTS ── */
+    .alerts-area {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    .alert-item {
+      padding: 6px 9px;
+      border-radius: 7px;
+      font-size: .65rem;
+      font-weight: 600;
+      animation: alertIn .35s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    @keyframes alertIn {
+      from {
+        opacity: 0;
+        transform: scale(.9) translateY(-4px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .alert-warn {
+      background: rgba(245, 158, 11, .12);
+      border: 1px solid rgba(245, 158, 11, .25);
+      color: var(--am);
+    }
+
+    .alert-info {
+      background: rgba(6, 182, 212, .12);
+      border: 1px solid rgba(6, 182, 212, .25);
+      color: var(--cy);
+    }
+
+    .alert-ok {
+      background: rgba(16, 185, 129, .12);
+      border: 1px solid rgba(16, 185, 129, .25);
+      color: var(--gr);
+    }
+
+    /* ── GESTURE CARD ── */
+    .gest-card {
+      padding: 9px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    .gest-card-lbl {
+      font-size: .5rem;
+      color: var(--mu);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .gest-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gest-ico {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .gest-name {
+      font-size: .72rem;
+      font-weight: 700;
+    }
+
+    .gest-sub {
+      font-size: .58rem;
+      color: var(--mu);
+    }
+
+    .emotion-block {
+      margin-left: auto;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .emotion-ico {
+      font-size: 1.2rem;
+    }
+
+    .emotion-lbl {
+      font-size: .54rem;
+      color: var(--mu);
+    }
+
+    /* ── PROGRESS CARD ── */
+    .progress-card {
+      padding: 8px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    .progress-card-lbl {
+      font-size: .5rem;
+      color: var(--mu);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .prog-val {
+      font-family: var(--mono);
+      font-size: .95rem;
+      font-weight: 700;
+    }
+
+    .prog-arrow {
+      font-size: .5rem;
+      color: var(--mu);
+    }
+
+    .prog-badge {
+      font-size: .65rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .prog-up {
+      background: rgba(16, 185, 129, .14);
+      color: var(--gr);
+    }
+
+    .prog-dn {
+      background: rgba(239, 68, 68, .14);
+      color: var(--rd);
+    }
+
+    .prog-eq {
+      background: rgba(107, 114, 128, .14);
+      color: #6B7280;
+    }
+
+    /* ── FILLER PANEL ── */
+    .filler-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    .filler-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 5px;
+    }
+
+    .filler-item {
+      padding: 4px 5px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, .03);
+      text-align: center;
+    }
+
+    .filler-word {
+      font-size: .52rem;
+      color: var(--mu);
+    }
+
+    .filler-count {
+      font-family: var(--mono);
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--am);
+    }
+
+    /* ── FEEDBACK LIST ── */
+    .feedback-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .feedback-list::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .feedback-list::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .fb-item {
+      padding: 6px 9px;
+      background: rgba(255, 255, 255, .03);
+      border-left: 3px solid var(--v);
+      border-radius: 0 6px 6px 0;
+      font-size: .67rem;
+      font-weight: 500;
+      line-height: 1.55;
+      animation: slideIn .3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .fb-ok {
+      border-left-color: var(--gr);
+    }
+
+    .fb-warn {
+      border-left-color: var(--am);
+    }
+
+    /* ── COACH CHAT ── */
+    .chat-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-bottom: 5px;
+      flex-shrink: 0;
+    }
+
+    .sug-btn {
+      padding: 3px 7px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--border);
+      font-size: .57rem;
+      color: var(--mu);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .sug-btn:hover {
+      border-color: var(--border2);
+      color: var(--vl);
+    }
+
+    .chatbox {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-bottom: 3px;
+      min-height: 0;
+    }
+
+    .chatbox::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .chatbox::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .chat-msg {
+      max-width: 93%;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: .67rem;
+      line-height: 1.6;
+      animation: chatIn .3s ease;
+    }
+
+    @keyframes chatIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      background: var(--v);
+      color: #fff;
+      border-radius: 8px 8px 3px 8px;
+    }
+
+    .chat-msg.ai {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 8px 3px;
+    }
+
+    .ai-label {
+      font-size: .48rem;
+      color: var(--vl);
+      font-weight: 700;
+      margin-bottom: 3px;
+      letter-spacing: .5px;
+    }
+
+    .chat-input-row {
+      position: relative;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .chat-input {
+      width: 100%;
+      padding: 7px 28px 7px 9px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--tx);
+      font-family: var(--sans);
+      font-size: .67rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--border2);
+    }
+
+    .chat-send {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border: none;
+      border-radius: 4px;
+      background: var(--v);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .td {
+      width: 4px;
+      height: 4px;
+      background: var(--mu);
+      border-radius: 50%;
+      animation: td 1.2s ease-in-out infinite;
+    }
+
+    .td:nth-child(2) {
+      animation-delay: .2s;
+    }
+
+    .td:nth-child(3) {
+      animation-delay: .4s;
+    }
+
+    @keyframes td {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0)
+      }
+
+      30% {
+        transform: translateY(-4px)
+      }
+    }
+
+    /* ── SIMULATOR ── */
+    .sim-card {
+      background: rgba(245, 158, 11, .06);
+      border: 1px solid rgba(245, 158, 11, .2);
+      border-radius: 8px;
+      padding: 10px 11px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    .sim-header {
+      font-size: .63rem;
+      font-weight: 700;
+      color: var(--am);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sim-question {
+      font-size: .7rem;
+      font-weight: 500;
+      line-height: 1.55;
+      margin-bottom: 5px;
+      min-height: 34px;
+    }
+
+    .sim-timer {
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--am);
+      text-align: center;
+      margin: 2px 0;
+    }
+
+    .sim-bar {
+      height: 3px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 2px;
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+
+    .sim-prog {
+      height: 100%;
+      background: var(--am);
+      border-radius: 2px;
+      transition: width 1s linear;
+    }
+
+    .sim-btns {
+      display: flex;
+      gap: 5px;
+    }
+
+    .q-mode-label {
+      font-size: .58rem;
+      color: var(--mu);
+      margin-bottom: 4px;
+      text-align: center;
+      padding: 2px 6px;
+      background: var(--surface);
+      border-radius: 5px;
+      border: 1px solid var(--border);
+    }
+
+    .q-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .q-list::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .q-list::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .q-item {
+      padding: 7px 9px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: .67rem;
+      line-height: 1.5;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .q-item:hover {
+      border-color: var(--border2);
+      background: var(--surface2);
+    }
+
+    .q-num {
+      font-size: .52rem;
+      color: var(--vl);
+      font-weight: 700;
+      margin-bottom: 2px;
+      font-family: var(--mono);
+    }
+
+    /* ── NOTES ── */
+    .notes-textarea {
+      width: 100%;
+      padding: 7px 9px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--tx);
+      font-family: var(--sans);
+      font-size: .67rem;
+      outline: none;
+      margin-bottom: 5px;
+      resize: none;
+      height: 54px;
+      flex-shrink: 0;
+    }
+
+    .notes-textarea:focus {
+      border-color: var(--border2);
+    }
+
+    .notes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .notes-list::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .note-item {
+      padding: 6px 9px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: .65rem;
+      line-height: 1.5;
+    }
+
+    .note-time {
+      font-family: var(--mono);
+      font-size: .5rem;
+      color: var(--vl);
+      margin-bottom: 2px;
+    }
+
+    .note-conf {
+      font-size: .52rem;
+      color: var(--mu);
+      margin-top: 2px;
+    }
+
+    /* ── HISTORY ── */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .history-list::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .history-list::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .hist-item {
+      padding: 8px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+    }
+
+    .hist-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .hist-date {
+      font-size: .54rem;
+      color: var(--mu);
+    }
+
+    .hist-grade {
+      font-family: var(--mono);
+      font-size: .95rem;
+      font-weight: 700;
+    }
+
+    .hist-bars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 3px;
+    }
+
+    .hist-bw {
+      flex: 1;
+    }
+
+    .hist-bl {
+      font-size: .47rem;
+      color: var(--mu);
+      margin-bottom: 2px;
+    }
+
+    .hist-bb {
+      height: 3px;
+      background: rgba(255, 255, 255, .06);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .hist-bf {
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    .hist-mode {
+      font-size: .52rem;
+      color: var(--mu);
+    }
+
+    .hist-empty {
+      color: var(--mu);
+      font-size: .67rem;
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    /* ── SHARED UTILS ── */
+    .btn-full {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .spinner {
+      border: 2px solid var(--border);
+      border-top-color: var(--v);
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+   OVERLAYS
+═══════════════════════════════════════════════ */
+    /* snapshot */
+    .snap-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, .9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+      padding: 20px;
+    }
+
+    .snap-ov.on {
+      display: flex;
+    }
+
+    .snap-img {
+      border-radius: 10px;
+      max-width: min(80vw, 600px);
+      max-height: 70vh;
+      border: 2px solid var(--v);
+    }
+
+    /* focus mode */
+    .focus-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: var(--bg);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 20px;
+    }
+
+    .focus-ov.on {
+      display: flex;
+    }
+
+    /* breathing */
+    .breath-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(6, 6, 11, .97);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+      backdrop-filter: blur(16px);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .breath-ov.on {
+      display: flex;
+    }
+
+    .breath-title {
+      font-family: var(--head);
+      font-size: clamp(1.2rem, 4vw, 1.6rem);
+      font-weight: 800;
+    }
+
+    .breath-sub {
+      color: var(--mu);
+      font-size: clamp(.75rem, 2vw, .82rem);
+      max-width: 300px;
+      line-height: 1.65;
+    }
+
+    .breath-ring {
+      width: min(160px, 38vw);
+      height: min(160px, 38vw);
+      border-radius: 50%;
+      border: 2px solid rgba(167, 139, 250, .2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .breath-inner {
+      width: 50%;
+      height: 50%;
+      border-radius: 50%;
+      background: rgba(124, 58, 237, .25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 1.2s ease-in-out, background 1.2s ease-in-out;
+    }
+
+    .breath-num {
+      font-family: var(--mono);
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-weight: 700;
+      color: var(--vl);
+    }
+
+    .breath-lbl {
+      font-size: .62rem;
+      font-weight: 700;
+      color: var(--vl);
+      margin-top: 2px;
+    }
+
+    .breath-step {
+      font-size: clamp(.76rem, 2vw, .84rem);
+      color: var(--mu);
+      max-width: 280px;
+    }
+
+    .breath-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .breath-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .15);
+      transition: background .4s;
+    }
+
+    .breath-dot.on {
+      background: var(--vl);
+    }
+
+    /* grade modal */
+    .modal-ov {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: rgba(0, 0, 0, .92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      padding: 20px;
+    }
+
+    .modal-ov.on {
+      display: flex;
+    }
+
+    .modal-box {
+      background: linear-gradient(135deg, rgba(18, 8, 38, .98), rgba(8, 8, 18, .98));
+      border: 1px solid rgba(124, 58, 237, .3);
+      border-radius: 20px;
+      padding: clamp(18px, 4vw, 28px);
+      max-width: min(430px, 100%);
+      width: 100%;
+      animation: modalPop .45s cubic-bezier(.34, 1.56, .64, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes modalPop {
+      from {
+        opacity: 0;
+        transform: scale(.85) translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .modal-grade {
+      font-family: var(--head);
+      font-size: clamp(3rem, 10vw, 4.5rem);
+      font-weight: 800;
+      text-align: center;
+      background: linear-gradient(135deg, #A78BFA, #22D3EE);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .modal-grade-lbl {
+      text-align: center;
+      font-size: .7rem;
+      font-weight: 600;
+      color: var(--mu);
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-family: var(--head);
+      font-size: clamp(.95rem, 3vw, 1.15rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .modal-sub {
+      text-align: center;
+      color: var(--mu);
+      font-size: clamp(.68rem, 2vw, .76rem);
+      margin-bottom: 12px;
+    }
+
+    .modal-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .modal-stat {
+      padding: 7px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .modal-stat-v {
+      font-family: var(--mono);
+      font-size: clamp(.82rem, 2.5vw, 1rem);
+      font-weight: 700;
+    }
+
+    .modal-stat-l {
+      font-size: .52rem;
+      color: var(--mu);
+      margin-top: 2px;
+    }
+
+    .modal-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .modal-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 9px;
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: .73rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      text-align: center;
+    }
+
+    .modal-btn-primary {
+      background: var(--v);
+      color: #fff;
+    }
+
+    .modal-btn-primary:hover {
+      background: #6D28D9;
+    }
+
+    .modal-btn-sec {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--tx);
+    }
+
+    .modal-btn-sec:hover {
+      border-color: var(--border2);
+    }
+
+    /* confetti */
+    .confetti-wrap {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .conf-piece {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      animation: confettiFall 2.5s ease-in forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        opacity: 1;
+        transform: translateY(-10px) rotate(0)
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(720deg)
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+   MOBILE BOTTOM NAV
+═══════════════════════════════════════════════ */
+    .mob-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: rgba(6, 6, 11, .97);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      padding: 6px 0 env(safe-area-inset-bottom, 6px);
+    }
+
+    .mob-nav-row {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .mob-nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      color: var(--mu);
+      font-size: .5rem;
+      font-weight: 600;
+      transition: color .2s;
+    }
+
+    .mob-nav-btn.active {
+      color: var(--vl);
+    }
+
+    .mob-nav-btn .icon {
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+
+    /* MOBILE SLIDE-UP DRAWER */
+    .drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, .65);
+      backdrop-filter: blur(4px);
+    }
+
+    .drawer-backdrop.open {
+      display: block;
+    }
+
+    .drawer-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 201;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-radius: 18px 18px 0 0;
+      height: 72vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform .32s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .drawer-panel.open {
+      transform: translateY(0);
+    }
+
+    .drawer-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 10px auto 0;
+    }
+
+    .drawer-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .drawer-tab {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      font-size: .6rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--mu);
+      border-bottom: 2px solid transparent;
+      transition: all .2s;
+      margin-bottom: -1px;
+    }
+
+    .drawer-tab.active {
+      color: var(--vl);
+      border-bottom-color: var(--vl);
+    }
+
+    .drawer-pane {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    .drawer-pane.active {
+      display: flex;
+    }
+
+    /* ═══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════════════ */
+
+    /* Tablet: shrink right column */
+    @media(max-width:1024px) {
+      :root {
+        --rc-width: 270px;
+      }
+    }
+
+    /* Small desktop: tighten camera */
+    @media(max-width:860px) {
+      .video-row {
+        grid-template-columns: 190px 1fr;
+      }
+    }
+
+    /* ── TABLET / MOBILE PIVOT (≤768px) ── */
+    @media(max-width:768px) {
+
+      /* Body scrollable */
+      body {
+        overflow: hidden;
+      }
+
+      /* Main: single column, left col only, scrollable */
+      .main {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-bottom: var(--mob-nav);
+      }
+
+      .left-col {
+        overflow: visible;
+        border-right: none;
+        /* do NOT set height — let content breathe */
+      }
+
+      .right-col {
+        display: none;
+      }
+
+      /* replaced by drawer */
+
+      /* Video row: stack vertically */
+      .video-row {
+        grid-template-columns: 1fr;
+        padding: 8px 10px 6px;
+      }
+
+      .cam-wrap {
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        aspect-ratio: 16/9;
+      }
+
+      .metrics-panel {
+        margin-top: 2px;
+      }
+
+      .scores-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      /* Charts section: auto height on mobile so content shows */
+      .charts-section {
+        height: 260px;
+        flex: none;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 10px;
+      }
+
+      /* Bottom nav shown */
+      .mob-nav {
+        display: block;
+      }
+
+      /* Topbar: hide non-essential buttons */
+      .tb-best {
+        display: none;
+      }
+
+      #btnSnap,
+      #btnBreath,
+      #btnReport {
+        display: none;
+      }
+    }
+
+    @media(max-width:480px) {
+      :root {
+        --topbar: 44px;
+      }
+
+      .video-row {
+        padding: 6px 8px 5px;
+      }
+
+      .scores-grid {
+        gap: 4px;
+      }
+
+      .sc-val {
+        font-size: 1.15rem;
+      }
+
+      .bio-strip {
+        gap: 4px;
+      }
+
+      .chart-tabs .chart-tab {
+        font-size: .58rem;
+      }
+
+      .charts-section {
+        height: 240px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════ TOP BAR ══════════════ -->
+  <div class="topbar">
+    <a href="/" class="tb-logo">PoseSense</a>
+    <div class="tb-center">
+      <div class="tb-live" id="liveDot"></div>
+      <span style="color:var(--mu);font-size:.62rem;" id="liveText">LIVE</span>
+      <span style="color:var(--mu);font-size:.62rem;">·</span>
+      <span class="tb-timer" id="tmr">00:00</span>
+      <span style="color:var(--mu);font-size:.62rem;">·</span>
+      <span class="tb-badge" id="modeBadge">General</span>
+      <span class="tb-best" id="bestBadge">🏆 --</span>
+    </div>
+    <div class="tb-right">
+      <button class="tbtn tbtn-am" id="btnSnap" onclick="takeSnap()">📸 <span class="tbtn-lbl">Snap</span></button>
+      <button class="tbtn tbtn-g" id="btnBreath" onclick="showBreath()">🫁 <span
+          class="tbtn-lbl">Breathe</span></button>
+      <button class="tbtn tbtn-g" id="pauseBtn" onclick="togglePause()">⏸ <span class="tbtn-lbl">Pause</span></button>
+      <button class="tbtn tbtn-gr" id="btnReport" onclick="dlReport()">📄 <span class="tbtn-lbl">PDF</span></button>
+      <button class="tbtn tbtn-v" onclick="showModal()">⏹ <span class="tbtn-lbl">End</span></button>
+      <a href="/" class="tbtn tbtn-g" style="text-decoration:none">← <span class="tbtn-lbl">Back</span></a>
+      <!-- mobile: extra buttons accessible via drawer -->
+      <button class="tbtn tbtn-g" style="display:none;" id="mobMenuBtn" onclick="openDrawer('fb')"
+        aria-label="Menu">☰</button>
+    </div>
+  </div>
+  <div class="pause-banner" id="pauseBanner">⏸ PAUSED — press Space or tap Resume to continue</div>
+
+  <!-- ══════════════ GOALS BAR ══════════════ -->
+  <div class="goalbar">
+    <span class="goalbar-lbl">🎯 Goals</span>
+    <div class="goals-row" id="goalsRow"></div>
+    <div class="goalbar-set">
+      <input type="number" id="goalInput" value="75" min="50" max="100">%
+      <button class="tbtn tbtn-g" style="padding:2px 6px;font-size:.56rem;" onclick="setGoal()">Set</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ MAIN GRID ══════════════ -->
+  <div class="main">
+
+    <!-- ─── LEFT COLUMN ─── -->
+    <div class="left-col">
+
+      <!-- VIDEO ROW: camera + metrics side by side -->
+      <div class="video-row">
+
+        <!-- Camera -->
+        <div class="cam-wrap">
+          <img id="camFeed" src="/video_feed" alt="Camera feed"
+            onerror="document.getElementById('camError').style.display='flex';this.style.display='none'" />
+          <div class="cam-overlay"></div>
+          <div class="cam-live"><span class="rec-dot"></span>REC</div>
+          <div class="cam-emotion" id="camEmotion">😐 Neutral</div>
+          <div class="cam-paused" id="camPaused">⏸</div>
+          <div class="cam-stats">
+            <div class="cstat">
+              <div class="cstat-v" id="ov1" style="color:#A78BFA">--</div>
+              <div class="cstat-l">Post</div>
+            </div>
+            <div class="cstat">
+              <div class="cstat-v" id="ov2" style="color:#22D3EE">--</div>
+              <div class="cstat-l">Eye</div>
+            </div>
+            <div class="cstat">
+              <div class="cstat-v" id="ov3" style="color:#F59E0B">--</div>
+              <div class="cstat-l">Conf</div>
+            </div>
+            <div class="cstat">
+              <div class="cstat-v" id="ov4" style="color:#10B981">--</div>
+              <div class="cstat-l">Gest</div>
+            </div>
+            <div class="cstat">
+              <div class="cstat-v" id="ov5" style="color:#EF4444">--</div>
+              <div class="cstat-l">Nerv</div>
+            </div>
+          </div>
+          <div class="cam-btns">
+            <button class="cbtn" id="micBtn" onclick="toggleMic()" title="Mic (M)">🎙️</button>
+            <button class="cbtn" onclick="toggleFocus()" title="Focus (F)">⛶</button>
+          </div>
+          <div id="camError" class="cam-error">
+            <div style="font-size:1.6rem;opacity:.3">📷</div>
+            <p>Start Flask server first</p>
+          </div>
+        </div>
+
+        <!-- Metrics panel -->
+        <div class="metrics-panel">
+          <div class="scores-grid">
+            <div class="score-card sc-posture">
+              <div class="sc-lbl">Posture</div>
+              <div class="sc-val" id="scPosture">--</div>
+              <div class="sc-bar">
+                <div class="sc-fill" id="sfPosture" style="width:0%;background:var(--v)"></div>
+              </div>
+            </div>
+            <div class="score-card sc-movement">
+              <div class="sc-lbl">Movement</div>
+              <div class="sc-val" id="scMovement">--</div>
+              <div class="sc-bar">
+                <div class="sc-fill" id="sfMovement" style="width:0%;background:var(--cy)"></div>
+              </div>
+            </div>
+            <div class="score-card sc-eye">
+              <div class="sc-lbl">Eye Contact</div>
+              <div class="sc-val" id="scEye">--</div>
+              <div class="sc-bar">
+                <div class="sc-fill" id="sfEye" style="width:0%;background:var(--gr)"></div>
+              </div>
+            </div>
+            <div class="score-card sc-nerv">
+              <div class="sc-lbl">Nervousness</div>
+              <div class="sc-val" id="scNerv">--</div>
+              <div class="sc-bar">
+                <div class="sc-fill" id="sfNerv" style="width:0%;background:var(--rd)"></div>
+              </div>
+            </div>
+            <div class="score-card sc-conf">
+              <div class="sc-lbl">Confidence</div>
+              <div class="sc-val" id="scConf">--</div>
+              <div class="sc-bar">
+                <div class="sc-fill" id="sfConf" style="width:0%;background:var(--am)"></div>
+              </div>
+            </div>
+            <div class="score-card sc-pres">
+              <div class="sc-lbl">Presentation</div>
+              <div class="sc-val" id="scPres">--</div>
+              <div class="sc-bar">
+                <div class="sc-fill" id="sfPres" style="width:0%;background:var(--pk)"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bio strip -->
+          <div class="bio-strip">
+            <div class="bio-card">
+              <span class="bio-icon">👁️</span>
+              <div>
+                <div class="bio-lbl">Blink Rate</div>
+                <div class="bio-val" id="bioBlink">--/min</div>
+              </div>
+            </div>
+            <div class="bio-card">
+              <span class="bio-icon">🗿</span>
+              <div>
+                <div class="bio-lbl">Head Motion</div>
+                <div class="bio-val" id="bioHead">Stable</div>
+              </div>
+            </div>
+            <div class="bio-card">
+              <span class="bio-icon">✋</span>
+              <div>
+                <div class="bio-lbl">Gesture</div>
+                <div class="bio-val" id="bioGest">Natural</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /video-row -->
+
+      <!-- CHARTS -->
+      <div class="charts-section">
+        <div class="chart-tabs">
+          <div class="chart-tab active" onclick="switchChart('trend')">📈 Trend</div>
+          <div class="chart-tab" onclick="switchChart('heat')">🔥 Heatmap</div>
+          <div class="chart-tab" onclick="switchChart('radar')">🕸️ Radar</div>
+        </div>
+        <div class="chart-card">
+          <!-- Trend chart -->
+          <div class="trend-wrap" id="trendWrap">
+            <div class="chart-head">
+              <span class="chart-title">Performance Trend</span>
+              <div class="chart-legend">
+                <div class="chart-leg-item">
+                  <div class="chart-leg-dot" style="background:#A78BFA"></div>Conf
+                </div>
+                <div class="chart-leg-item">
+                  <div class="chart-leg-dot" style="background:#7C3AED"></div>Post
+                </div>
+                <div class="chart-leg-item">
+                  <div class="chart-leg-dot" style="background:#22D3EE"></div>Eye
+                </div>
+              </div>
+            </div>
+            <div class="chart-body"><canvas id="trendCanvas"></canvas></div>
+          </div>
+          <!-- Heatmap -->
+          <div class="hm-wrap" id="heatWrap">
+            <div class="chart-head">
+              <span class="chart-title">Confidence Heatmap</span>
+              <span style="font-size:.54rem;color:var(--mu)">time →</span>
+            </div>
+            <canvas id="hmC" height="36"></canvas>
+            <div class="hm-legend"><span>Low</span>
+              <div class="hm-grad"></div><span>High</span>
+            </div>
+            <div class="hm-stats">
+              <div class="hm-stat">
+                <div class="hm-stat-v" id="hmAvg">--</div>
+                <div class="hm-stat-l">Average</div>
+              </div>
+              <div class="hm-stat">
+                <div class="hm-stat-v" id="hmPeak">--</div>
+                <div class="hm-stat-l">Peak</div>
+              </div>
+              <div class="hm-stat">
+                <div class="hm-stat-v" id="hmLow">--</div>
+                <div class="hm-stat-l">Low</div>
+              </div>
+            </div>
+          </div>
+          <!-- Radar -->
+          <div class="radar-wrap" id="radarWrap">
+            <canvas id="radarCanvas" width="180" height="180"></canvas>
+          </div>
+        </div>
+      </div><!-- /charts-section -->
+
+    </div><!-- /left-col -->
+
+    <!-- ─── RIGHT COLUMN (desktop only) ─── -->
+    <div class="right-col" id="rightCol">
+      <div class="panel-tabs" id="panelTabs">
+        <div class="panel-tab active" onclick="switchPane('live','d')">Live</div>
+        <div class="panel-tab" onclick="switchPane('coach','d')">Coach</div>
+        <div class="panel-tab" onclick="switchPane('sim','d')">Sim</div>
+        <div class="panel-tab" onclick="switchPane('notes','d')">Notes</div>
+        <div class="panel-tab" onclick="switchPane('hist','d')">History</div>
+      </div>
+
+      <!-- LIVE PANE -->
+      <div class="panel-pane active" id="d-live">
+        <div class="pane-title">Live Feedback <span class="pane-pill">REAL-TIME</span></div>
+        <div class="alerts-area" id="d-alerts"></div>
+        <div class="gest-card">
+          <div class="gest-card-lbl">Gesture &amp; Emotion</div>
+          <div class="gest-row">
+            <span class="gest-ico" id="dGestIco">✋</span>
+            <div>
+              <div class="gest-name" id="dGestName">Analyzing…</div>
+              <div class="gest-sub" id="dGestSub">Movement pattern</div>
+            </div>
+            <div class="emotion-block">
+              <div class="emotion-ico" id="dEmIco">😐</div>
+              <div class="emotion-lbl" id="dEmTxt">Neutral</div>
+            </div>
+          </div>
+        </div>
+        <div class="progress-card" id="d-progress">
+          <div class="progress-card-lbl">Progress · Start → Now</div>
+          <div class="progress-row">
+            <div>
+              <div style="font-size:.5rem;color:var(--mu);margin-bottom:2px;">Start</div>
+              <div class="prog-val" id="dProgStart">--</div>
+            </div>
+            <div class="prog-arrow">→</div>
+            <div>
+              <div style="font-size:.5rem;color:var(--mu);margin-bottom:2px;">Now</div>
+              <div class="prog-val" id="dProgNow">--</div>
+            </div>
+            <div class="prog-badge" id="dProgBadge">--</div>
+          </div>
+        </div>
+        <div class="filler-panel" id="d-filler">
+          <div class="pane-title" style="margin-bottom:4px;">🎙️ Filler Words <span class="pane-pill">MIC ON</span>
+          </div>
+          <div class="filler-grid">
+            <div class="filler-item">
+              <div class="filler-word">"um"</div>
+              <div class="filler-count" id="fw1">0</div>
+            </div>
+            <div class="filler-item">
+              <div class="filler-word">"uh"</div>
+              <div class="filler-count" id="fw2">0</div>
+            </div>
+            <div class="filler-item">
+              <div class="filler-word">"like"</div>
+              <div class="filler-count" id="fw3">0</div>
+            </div>
+            <div class="filler-item">
+              <div class="filler-word">"y'know"</div>
+              <div class="filler-count" id="fw4">0</div>
+            </div>
+          </div>
+        </div>
+        <div class="pane-title">AI Feedback <span class="pane-pill">LIVE</span></div>
+        <div class="feedback-list" id="d-feedback">
+          <div class="fb-item fb-ok">Waiting for analysis…</div>
+        </div>
+      </div>
+
+      <!-- COACH PANE -->
+      <div class="panel-pane" id="d-coach">
+        <div class="pane-title">Interview Coach <span class="pane-pill">AI</span></div>
+        <div class="chat-suggestions">
+          <button class="sug-btn" onclick="qa('How do I calm interview nerves fast?')">Calm nerves</button>
+          <button class="sug-btn" onclick="qa('Tips to improve eye contact on camera?')">Eye contact</button>
+          <button class="sug-btn" onclick="qa('How to sit with better posture?')">Posture</button>
+          <button class="sug-btn" onclick="qa('How to stop using filler words?')">Fillers</button>
+          <button class="sug-btn" onclick="qa('How can I project more confidence?')">Confidence</button>
+        </div>
+        <div class="chatbox" id="d-chatbox">
+          <div class="chat-msg ai">
+            <div class="ai-label">COACH</div>Hi! Ask me anything — I'll give advice based on your live metrics.
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" class="chat-input" id="d-chat-inp" placeholder="Ask your coach…"
+            onkeydown="if(event.key==='Enter')sendChat('d')" />
+          <button class="chat-send" onclick="sendChat('d')">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22,2 15,22 11,13 2,9" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- SIM PANE -->
+      <div class="panel-pane" id="d-sim">
+        <div class="pane-title">Interview Simulator <span class="pane-pill">TIMED</span></div>
+        <div class="sim-card">
+          <div class="sim-header">
+            <span id="simStatus">Ready</span>
+            <button class="tbtn tbtn-am" style="font-size:.6rem;padding:3px 8px;" id="simBtn" onclick="startSim()">▶
+              Start</button>
+          </div>
+          <div class="sim-question" id="simQuestion">Hit Start for a 2-minute timed session with real interview
+            questions.</div>
+          <div class="sim-timer" id="simTimer">2:00</div>
+          <div class="sim-bar">
+            <div class="sim-prog" id="simProg" style="width:100%"></div>
+          </div>
+          <div class="sim-btns">
+            <button class="tbtn tbtn-g btn-full" onclick="skipQ()">Next →</button>
+            <button class="tbtn tbtn-rd btn-full" onclick="endSim()">End</button>
+          </div>
+        </div>
+        <div class="q-mode-label" id="qModeLabel"></div>
+        <div class="q-list" id="qList"></div>
+        <button class="tbtn tbtn-g btn-full" style="margin-top:6px;" onclick="loadQs()">↻ Shuffle</button>
+      </div>
+
+      <!-- NOTES PANE -->
+      <div class="panel-pane" id="d-notes">
+        <div class="pane-title">Session Notes <span class="pane-pill">TIMESTAMPED</span></div>
+        <textarea class="notes-textarea" id="d-note-inp" placeholder="Type a note… (Ctrl+Enter saves)"></textarea>
+        <button class="tbtn tbtn-g btn-full" style="margin-bottom:6px;" onclick="addNote('d-note-inp')">+ Add
+          Note</button>
+        <div class="notes-list" id="d-notes-list">
+          <div style="color:var(--mu);font-size:.65rem;text-align:center;padding:10px;">No notes yet.</div>
+        </div>
+      </div>
+
+      <!-- HISTORY PANE -->
+      <div class="panel-pane" id="d-hist">
+        <div class="pane-title">Session History <span class="pane-pill" id="d-hist-pill">0 sessions</span></div>
+        <div class="history-list" id="d-hist-list">
+          <div class="hist-empty">Complete a session to see history here.</div>
+        </div>
+        <button class="tbtn tbtn-rd btn-full" style="margin-top:6px;font-size:.6rem;" onclick="clearHist()">🗑 Clear
+          History</button>
+      </div>
+    </div><!-- /right-col -->
+
+  </div><!-- /main -->
+
+  <!-- ══════════════ MOBILE BOTTOM NAV ══════════════ -->
+  <div class="mob-nav">
+    <div class="mob-nav-row">
+      <button class="mob-nav-btn active" id="mn-live" onclick="openDrawer('live')"><span
+          class="icon">📊</span>Live</button>
+      <button class="mob-nav-btn" id="mn-coach" onclick="openDrawer('coach')"><span class="icon">🤖</span>Coach</button>
+      <button class="mob-nav-btn" id="mn-sim" onclick="openDrawer('sim')"><span class="icon">⏱️</span>Sim</button>
+      <button class="mob-nav-btn" id="mn-notes" onclick="openDrawer('notes')"><span class="icon">📝</span>Notes</button>
+      <button class="mob-nav-btn" id="mn-hist" onclick="openDrawer('hist')"><span class="icon">📜</span>History</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ MOBILE DRAWER ══════════════ -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+  <div class="drawer-panel" id="drawerPanel">
+    <div class="drawer-handle"></div>
+    <div class="drawer-tabs">
+      <div class="drawer-tab active" onclick="switchDrawerPane('live')">Live</div>
+      <div class="drawer-tab" onclick="switchDrawerPane('coach')">Coach</div>
+      <div class="drawer-tab" onclick="switchDrawerPane('sim')">Sim</div>
+      <div class="drawer-tab" onclick="switchDrawerPane('notes')">Notes</div>
+      <div class="drawer-tab" onclick="switchDrawerPane('hist')">History</div>
+    </div>
+
+    <!-- LIVE -->
+    <div class="drawer-pane active" id="m-live">
+      <div class="pane-title">Live Feedback <span class="pane-pill">REAL-TIME</span></div>
+      <div class="alerts-area" id="m-alerts"></div>
+      <div class="gest-card">
+        <div class="gest-card-lbl">Gesture &amp; Emotion</div>
+        <div class="gest-row">
+          <span class="gest-ico" id="mGestIco">✋</span>
+          <div>
+            <div class="gest-name" id="mGestName">Analyzing…</div>
+            <div class="gest-sub" id="mGestSub">Movement pattern</div>
+          </div>
+          <div class="emotion-block">
+            <div class="emotion-ico" id="mEmIco">😐</div>
+            <div class="emotion-lbl" id="mEmTxt">Neutral</div>
+          </div>
+        </div>
+      </div>
+      <div class="pane-title">AI Feedback <span class="pane-pill">LIVE</span></div>
+      <div class="feedback-list" id="m-feedback">
+        <div class="fb-item fb-ok">Waiting for analysis…</div>
+      </div>
+    </div>
+
+    <!-- COACH -->
+    <div class="drawer-pane" id="m-coach">
+      <div class="pane-title">Interview Coach <span class="pane-pill">AI</span></div>
+      <div class="chat-suggestions">
+        <button class="sug-btn" onclick="qa('How do I calm interview nerves fast?')">Calm nerves</button>
+        <button class="sug-btn" onclick="qa('Tips to improve eye contact?')">Eye contact</button>
+        <button class="sug-btn" onclick="qa('Better posture tips?')">Posture</button>
+        <button class="sug-btn" onclick="qa('Stop using filler words?')">Fillers</button>
+      </div>
+      <div class="chatbox" id="m-chatbox">
+        <div class="chat-msg ai">
+          <div class="ai-label">COACH</div>Hi! Ask me anything based on your live metrics.
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="m-chat-inp" placeholder="Ask your coach…"
+          onkeydown="if(event.key==='Enter')sendChat('m')" />
+        <button class="chat-send" onclick="sendChat('m')">
+          <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22,2 15,22 11,13 2,9" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- SIM -->
+    <div class="drawer-pane" id="m-sim">
+      <div class="pane-title">Simulator <span class="pane-pill">TIMED</span></div>
+      <div class="sim-card">
+        <div class="sim-header">
+          <span id="mSimStatus">Ready</span>
+          <button class="tbtn tbtn-am" style="font-size:.6rem;padding:3px 8px;" id="mSimBtn" onclick="startSim()">▶
+            Start</button>
+        </div>
+        <div class="sim-question" id="mSimQuestion">Tap Start for a 2-minute timed session.</div>
+        <div class="sim-timer" id="mSimTimer">2:00</div>
+        <div class="sim-bar">
+          <div class="sim-prog" id="mSimProg" style="width:100%"></div>
+        </div>
+        <div class="sim-btns">
+          <button class="tbtn tbtn-g btn-full" onclick="skipQ()">Next →</button>
+          <button class="tbtn tbtn-rd btn-full" onclick="endSim()">End</button>
+        </div>
+      </div>
+      <div class="q-list" id="mQList"></div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="drawer-pane" id="m-notes">
+      <div class="pane-title">Notes <span class="pane-pill">TIMESTAMPED</span></div>
+      <textarea class="notes-textarea" id="m-note-inp" placeholder="Type a note…"></textarea>
+      <button class="tbtn tbtn-g btn-full" style="margin-bottom:6px;" onclick="addNote('m-note-inp')">+ Add
+        Note</button>
+      <div class="notes-list" id="m-notes-list">
+        <div style="color:var(--mu);font-size:.65rem;text-align:center;padding:10px;">No notes yet.</div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="drawer-pane" id="m-hist">
+      <div class="pane-title">History <span class="pane-pill" id="m-hist-pill">0 sessions</span></div>
+      <div class="history-list" id="m-hist-list">
+        <div class="hist-empty">No sessions yet.</div>
+      </div>
+      <button class="tbtn tbtn-rd btn-full" style="margin-top:6px;font-size:.6rem;" onclick="clearHist()">🗑
+        Clear</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ OVERLAYS ══════════════ -->
+  <div class="snap-ov" id="snapOv">
+    <img class="snap-img" id="snapImg" src="" alt="Snapshot" />
+    <div style="display:flex;gap:8px;">
+      <button class="tbtn tbtn-v" onclick="dlSnap()">⬇ Download</button>
+      <button class="tbtn tbtn-g" onclick="document.getElementById('snapOv').classList.remove('on')">✕ Close</button>
+    </div>
+  </div>
+
+  <div class="focus-ov" id="focusOv">
+    <div style="width:min(90vw,640px);border-radius:14px;overflow:hidden;border:2px solid var(--border2);">
+      <img src="/video_feed" style="width:100%;display:block;" />
+    </div>
+    <div id="focusStats" style="display:flex;gap:20px;"></div>
+    <button class="tbtn tbtn-g" onclick="toggleFocus()">Exit Focus (Esc)</button>
+  </div>
+
+  <div class="breath-ov" id="breathOv">
+    <div class="breath-title">4-7-8 Breathing</div>
+    <div class="breath-sub">Resets your nervous system. Used before high-pressure moments.</div>
+    <div class="breath-ring">
+      <div class="breath-inner" id="breathInner">
+        <div class="breath-num" id="breathNum">4</div>
+        <div class="breath-lbl" id="breathLbl">Inhale</div>
+      </div>
+    </div>
+    <div class="breath-step" id="breathStep">Breathe in slowly through your nose…</div>
+    <div class="breath-dots">
+      <div class="breath-dot on" id="bd0"></div>
+      <div class="breath-dot" id="bd1"></div>
+      <div class="breath-dot" id="bd2"></div>
+    </div>
+    <button class="tbtn tbtn-g" onclick="hideBreath()">Done — Back to Practice</button>
+  </div>
+
+  <div class="modal-ov" id="modalOv">
+    <div class="modal-box">
+      <div class="modal-grade" id="modalGrade">A</div>
+      <div class="modal-grade-lbl">Interview Performance Grade</div>
+      <div class="modal-title" id="modalTitle">Great Session!</div>
+      <div class="modal-sub" id="modalSub">Here's your full breakdown</div>
+      <div class="modal-stats">
+        <div class="modal-stat">
+          <div class="modal-stat-v" id="msConf" style="color:var(--am)">--</div>
+          <div class="modal-stat-l">Confidence</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-v" id="msPost" style="color:var(--v)">--</div>
+          <div class="modal-stat-l">Posture</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-v" id="msEye" style="color:var(--gr)">--</div>
+          <div class="modal-stat-l">Eye Contact</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-v" id="msDur" style="color:var(--cy)">--</div>
+          <div class="modal-stat-l">Duration</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-v" id="msNerv" style="color:var(--rd)">--</div>
+          <div class="modal-stat-l">Nervousness</div>
+        </div>
+        <div class="modal-stat">
+          <div class="modal-stat-v" id="msFill" style="color:var(--pk)">--</div>
+          <div class="modal-stat-l">Fillers</div>
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button class="modal-btn modal-btn-primary" onclick="dlReport();closeModal()">📄 PDF Report</button>
+        <button class="modal-btn modal-btn-sec" onclick="doSave()">💾 Save &amp; Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="confetti-wrap" id="confettiWrap"></div>
+
+  <script>
+    // ═══════════════════════════════════════════════
+    //  MODE
+    // ═══════════════════════════════════════════════
+    const MODE = new URLSearchParams(location.search).get('mode') || 'general';
+    const MODES = {
+      general: { l: 'General', c: 'rgba(167,139,250,.2)', t: '#A78BFA', e: '🎯' },
+      technical: { l: 'Technical', c: 'rgba(34,211,238,.2)', t: '#22D3EE', e: '💻' },
+      hr: { l: 'HR', c: 'rgba(245,158,11,.2)', t: '#F59E0B', e: '🤝' },
+      case: { l: 'Case', c: 'rgba(236,72,153,.2)', t: '#EC4899', e: '📋' },
+      sales: { l: 'Sales', c: 'rgba(16,185,129,.2)', t: '#10B981', e: '🚀' },
+    };
+    const md = MODES[MODE] || MODES.general;
+    const bdg = document.getElementById('modeBadge');
+    bdg.textContent = md.e + ' ' + md.l;
+    bdg.style.background = md.c; bdg.style.color = md.t; bdg.style.borderColor = md.t + '55';
+
+    // ═══════════════════════════════════════════════
+    //  TIMER
+    // ═══════════════════════════════════════════════
+    let secs = 0, paused = false, autoSaved = false;
+    setInterval(() => {
+      if (paused) return; secs++;
+      const m = String(Math.floor(secs / 60)).padStart(2, '0'), s = String(secs % 60).padStart(2, '0');
+      document.getElementById('tmr').textContent = m + ':' + s;
+      if (secs === 120 && !autoSaved && ld.confidence_score > 0) { saveSc(ld.confidence_score); autoSaved = true; }
+    }, 1000);
+
+    function togglePause() {
+      paused = !paused;
+      const pb = document.getElementById('pauseBtn');
+      pb.innerHTML = paused ? '▶ <span class="tbtn-lbl">Resume</span>' : '⏸ <span class="tbtn-lbl">Pause</span>';
+      document.getElementById('pauseBanner').style.display = paused ? 'block' : 'none';
+      document.getElementById('liveDot').style.background = paused ? 'var(--am)' : 'var(--gr)';
+      document.getElementById('liveText').textContent = paused ? 'PAUSED' : 'LIVE';
+      document.getElementById('camPaused').classList.toggle('on', paused);
+      fetch('/pause', { method: 'POST' }).catch(() => { });
+    }
+
+    // ═══════════════════════════════════════════════
+    //  CHARTS
+    // ═══════════════════════════════════════════════
+    // Trend
+    const tCtx = document.getElementById('trendCanvas').getContext('2d');
+    const tData = {
+      labels: [], datasets: [
+        { label: 'Conf', data: [], borderColor: '#A78BFA', backgroundColor: 'rgba(167,139,250,.07)', borderWidth: 1.5, fill: true, tension: .4, pointRadius: 0 },
+        { label: 'Post', data: [], borderColor: '#7C3AED', backgroundColor: 'transparent', borderWidth: 1.5, tension: .4, pointRadius: 0 },
+        { label: 'Eye', data: [], borderColor: '#22D3EE', backgroundColor: 'transparent', borderWidth: 1.5, tension: .4, pointRadius: 0 },
+      ]
+    };
+    const tChart = new Chart(tCtx, {
+      type: 'line', data: tData, options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 150 },
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { display: false },
+          y: {
+            min: 0, max: 100, grid: { color: 'rgba(255,255,255,.04)' },
+            ticks: { color: 'rgba(241,245,249,.25)', font: { size: 8, family: 'JetBrains Mono' }, callback: v => v + '%' },
+            border: { display: false }
+          }
+        }
+      }
+    });
+
+    // Radar
+    const rCtx = document.getElementById('radarCanvas').getContext('2d');
+    const rChart = new Chart(rCtx, {
+      type: 'radar', data: {
+        labels: ['Posture', 'Move', 'Eye', 'Conf', 'Pres', 'Calm'],
+        datasets: [{ label: 'You', data: [0, 0, 0, 0, 0, 0], borderColor: '#A78BFA', backgroundColor: 'rgba(124,58,237,.15)', borderWidth: 2, pointBackgroundColor: '#A78BFA', pointRadius: 3 }]
+      }, options: {
+        responsive: false, maintainAspectRatio: false, animation: { duration: 350 },
+        plugins: { legend: { display: false } },
+        scales: {
+          r: {
+            min: 0, max: 100, ticks: { display: false }, grid: { color: 'rgba(255,255,255,.1)' },
+            pointLabels: { color: 'rgba(241,245,249,.55)', font: { size: 8, family: 'DM Sans' } },
+            angleLines: { color: 'rgba(255,255,255,.07)' }
+          }
+        }
+      }
+    });
+
+    function drawHM(data) {
+      const c = document.getElementById('hmC'), ctx = c.getContext('2d');
+      c.width = c.offsetWidth || 300;
+      if (!data || !data.length) return;
+      const w = c.width, h = c.height, sw = w / data.length;
+      ctx.clearRect(0, 0, w, h);
+      data.forEach((v, i) => {
+        const t = v / 100; let r, g, b;
+        if (t < .5) { r = 239; g = 68 + Math.round(t * 2 * 90); b = 68; }
+        else { r = Math.round(16 + (1 - (t - .5) * 2) * (239 - 16)); g = 185; b = 68; }
+        ctx.fillStyle = `rgb(${r},${g},${b})`; ctx.fillRect(i * sw, 0, sw + 1, h);
+      });
+      const avg = Math.round(data.reduce((a, b) => a + b, 0) / data.length);
+      document.getElementById('hmAvg').textContent = avg + '%';
+      document.getElementById('hmPeak').textContent = Math.max(...data) + '%';
+      document.getElementById('hmLow').textContent = Math.min(...data) + '%';
+    }
+
+    function switchChart(n) {
+      document.querySelectorAll('.chart-tab').forEach((t, i) => t.classList.toggle('active', ['trend', 'heat', 'radar'][i] === n));
+      document.getElementById('trendWrap').classList.toggle('hidden', n !== 'trend');
+      document.getElementById('heatWrap').classList.toggle('active', n === 'heat');
+      document.getElementById('radarWrap').classList.toggle('active', n === 'radar');
+      if (n === 'trend') document.getElementById('trendWrap').classList.remove('hidden');
+      if (n === 'radar') rChart.resize();
+    }
+
+    // ═══════════════════════════════════════════════
+    //  PANEL / DRAWER TABS
+    // ═══════════════════════════════════════════════
+    const PANES = ['live', 'coach', 'sim', 'notes', 'hist'];
+
+    function switchPane(n, prefix) {
+      const tabSel = prefix === 'd' ? '#panelTabs .panel-tab' : '#drawerPanel .drawer-tabs .drawer-tab';
+      document.querySelectorAll(tabSel).forEach((t, i) => t.classList.toggle('active', PANES[i] === n));
+      PANES.forEach(id => {
+        const el = document.getElementById(prefix === '-d' ? `d-${id}` : `d-${id}`);
+        if (el) el.classList.toggle('active', id === n);
+      });
+      // desktop
+      PANES.forEach(id => {
+        const el = document.getElementById(`d-${id}`);
+        if (el) el.classList.toggle('active', id === n);
+      });
+      if (n === 'hist') loadHistory();
+    }
+
+    // Mobile drawer
+    function openDrawer(pane) {
+      document.getElementById('drawerBackdrop').classList.add('open');
+      document.getElementById('drawerPanel').classList.add('open');
+      switchDrawerPane(pane);
+      document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('mn-' + pane);
+      if (btn) btn.classList.add('active');
+    }
+    function closeDrawer() {
+      document.getElementById('drawerBackdrop').classList.remove('open');
+      document.getElementById('drawerPanel').classList.remove('open');
+    }
+    function switchDrawerPane(n) {
+      document.querySelectorAll('.drawer-tab').forEach((t, i) => t.classList.toggle('active', PANES[i] === n));
+      PANES.forEach(id => {
+        const el = document.getElementById(`m-${id}`);
+        if (el) el.classList.toggle('active', id === n);
+      });
+      if (n === 'hist') loadHistory();
+    }
+    // swipe to close
+    let _ty = 0;
+    document.getElementById('drawerPanel').addEventListener('touchstart', e => { _ty = e.touches[0].clientY; }, { passive: true });
+    document.getElementById('drawerPanel').addEventListener('touchmove', e => { if (e.touches[0].clientY - _ty > 65) closeDrawer(); }, { passive: true });
+
+    // show mobile menu btn on small screens
+    if (window.innerWidth <= 768) {
+      document.getElementById('mobMenuBtn').style.display = 'flex';
+    }
+
+    // ═══════════════════════════════════════════════
+    //  METRICS POLL
+    // ═══════════════════════════════════════════════
+    let ld = {}, prevAlerts = new Set();
+    const scoreColor = v => v >= 75 ? '#10B981' : v >= 50 ? '#F59E0B' : '#EF4444';
+
+    function setScore(id, fillId, val, color) {
+      const e = document.getElementById(id);
+      const f = document.getElementById(fillId);
+      if (e) { e.textContent = val + '%'; e.style.color = scoreColor(val); }
+      if (f) { f.style.width = val + '%'; f.style.background = color; }
+    }
+
+    function poll() {
+      if (paused) return;
+      fetch('/metrics').then(r => r.json()).then(d => {
+        ld = d;
+        setScore('scPosture', 'sfPosture', d.posture_score, 'var(--v)');
+        setScore('scMovement', 'sfMovement', d.movement_score, 'var(--cy)');
+        setScore('scEye', 'sfEye', d.eye_contact_score, 'var(--gr)');
+        setScore('scNerv', 'sfNerv', d.nervousness_level, 'var(--rd)');
+        setScore('scConf', 'sfConf', d.confidence_score, 'var(--am)');
+        setScore('scPres', 'sfPres', d.presentation_score, 'var(--pk)');
+
+        // overlay stats
+        document.getElementById('ov1').textContent = d.posture_score + '%';
+        document.getElementById('ov2').textContent = d.eye_contact_score + '%';
+        document.getElementById('ov3').textContent = d.confidence_score + '%';
+        document.getElementById('ov5').textContent = d.nervousness_level + '%';
+        const gMap = { natural: '✓ Nat', excessive: 'Active', still: 'Still', active: 'Move' };
+        document.getElementById('ov4').textContent = gMap[d.gesture] || '--';
+
+        // emotion badge on cam
+        document.getElementById('camEmotion').textContent = (d.emotion_emoji || '😐') + ' ' + (d.emotion || 'neutral');
+
+        // bio strip
+        const blEl = document.getElementById('bioBlink');
+        blEl.textContent = (d.blink_rate || 0) + '/min';
+        blEl.style.color = d.blink_status === 'low' ? 'var(--am)' : d.blink_status === 'high' ? 'var(--rd)' : 'var(--gr)';
+        const hdEl = document.getElementById('bioHead');
+        hdEl.textContent = d.head_nod_label || 'Stable';
+        hdEl.style.color = d.head_nod === 'nodding' ? 'var(--gr)' : d.head_nod === 'frozen' ? 'var(--am)' : 'var(--tx)';
+        const geEl = document.getElementById('bioGest');
+        geEl.textContent = d.gesture_label || 'Natural';
+        geEl.style.color = d.gesture === 'natural' ? 'var(--gr)' : d.gesture === 'excessive' ? 'var(--rd)' : 'var(--am)';
+
+        // gesture + emotion cards (desktop + mobile)
+        const gIco = { natural: '✋', excessive: '🙌', still: '🤲', active: '👐' };
+        const gSub = { natural: 'Natural — great!', excessive: 'Reduce hand movement', still: 'Add some gestures', active: 'Slightly reduce' };
+        [['d', 'dGestIco', 'dGestName', 'dGestSub', 'dEmIco', 'dEmTxt'],
+        ['m', 'mGestIco', 'mGestName', 'mGestSub', 'mEmIco', 'mEmTxt']
+        ].forEach(([_, gi, gn, gs, ei, et]) => {
+          const a = document.getElementById(gi), b = document.getElementById(gn),
+            c = document.getElementById(gs), x = document.getElementById(ei), y = document.getElementById(et);
+          if (a) a.textContent = gIco[d.gesture] || '✋';
+          if (b) b.textContent = d.gesture_label || 'Natural';
+          if (c) c.textContent = gSub[d.gesture] || '';
+          if (x) x.textContent = d.emotion_emoji || '😐';
+          if (y) y.textContent = d.emotion || 'neutral';
+        });
+
+        // feedback lists
+        const fbHtml = (d.feedback && d.feedback.length)
+          ? d.feedback.map(f => `<div class="fb-item fb-warn">⚠ ${f}</div>`).join('')
+          : '<div class="fb-item fb-ok">✓ Looking solid. Keep it up!</div>';
+        ['d-feedback', 'm-feedback'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = fbHtml; });
+
+        // alerts
+        (d.alerts || []).forEach(a => {
+          const k = a.key + (a.ts || '');
+          if (!prevAlerts.has(k)) { prevAlerts.add(k); showAlert(a.msg, a.severity); playTone(a.severity); }
+        });
+
+        // charts update
+        tData.labels.push('');
+        tData.datasets[0].data.push(d.confidence_score);
+        tData.datasets[1].data.push(d.posture_score);
+        tData.datasets[2].data.push(d.eye_contact_score);
+        if (tData.labels.length > 60) { tData.labels.shift(); tData.datasets.forEach(ds => ds.data.shift()); }
+        tChart.update('none');
+
+        rChart.data.datasets[0].data = [d.posture_score, d.movement_score, d.eye_contact_score, d.confidence_score, d.presentation_score, 100 - d.nervousness_level];
+        rChart.update('none');
+        if (d.heatmap_history) drawHM(d.heatmap_history);
+
+        // progress card
+        if (d.first_30_avg && d.last_30_avg) {
+          document.getElementById('d-progress').style.display = 'block';
+          document.getElementById('dProgStart').textContent = d.first_30_avg + '%';
+          document.getElementById('dProgNow').textContent = d.last_30_avg + '%';
+          const delta = d.last_30_avg - d.first_30_avg;
+          const pb = document.getElementById('dProgBadge');
+          if (delta > 0) { pb.textContent = '↑ +' + delta + '%'; pb.className = 'prog-badge prog-up'; }
+          else if (delta < 0) { pb.textContent = '↓ ' + delta + '%'; pb.className = 'prog-badge prog-dn'; }
+          else { pb.textContent = '→ Stable'; pb.className = 'prog-badge prog-eq'; }
+        }
+
+        // focus mode stats
+        document.getElementById('focusStats').innerHTML =
+          `<div style="text-align:center;color:#A78BFA;font-family:var(--mono);font-size:1.1rem;">${d.confidence_score}%<br><span style="font-size:.54rem;opacity:.6">CONF</span></div>` +
+          `<div style="text-align:center;color:#22D3EE;font-family:var(--mono);font-size:1.1rem;">${d.eye_contact_score}%<br><span style="font-size:.54rem;opacity:.6">EYE</span></div>` +
+          `<div style="text-align:center;color:#10B981;font-family:var(--mono);font-size:1.1rem;">${d.posture_score}%<br><span style="font-size:.54rem;opacity:.6">POST</span></div>` +
+          `<div style="text-align:center;font-family:var(--mono);font-size:1.1rem;">${d.emotion_emoji || '😐'}<br><span style="font-size:.54rem;opacity:.6">MOOD</span></div>`;
+
+        if (d.nervousness_level > 75 && !breathOn && secs > 30)
+          showAlert('💙 High nervousness — try Breathe', 'info');
+
+        checkGoals(d);
+      }).catch(() => { });
+    }
+    setInterval(poll, 1000);
+    poll();
+
+    // ═══════════════════════════════════════════════
+    //  ALERTS
+    // ═══════════════════════════════════════════════
+    function showAlert(msg, type) {
+      const cls = type === 'success' ? 'alert-ok' : type === 'info' ? 'alert-info' : 'alert-warn';
+      ['d-alerts', 'm-alerts'].forEach(id => {
+        const container = document.getElementById(id); if (!container) return;
+        const el = document.createElement('div'); el.className = 'alert-item ' + cls; el.textContent = msg;
+        container.prepend(el);
+        while (container.children.length > 3) container.lastChild.remove();
+        setTimeout(() => { el.style.transition = 'opacity .5s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 600); }, 7000);
+      });
+    }
+
+    // ═══════════════════════════════════════════════
+    //  GOALS
+    // ═══════════════════════════════════════════════
+    let goalTarget = 75, goalsHit = new Set();
+    const GOALS = [
+      { id: 'p80', l: 'Posture 80+', fn: d => d.posture_score >= 80 },
+      { id: 'e75', l: 'Eye 75+', fn: d => d.eye_contact_score >= 75 },
+      { id: 'ct', l: 'Conf ' + goalTarget + '+', fn: d => d.confidence_score >= goalTarget },
+      { id: 'n30', l: 'Calm <30', fn: d => d.nervousness_level < 30 },
+      { id: 'c90', l: 'Conf 90+', fn: d => d.confidence_score >= 90 },
+    ];
+    function renderGoals() {
+      document.getElementById('goalsRow').innerHTML = GOALS.map(g =>
+        `<div class="goal-chip ${goalsHit.has(g.id) ? 'hit' : 'pending'}">${goalsHit.has(g.id) ? '✓ ' : ''}${g.l}</div>`
+      ).join('');
+    }
+    function checkGoals(d) {
+      GOALS.forEach(g => {
+        if (!goalsHit.has(g.id) && g.fn(d)) {
+          goalsHit.add(g.id); renderGoals(); fireCelebration(); showAlert('🎯 Goal hit: ' + g.l + '!', 'success');
+        }
+      });
+    }
+    function setGoal() {
+      goalTarget = parseInt(document.getElementById('goalInput').value) || 75;
+      GOALS[2].l = 'Conf ' + goalTarget + '+'; GOALS[2].fn = d => d.confidence_score >= goalTarget; renderGoals();
+    }
+    renderGoals();
+
+    // ═══════════════════════════════════════════════
+    //  HISTORY
+    // ═══════════════════════════════════════════════
+    function gradeOf(c) { return c >= 85 ? 'A+' : c >= 78 ? 'A' : c >= 70 ? 'B+' : c >= 62 ? 'B' : c >= 55 ? 'C+' : c >= 48 ? 'C' : 'D'; }
+    async function saveSc(v) {
+      try {
+        const entry = { d: new Date().toLocaleDateString(), v, m: MODE, posture: ld.posture_score || 0, eye: ld.eye_contact_score || 0, nervousness: ld.nervousness_level || 0, emotion: ld.emotion || 'neutral', emotion_emoji: ld.emotion_emoji || '😐', duration_s: secs, filler_count: totFillers, grade: gradeOf(v) };
+        const h = JSON.parse(localStorage.getItem('ps_h') || '[]'); h.push(entry); if (h.length > 50) h.shift();
+        localStorage.setItem('ps_h', JSON.stringify(h));
+        const best = Math.max(...h.map(x => x.v));
+        document.getElementById('bestBadge').textContent = '🏆 ' + best + '%';
+        await fetch('/save_session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: MODE, confidence: v, posture: ld.posture_score || 0, eye_contact: ld.eye_contact_score || 0, nervousness: ld.nervousness_level || 0, emotion: ld.emotion || 'neutral', emotion_emoji: ld.emotion_emoji || '😐', duration_s: secs, filler_count: totFillers }) });
+      } catch (e) { console.warn(e); }
+    }
+    try {
+      const h = JSON.parse(localStorage.getItem('ps_h') || '[]');
+      if (h.length) document.getElementById('bestBadge').textContent = '🏆 ' + Math.max(...h.map(x => x.v)) + '%';
+    } catch (e) { }
+
+    async function loadHistory() {
+      let combined = [];
+      try { combined = JSON.parse(localStorage.getItem('ps_h') || '[]'); } catch (e) { }
+      try {
+        const srv = await fetch('/history').then(r => r.json());
+        srv.forEach(s => { if (!combined.find(c => c.d === (s.date || s.d))) combined.push({ d: s.date || s.d, v: s.confidence || s.v || 0, m: s.mode || s.m, posture: s.posture || 0, eye: s.eye_contact || s.eye || 0, grade: s.grade || gradeOf(s.confidence || 0), duration_s: s.duration_s || 0, emotion: s.emotion || 'neutral', emotion_emoji: s.emotion_emoji || '😐' }); });
+      } catch (e) { }
+      const gc = g => g.startsWith('A') ? 'var(--gr)' : g.startsWith('B') ? 'var(--am)' : 'var(--rd)';
+      const html = combined.length ? [...combined].reverse().map(s =>
+        `<div class="hist-item">
+      <div class="hist-top"><span class="hist-date">${s.d} · ${s.m || 'general'}</span><span class="hist-grade" style="color:${gc(s.grade || 'C')}">${s.grade || gradeOf(s.v || 0)}</span></div>
+      <div class="hist-bars">
+        <div class="hist-bw"><div class="hist-bl">Conf ${s.v || 0}%</div><div class="hist-bb"><div class="hist-bf" style="width:${s.v || 0}%;background:var(--am)"></div></div></div>
+        <div class="hist-bw"><div class="hist-bl">Post ${s.posture || 0}%</div><div class="hist-bb"><div class="hist-bf" style="width:${s.posture || 0}%;background:var(--v)"></div></div></div>
+      </div>
+      <div class="hist-mode">${Math.floor((s.duration_s || 0) / 60)}m ${(s.duration_s || 0) % 60}s · ${s.emotion || 'neutral'} ${s.emotion_emoji || '😐'}</div>
+    </div>`
+      ).join('') : '<div class="hist-empty">No sessions saved yet.</div>';
+      ['d-hist-list', 'm-hist-list'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
+      ['d-hist-pill', 'm-hist-pill'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = combined.length + ' session' + (combined.length !== 1 ? 's' : ''); });
+    }
+    function clearHist() { if (!confirm('Clear all history?')) return; localStorage.removeItem('ps_h'); fetch('/clear_history', { method: 'POST' }).catch(() => { }); loadHistory(); }
+
+    // ═══════════════════════════════════════════════
+    //  GRADE MODAL
+    // ═══════════════════════════════════════════════
+    function showModal() {
+      const conf = ld.confidence_score || 0, g = gradeOf(conf);
+      const T = { 'A+': 'Outstanding!', 'A': 'Excellent!', 'B+': 'Very Good!', 'B': 'Good Job!', 'C+': 'Keep Going!', 'C': 'Keep Practicing', 'D': "Don't Stop!" };
+      const S = { 'A+': "You're interview-ready.", 'A': 'Strong across all metrics.', 'B+': "A few tweaks and you'll nail it.", 'B': 'Daily practice will get you there.', 'C+': 'Consistency is the key.', 'C': 'Focus on one metric at a time.', 'D': 'Every rep counts.' };
+      document.getElementById('modalGrade').textContent = g;
+      document.getElementById('modalTitle').textContent = T[g] || 'Well Done!';
+      document.getElementById('modalSub').textContent = S[g] || 'Keep practicing!';
+      document.getElementById('msConf').textContent = conf + '%';
+      document.getElementById('msPost').textContent = (ld.posture_score || 0) + '%';
+      document.getElementById('msEye').textContent = (ld.eye_contact_score || 0) + '%';
+      document.getElementById('msDur').textContent = Math.floor(secs / 60) + 'm ' + (secs % 60) + 's';
+      document.getElementById('msNerv').textContent = (ld.nervousness_level || 0) + '%';
+      document.getElementById('msFill').textContent = totFillers + ' filler' + (totFillers !== 1 ? 's' : '');
+      document.getElementById('modalOv').classList.add('on');
+      if (conf >= 75) fireCelebration();
+    }
+    function closeModal() { document.getElementById('modalOv').classList.remove('on'); }
+    async function doSave() { await saveSc(ld.confidence_score || 0); closeModal(); switchPane('hist', 'd'); }
+
+    // ═══════════════════════════════════════════════
+    //  SNAPSHOT
+    // ═══════════════════════════════════════════════
+    let snapUrl = '';
+    async function takeSnap() {
+      try { const r = await fetch('/snapshot'); const data = await r.json(); if (data.image) { snapUrl = data.image; document.getElementById('snapImg').src = data.image; document.getElementById('snapOv').classList.add('on'); } }
+      catch (e) { showAlert('Start Flask server first.', 'warn'); }
+    }
+    function dlSnap() { const a = document.createElement('a'); a.href = snapUrl; a.download = 'posesense_' + Date.now() + '.jpg'; a.click(); }
+
+    // ═══════════════════════════════════════════════
+    //  FOCUS MODE
+    // ═══════════════════════════════════════════════
+    let focusOn = false;
+    function toggleFocus() { focusOn = !focusOn; document.getElementById('focusOv').classList.toggle('on', focusOn); }
+
+    // ═══════════════════════════════════════════════
+    //  BREATHING
+    // ═══════════════════════════════════════════════
+    const BPHASES = [
+      { lbl: 'Inhale', dur: 4, step: 'Breathe in slowly and deeply through your nose…', scale: 1.8, bg: 'rgba(124,58,237,.55)' },
+      { lbl: 'Hold', dur: 7, step: 'Hold gently. Let your body absorb the oxygen…', scale: 1.8, bg: 'rgba(6,182,212,.45)' },
+      { lbl: 'Exhale', dur: 8, step: 'Exhale slowly through your mouth. Release all tension…', scale: 1.0, bg: 'rgba(124,58,237,.18)' },
+    ];
+    let bIdx = 0, bCycles = 0, bIv = null, breathOn = false;
+    function showBreath() { breathOn = true; document.getElementById('breathOv').classList.add('on'); bIdx = 0; bCycles = 0; runBreath(); }
+    function hideBreath() { breathOn = false; document.getElementById('breathOv').classList.remove('on'); if (bIv) clearInterval(bIv); }
+    function runBreath() {
+      if (!breathOn) return;
+      const p = BPHASES[bIdx], inner = document.getElementById('breathInner');
+      document.getElementById('breathLbl').textContent = p.lbl;
+      document.getElementById('breathStep').textContent = p.step;
+      inner.style.transform = `scale(${p.scale})`; inner.style.background = p.bg;
+      [0, 1, 2].forEach(i => document.getElementById('bd' + i).classList.toggle('on', i === bIdx));
+      let c = p.dur; document.getElementById('breathNum').textContent = c;
+      if (bIv) clearInterval(bIv);
+      bIv = setInterval(() => {
+        c--; if (c > 0) { document.getElementById('breathNum').textContent = c; }
+        else {
+          clearInterval(bIv); bIdx = (bIdx + 1) % 3; if (bIdx === 0) bCycles++;
+          if (bCycles >= 3) { document.getElementById('breathLbl').textContent = 'Done!'; document.getElementById('breathStep').textContent = '3 cycles complete. You should feel calmer now.'; document.getElementById('breathNum').textContent = '✓'; inner.style.background = 'rgba(16,185,129,.4)'; }
+          else setTimeout(runBreath, 400);
+        }
+      }, 1000);
+    }
+
+    // ═══════════════════════════════════════════════
+    //  FILLER WORDS / MIC
+    // ═══════════════════════════════════════════════
+    let micOn = false, recog = null, totFillers = 0;
+    const fc = { um: 0, uh: 0, like: 0, yk: 0 };
+    function toggleMic() {
+      const btn = document.getElementById('micBtn');
+      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) { showAlert('Speech recognition needs Chrome', 'warn'); return; }
+      if (micOn) {
+        recog && recog.stop(); micOn = false; btn.textContent = '🎙️'; btn.classList.remove('active');
+        document.getElementById('d-filler').style.display = 'none';
+        showAlert('Mic off', 'info');
+      } else {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recog = new SR(); recog.continuous = true; recog.interimResults = true; recog.lang = 'en-US';
+        recog.onresult = e => { for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript.toLowerCase(); if (e.results[i].isFinal) { const h = { um: (t.match(/\bum\b/g) || []).length, uh: (t.match(/\buh\b/g) || []).length, like: (t.match(/\blike\b/g) || []).length, yk: (t.match(/you know/g) || []).length }; Object.keys(h).forEach(k => { fc[k] += h[k]; totFillers += h[k]; });['fw1', 'fw2', 'fw3', 'fw4'].forEach((id, i) => { const el = document.getElementById(id); if (el) el.textContent = [fc.um, fc.uh, fc.like, fc.yk][i]; }); if (totFillers > 0) fetch('/update_fillers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ count: totFillers }) }); } } };
+        recog.onerror = e => { if (e.error !== 'no-speech') showAlert('Mic: ' + e.error, 'warn'); };
+        recog.onend = () => { if (micOn) setTimeout(() => { try { recog.start(); } catch (e) { } }, 500); };
+        recog.start(); micOn = true; btn.textContent = '🔴'; btn.classList.add('active');
+        document.getElementById('d-filler').style.display = 'block';
+        showAlert('🎙️ Mic on — counting filler words', 'success');
+      }
+    }
+
+    // ═══════════════════════════════════════════════
+    //  COACH CHAT
+    // ═══════════════════════════════════════════════
+    let chatBusy = false;
+    async function sendChat(prefix) {
+      if (chatBusy) return;
+      const inp = document.getElementById(prefix + '-chat-inp');
+      const msg = inp.value.trim(); if (!msg) return;
+      inp.value = '';
+      const boxId = prefix + '-chatbox';
+      appendMsg(msg, 'user', boxId); chatBusy = true;
+      const ty = appendTyping(boxId);
+      try {
+        const sys = `You are an expert interview coach for ${md.l} interviews. User LIVE metrics — Confidence:${ld.confidence_score || '--'}%, Posture:${ld.posture_score || '--'}%, Eye:${ld.eye_contact_score || '--'}%, Nervousness:${ld.nervousness_level || '--'}%, Emotion:${ld.emotion || 'neutral'}, Gesture:${ld.gesture || 'natural'}, Blink:${ld.blink_rate || '--'}/min, Head:${ld.head_nod_label || 'Stable'}, Fillers:${totFillers}. Give specific, actionable advice in 2–3 sentences.`;
+        const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: sys, messages: [{ role: 'user', content: msg }] }) });
+        const data = await r.json(); ty.remove();
+        const text = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : 'Stay calm, sit up straight, and maintain eye contact with the camera.';
+        appendMsg(text, 'ai', boxId);
+      } catch (e) { ty.remove(); appendMsg('Keep breathing steadily and focus on confident, clear delivery.', 'ai', boxId); }
+      chatBusy = false;
+    }
+    function qa(q) { document.getElementById('d-chat-inp').value = q; sendChat('d'); }
+    function appendMsg(text, role, boxId) {
+      const box = document.getElementById(boxId); if (!box) return;
+      const el = document.createElement('div'); el.className = 'chat-msg ' + role;
+      if (role === 'ai') el.innerHTML = `<div class="ai-label">COACH</div>${text}`; else el.textContent = text;
+      box.appendChild(el); box.scrollTop = box.scrollHeight; return el;
+    }
+    function appendTyping(boxId) {
+      const box = document.getElementById(boxId); if (!box) return { remove: () => { } };
+      const el = document.createElement('div'); el.className = 'chat-msg ai';
+      el.innerHTML = `<div class="ai-label">COACH</div><div class="typing-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+      box.appendChild(el); box.scrollTop = box.scrollHeight; return el;
+    }
+
+    // ═══════════════════════════════════════════════
+    //  SIMULATOR
+    // ═══════════════════════════════════════════════
+    const QS = {
+      general: ['Tell me about yourself.', 'What are your greatest strengths?', 'Where do you see yourself in 5 years?', 'Why do you want this role?', 'Describe a challenge you overcame.', 'How do you handle pressure?'],
+      technical: ['Explain the difference between a stack and a queue.', 'How would you optimize a slow database query?', 'Describe your debugging process.', 'What is Big O notation?', 'Explain REST vs GraphQL.', 'What is a race condition?'],
+      hr: ['Describe a conflict with a coworker you resolved.', 'Tell me about a time you led a team.', 'How do you handle critical feedback?', 'Give an example of working under pressure.', 'Describe your ideal work culture.'],
+      case: ["Estimate the market size for EVs in India.", "A client's revenue dropped 20% — where do you start?", 'How would you enter a new market?', 'Walk me through turning around a struggling team.', 'How would you price a new SaaS product?'],
+      sales: ['How do you handle a tough objection?', 'Tell me about your biggest deal win.', 'How do you research a prospect?', "What's your follow-up strategy after a no?", 'What makes a pitch truly memorable?'],
+    };
+    let simOn = false, simIv = null, simSecs = 120, simIdx = 0, simQs = [];
+    function loadQs() {
+      simQs = (QS[MODE] || QS.general).sort(() => Math.random() - .5);
+      const html = simQs.slice(0, 5).map((q, i) => `<div class="q-item" onclick="qa('Help me answer: ${q.replace(/'/g, "\\'")}')"><div class="q-num">Q${i + 1} · ${md.l}</div>${q}</div>`).join('');
+      ['qList', 'mQList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
+      const qml = document.getElementById('qModeLabel');
+      if (qml) qml.textContent = md.e + ' ' + md.l + ' — click any question for AI coaching';
+    }
+    function updSim() {
+      const t = Math.floor(simSecs / 60) + ':' + String(simSecs % 60).padStart(2, '0');
+      const w = (simSecs / 120 * 100) + '%';
+      [['simTimer', 'simProg'], ['mSimTimer', 'mSimProg']].forEach(([ti, pi]) => {
+        const te = document.getElementById(ti), pe = document.getElementById(pi);
+        if (te) te.textContent = t; if (pe) pe.style.width = w;
+      });
+    }
+    function showQ() {
+      const q = simQs[simIdx % simQs.length], st = 'Q' + ((simIdx % simQs.length) + 1) + '/' + simQs.length;
+      [['simQuestion', 'simStatus'], ['mSimQuestion', 'mSimStatus']].forEach(([qi, si]) => {
+        const qe = document.getElementById(qi), se = document.getElementById(si);
+        if (qe) qe.textContent = q; if (se) se.textContent = st;
+      });
+    }
+    function startSim() {
+      if (simOn) return; simOn = true; simSecs = 120;
+      simQs = (QS[MODE] || QS.general).sort(() => Math.random() - .5); simIdx = 0; showQ();
+      ['simBtn', 'mSimBtn'].forEach(id => { const el = document.getElementById(id); if (el) { el.textContent = '⏳'; el.style.pointerEvents = 'none'; } });
+      simIv = setInterval(() => { simSecs--; updSim(); if (simSecs <= 0) skipQ(); }, 1000);
+    }
+    function skipQ() { clearInterval(simIv); simIdx++; simSecs = 120; updSim(); if (simIdx >= simQs.length) { endSim(); return; } showQ(); simIv = setInterval(() => { simSecs--; updSim(); if (simSecs <= 0) skipQ(); }, 1000); }
+    function endSim() {
+      clearInterval(simIv); simOn = false;
+      [['simQuestion', 'simStatus'], ['mSimQuestion', 'mSimStatus']].forEach(([qi, si]) => {
+        const qe = document.getElementById(qi), se = document.getElementById(si);
+        if (qe) qe.textContent = 'Simulation complete!'; if (se) se.textContent = 'Done ✓';
+      });
+      ['simBtn', 'mSimBtn'].forEach(id => { const el = document.getElementById(id); if (el) { el.textContent = '▶ Restart'; el.style.pointerEvents = 'auto'; } });
+      showAlert('✓ Simulation complete!', 'success');
+      if (ld.confidence_score > 0) saveSc(ld.confidence_score);
+    }
+    loadQs();
+
+    // ═══════════════════════════════════════════════
+    //  NOTES
+    // ═══════════════════════════════════════════════
+    document.getElementById('d-note-inp').addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') addNote('d-note-inp'); });
+    function addNote(inputId) {
+      const inp = document.getElementById(inputId);
+      const note = inp.value.trim(); if (!note) return; inp.value = '';
+      fetch('/add_note', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) })
+        .then(r => r.json()).then(d => renderNotes(d.notes)).catch(() => { });
+    }
+    function renderNotes(notes) {
+      const html = (!notes || !notes.length) ?
+        '<div style="color:var(--mu);font-size:.65rem;text-align:center;padding:10px;">No notes yet.</div>'
+        : [...notes].reverse().map(n => `<div class="note-item"><div class="note-time">${n.time}</div>${n.note}<div class="note-conf">Confidence: ${n.confidence}%</div></div>`).join('');
+      ['d-notes-list', 'm-notes-list'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
+    }
+
+    // ═══════════════════════════════════════════════
+    //  PDF REPORT
+    // ═══════════════════════════════════════════════
+    async function dlReport() {
+      const btn = document.getElementById('btnReport'), orig = btn.innerHTML;
+      btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true;
+      try {
+        const notes = await fetch('/get_notes').then(r => r.json()).catch(() => []);
+        const res = await fetch('/generate_report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ posture: ld.posture_score || 0, movement: ld.movement_score || 0, eye_contact: ld.eye_contact_score || 0, nervousness: ld.nervousness_level || 0, confidence: ld.confidence_score || 0, presentation: ld.presentation_score || 0, emotion: ld.emotion || 'neutral', emotion_emoji: ld.emotion_emoji || '😐', gesture_label: ld.gesture_label || 'Natural', blink_rate: ld.blink_rate || 0, blink_status: ld.blink_status || 'normal', head_nod_label: ld.head_nod_label || 'Stable', first_30_avg: ld.first_30_avg, last_30_avg: ld.last_30_avg, feedback: ld.feedback || [], mode: MODE, filler_count: totFillers, session_notes: notes, timestamp: new Date().toLocaleString(), duration_s: secs }) });
+        const blob = await res.blob(), url = URL.createObjectURL(blob), a = document.createElement('a');
+        a.href = url; a.download = 'posesense_report.pdf'; a.click(); URL.revokeObjectURL(url);
+      } catch (e) { showAlert('Report failed — is Flask running?', 'warn'); }
+      btn.innerHTML = orig; btn.disabled = false;
+    }
+
+    // ═══════════════════════════════════════════════
+    //  CONFETTI
+    // ═══════════════════════════════════════════════
+    function fireCelebration() {
+      const wrap = document.getElementById('confettiWrap');
+      const colors = ['#A78BFA', '#22D3EE', '#10B981', '#F59E0B', '#EC4899'];
+      for (let i = 0; i < 45; i++) {
+        const el = document.createElement('div'); el.className = 'conf-piece';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.background = colors[i % colors.length];
+        el.style.animationDelay = Math.random() * .7 + 's';
+        el.style.animationDuration = (1.5 + Math.random()) + 's';
+        wrap.appendChild(el); setTimeout(() => el.remove(), 3500);
+      }
+    }
+
+    // ═══════════════════════════════════════════════
+    //  AUDIO
+    // ═══════════════════════════════════════════════
+    let audioCtx = null;
+    function playTone(type) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const freqs = { success: [523, 659], warning: [330, 277], warn: [330, 277], info: [440, 494] }[type] || [440];
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        o.frequency.value = freqs[0]; g.gain.setValueAtTime(.06, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + .4);
+        o.start(); o.stop(audioCtx.currentTime + .4);
+      } catch (e) { }
+    }
+
+    // ═══════════════════════════════════════════════
+    //  KEYBOARD SHORTCUTS
+    // ═══════════════════════════════════════════════
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      switch (e.key) {
+        case ' ': e.preventDefault(); togglePause(); break;
+        case 'b': case 'B': showBreath(); break;
+        case 'p': case 'P': dlReport(); break;
+        case 'm': case 'M': toggleMic(); break;
+        case 'f': case 'F': toggleFocus(); break;
+        case 'e': case 'E': showModal(); break;
+        case 'h': case 'H': switchPane('hist', 'd'); break;
+        case '1': switchChart('trend'); break;
+        case '2': switchChart('heat'); break;
+        case '3': switchChart('radar'); break;
+        case 'Escape':
+          closeModal(); hideBreath();
+          if (focusOn) toggleFocus();
+          document.getElementById('snapOv').classList.remove('on');
+          closeDrawer(); break;
+      }
+    });
+  </script>
+</body>
+
+</html>

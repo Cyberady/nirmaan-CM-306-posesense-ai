@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoseSense AI — Interview Intelligence</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050508;
+            --surface: rgba(255, 255, 255, .04);
+            --border: rgba(255, 255, 255, .08);
+            --accent: #7C3AED;
+            --accent2: #06B6D4;
+            --text: #F8FAFC;
+            --muted: rgba(248, 250, 252, .5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .b1 {
+            width: min(600px, 90vw);
+            height: min(600px, 90vw);
+            background: rgba(124, 58, 237, .12);
+            top: -200px;
+            left: -100px;
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        .b2 {
+            width: min(500px, 80vw);
+            height: min(500px, 80vw);
+            background: rgba(6, 182, 212, .08);
+            bottom: -100px;
+            right: -100px;
+            animation: drift 25s ease-in-out infinite reverse;
+        }
+
+        .b3 {
+            width: min(400px, 70vw);
+            height: min(400px, 70vw);
+            background: rgba(16, 185, 129, .06);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pb 8s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            33% {
+                transform: translate(30px, -30px)
+            }
+
+            66% {
+                transform: translate(-20px, 20px)
+            }
+        }
+
+        @keyframes pb {
+
+            0%,
+            100% {
+                opacity: .5;
+                transform: translate(-50%, -50%) scale(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1)
+            }
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 14px clamp(16px, 5vw, 60px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: rgba(5, 5, 8, .88);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            background: linear-gradient(135deg, #A78BFA, #22D3EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
+        }
+
+        .nav-cta {
+            padding: 8px clamp(14px, 3vw, 22px);
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(.78rem, 2vw, .88rem);
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .2s;
+            box-shadow: 0 0 20px rgba(124, 58, 237, .3);
+            white-space: nowrap;
+        }
+
+        .nav-cta:hover {
+            background: #6D28D9;
+            transform: translateY(-1px);
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: clamp(100px, 14vw, 140px) clamp(20px, 6vw, 80px) clamp(60px, 8vw, 100px);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px clamp(12px, 3vw, 16px);
+            background: rgba(124, 58, 237, .15);
+            border: 1px solid rgba(124, 58, 237, .3);
+            border-radius: 100px;
+            font-size: clamp(.66rem, 1.8vw, .78rem);
+            font-weight: 500;
+            color: #A78BFA;
+            margin-bottom: clamp(20px, 4vw, 30px);
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .bdot {
+            width: 6px;
+            height: 6px;
+            background: #10B981;
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 8vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: clamp(-1px, -0.025em, -2px);
+            margin-bottom: clamp(14px, 3vw, 22px);
+            max-width: 860px;
+        }
+
+        .gt {
+            background: linear-gradient(135deg, #A78BFA 0%, #22D3EE 50%, #34D399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: sh 4s linear infinite;
+        }
+
+        @keyframes sh {
+            0% {
+                background-position: 0% 50%
+            }
+
+            100% {
+                background-position: 200% 50%
+            }
+        }
+
+        .sub {
+            font-size: clamp(.88rem, 2.2vw, 1.1rem);
+            color: var(--muted);
+            max-width: 560px;
+            line-height: 1.7;
+            margin-bottom: clamp(28px, 5vw, 44px);
+            font-weight: 300;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .bp {
+            padding: clamp(11px, 2vw, 14px) clamp(20px, 4vw, 32px);
+            background: linear-gradient(135deg, var(--accent), #6D28D9);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(.88rem, 2vw, 1rem);
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .3s;
+            box-shadow: 0 0 40px rgba(124, 58, 237, .4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bp:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 60px rgba(124, 58, 237, .6);
+        }
+
+        .bs {
+            padding: clamp(11px, 2vw, 14px) clamp(20px, 4vw, 32px);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(.88rem, 2vw, 1rem);
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .3s;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bs:hover {
+            border-color: rgba(124, 58, 237, .4);
+            transform: translateY(-3px);
+        }
+
+        /* METRIC STRIP */
+        .mstrip {
+            position: relative;
+            z-index: 1;
+            margin-top: clamp(32px, 5vw, 60px);
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0 clamp(12px, 4vw, 40px);
+        }
+
+        .mc {
+            padding: 7px clamp(10px, 2vw, 18px);
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: clamp(.7rem, 1.8vw, .82rem);
+            font-weight: 500;
+            transition: all .3s;
+        }
+
+        .mc:hover {
+            border-color: rgba(124, 58, 237, .4);
+            transform: translateY(-2px);
+        }
+
+        .mc .val {
+            color: var(--accent2);
+            font-weight: 700;
+        }
+
+        /* KB HINT */
+        .kb-hint {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            gap: clamp(10px, 2vw, 20px);
+            flex-wrap: wrap;
+            padding: 0 clamp(16px, 4vw, 40px) clamp(40px, 6vw, 60px);
+            margin-top: -10px;
+        }
+
+        .kb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: clamp(.68rem, 1.8vw, .8rem);
+            color: var(--muted);
+        }
+
+        .key {
+            padding: 2px 7px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(.6rem, 1.5vw, .72rem);
+            color: var(--text);
+        }
+
+        /* SECTIONS */
+        .modes-sec {
+            position: relative;
+            z-index: 1;
+            padding: clamp(60px, 10vw, 100px) clamp(20px, 5vw, 60px);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .stag {
+            text-align: center;
+            font-size: clamp(.66rem, 1.8vw, .78rem);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent2);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .sh {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.8rem);
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
+
+        .ssub {
+            text-align: center;
+            color: var(--muted);
+            font-size: clamp(.83rem, 2vw, .95rem);
+            margin-bottom: clamp(28px, 5vw, 50px);
+        }
+
+        /* MODE CARDS */
+        .mg {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+            gap: clamp(12px, 2vw, 18px);
+        }
+
+        .mcard {
+            padding: clamp(18px, 3vw, 26px) clamp(16px, 2.5vw, 22px);
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all .3s;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mcard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .mcard:hover {
+            transform: translateY(-6px);
+            border-color: rgba(124, 58, 237, .4);
+            background: rgba(124, 58, 237, .05);
+        }
+
+        .mcard:hover::before {
+            opacity: 1;
+        }
+
+        .m1::before {
+            background: linear-gradient(90deg, #A78BFA, #22D3EE);
+        }
+
+        .m2::before {
+            background: linear-gradient(90deg, #22D3EE, #10B981);
+        }
+
+        .m3::before {
+            background: linear-gradient(90deg, #F59E0B, #EF4444);
+        }
+
+        .m4::before {
+            background: linear-gradient(90deg, #EC4899, #A78BFA);
+        }
+
+        .m5::before {
+            background: linear-gradient(90deg, #10B981, #22D3EE);
+        }
+
+        .mico {
+            font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+        }
+
+        .mt {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: clamp(.88rem, 2vw, 1rem);
+        }
+
+        .md {
+            color: var(--muted);
+            font-size: clamp(.74rem, 1.8vw, .8rem);
+            line-height: 1.6;
+        }
+
+        .mtag {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 100px;
+            font-size: clamp(.58rem, 1.5vw, .68rem);
+            font-weight: 600;
+            letter-spacing: .5px;
+            margin-top: 2px;
+        }
+
+        /* FEATURES */
+        .feats {
+            position: relative;
+            z-index: 1;
+            padding: clamp(50px, 8vw, 80px) clamp(20px, 5vw, 60px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .fg {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+            gap: clamp(12px, 2vw, 20px);
+        }
+
+        .fc {
+            padding: clamp(18px, 2.5vw, 26px);
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fc:hover {
+            border-color: rgba(124, 58, 237, .3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+        }
+
+        .ficon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .fc h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(.88rem, 2vw, 1rem);
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .fc p {
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: clamp(.76rem, 1.8vw, .85rem);
+        }
+
+        .fnew {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(16, 185, 129, .15);
+            border: 1px solid rgba(16, 185, 129, .3);
+            border-radius: 100px;
+            font-size: .62rem;
+            color: #34D399;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        /* STATS */
+        .stats {
+            position: relative;
+            z-index: 1;
+            padding: clamp(36px, 6vw, 56px) clamp(20px, 5vw, 56px);
+            display: flex;
+            justify-content: center;
+            gap: clamp(28px, 6vw, 72px);
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .sv {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #A78BFA, #22D3EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .sl {
+            color: var(--muted);
+            font-size: clamp(.72rem, 1.8vw, .82rem);
+            margin-top: 4px;
+        }
+
+        /* CTA */
+        .cta-s {
+            position: relative;
+            z-index: 1;
+            padding: clamp(60px, 10vw, 100px) clamp(20px, 5vw, 60px);
+            text-align: center;
+        }
+
+        .cta-s h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 14px;
+        }
+
+        .cta-s p {
+            color: var(--muted);
+            font-size: clamp(.88rem, 2vw, 1rem);
+            margin-bottom: clamp(24px, 4vw, 36px);
+        }
+
+        /* FOOTER */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: clamp(18px, 3vw, 32px) clamp(20px, 5vw, 60px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            color: var(--muted);
+            font-size: clamp(.72rem, 1.8vw, .8rem);
+        }
+
+        /* ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: all .7s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:768px) {
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .hero-btns .bp,
+            .hero-btns .bs {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .kb-hint {
+                display: none;
+            }
+
+            footer {
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        @media(max-width:500px) {
+            .mstrip .mc:nth-child(n+5) {
+                display: none;
+            }
+
+            .stats {
+                gap: 24px;
+            }
+        }
+
+        @media(hover:none) {
+
+            .mcard:hover,
+            .fc:hover,
+            .mc:hover,
+            .bp:hover,
+            .bs:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+
+    <nav>
+        <div class="logo">PoseSense AI</div>
+        <a href="#modes" class="nav-cta">Choose Mode →</a>
+    </nav>
+
+    <section class="hero">
+        <div class="badge"><span class="bdot"></span> v3.0 · MediaPipe + AI Coach · Biometrics</div>
+        <h1>Master Your<br><span class="gt">Interview Presence</span></h1>
+        <p class="sub">Real-time pose analysis, emotion detection, blink rate monitoring,
+            head nod tracking, breathing exercises, and an AI interview coach — all in one platform.</p>
+        <div class="hero-btns">
+            <a href="#modes" class="bp">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="10,8 16,12 10,16" />
+                </svg>
+                Start Training
+            </a>
+            <a href="#features" class="bs">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                See Features
+            </a>
+        </div>
+        <div class="mstrip">
+            <div class="mc">🎯 Posture <span class="val">Live</span></div>
+            <div class="mc">😎 Emotions <span class="val">6 States</span></div>
+            <div class="mc">👁️ Blink <span class="val">Monitor</span></div>
+            <div class="mc">🫁 Breathing <span class="val">Coach</span></div>
+            <div class="mc">📊 Radar <span class="val">Chart</span></div>
+            <div class="mc">🏆 Grade <span class="val">A–D</span></div>
+        </div>
+    </section>
+
+    <div class="kb-hint reveal">
+        <div class="kb"><span class="key">Space</span> Pause</div>
+        <div class="kb"><span class="key">B</span> Breathing</div>
+        <div class="kb"><span class="key">P</span> PDF</div>
+        <div class="kb"><span class="key">M</span> Mic</div>
+        <div class="kb"><span class="key">H</span> History</div>
+        <div class="kb"><span class="key">E</span> End</div>
+    </div>
+
+    <section class="modes-sec" id="modes">
+        <p class="stag reveal">Choose Your Battle</p>
+        <h2 class="sh reveal">Pick Your Interview Mode</h2>
+        <p class="ssub reveal">Each mode tunes AI scoring weights and loads a matching question bank.</p>
+        <div class="mg">
+            <a href="/dashboard?mode=general" class="mcard m1 reveal">
+                <div class="mico">🎯</div>
+                <div class="mt">General Practice</div>
+                <div class="md">Balanced scoring. Perfect for daily warm-ups and building overall confidence.</div>
+                <span class="mtag" style="background:rgba(167,139,250,.15);color:#A78BFA;">Recommended</span>
+            </a>
+            <a href="/dashboard?mode=technical" class="mcard m2 reveal">
+                <div class="mico">💻</div>
+                <div class="mt">Technical Interview</div>
+                <div class="md">Calm, steady presence while explaining complex technical topics.</div>
+                <span class="mtag" style="background:rgba(34,211,238,.15);color:#22D3EE;">Engineering</span>
+            </a>
+            <a href="/dashboard?mode=hr" class="mcard m3 reveal">
+                <div class="mico">🤝</div>
+                <div class="mt">HR / Behavioral</div>
+                <div class="md">Warmth, eye contact, and natural gestures — the human connection metrics.</div>
+                <span class="mtag" style="background:rgba(245,158,11,.15);color:#F59E0B;">People Skills</span>
+            </a>
+            <a href="/dashboard?mode=case" class="mcard m4 reveal">
+                <div class="mico">📋</div>
+                <div class="mt">Case Study</div>
+                <div class="md">Confidence under pressure. Tracks nervous gestures during analytical delivery.</div>
+                <span class="mtag" style="background:rgba(236,72,153,.15);color:#EC4899;">Consulting</span>
+            </a>
+            <a href="/dashboard?mode=sales" class="mcard m5 reveal">
+                <div class="mico">🚀</div>
+                <div class="mt">Sales / Pitch</div>
+                <div class="md">Energy, expressiveness, and persuasive body language for high-energy pitches.</div>
+                <span class="mtag" style="background:rgba(16,185,129,.15);color:#10B981;">High Energy</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="feats" id="features">
+        <p class="stag reveal">Full Feature Set v3.0</p>
+        <h2 class="sh reveal" style="margin-bottom:clamp(24px,4vw,44px);">Every tool to win the interview</h2>
+        <div class="fg">
+            <div class="fc reveal">
+                <div class="ficon" style="background:rgba(124,58,237,.15);">🦾</div>
+                <h3>33-Point Pose Analysis</h3>
+                <p>MediaPipe tracks 33 body landmarks — shoulder slope, head tilt, and ear offset analysed every frame.
+                </p>
+            </div>
+            <div class="fc reveal">
+                <div class="ficon" style="background:rgba(6,182,212,.15);">😎</div>
+                <h3>Emotion Detection</h3>
+                <p>Face mesh classifies 6 states: confident, nervous, stressed, happy, focused, neutral — live.</p>
+            </div>
+            <div class="fc reveal"><span class="fnew">NEW v3</span>
+                <div class="ficon" style="background:rgba(16,185,129,.15);">👁️</div>
+                <h3>Blink Rate Monitor</h3>
+                <p>Counts blinks per minute. Under 8 = stiff. Over 30 = anxious. Both trigger targeted alerts.</p>
+            </div>
+            <div class="fc reveal"><span class="fnew">NEW v3</span>
+                <div class="ficon" style="background:rgba(245,158,11,.15);">🗿</div>
+                <h3>Head Nod Detection</h3>
+                <p>Nose-Y variance classifies: Nodding (engaged), Stable, or Frozen (robotic).</p>
+            </div>
+            <div class="fc reveal"><span class="fnew">NEW v3</span>
+                <div class="ficon" style="background:rgba(239,68,68,.15);">🫁</div>
+                <h3>Breathing Exercise</h3>
+                <p>When nervousness spikes, an animated 4-7-8 breathing guide overlays the dashboard live.</p>
+            </div>
+            <div class="fc reveal"><span class="fnew">NEW v3</span>
+                <div class="ficon" style="background:rgba(236,72,153,.15);">📡</div>
+                <h3>Radar / Spider Chart</h3>
+                <p>Chart.js radar chart plots all 6 metrics simultaneously for a holistic snapshot.</p>
+            </div>
+            <div class="fc reveal">
+                <div class="ficon" style="background:rgba(167,139,250,.15);">⏱️</div>
+                <h3>Interview Simulator</h3>
+                <p>2-minute timed sessions with a real question bank per mode. Skip, shuffle, practice.</p>
+            </div>
+            <div class="fc reveal">
+                <div class="ficon" style="background:rgba(52,211,153,.15);">📜</div>
+                <h3>Session History</h3>
+                <p>Last 20 sessions saved with date, mode, grade, and scores. Track improvement over time.</p>
+            </div>
+            <div class="fc reveal"><span class="fnew">NEW v3</span>
+                <div class="ficon" style="background:rgba(34,211,238,.15);">🏆</div>
+                <h3>Grade &amp; Summary Modal</h3>
+                <p>End-of-session modal reveals your letter grade (A+ to D) with full breakdown before PDF export.</p>
+            </div>
+            <div class="fc reveal">
+                <div class="ficon" style="background:rgba(6,182,212,.15);">⚡</div>
+                <h3>Smart Alert System</h3>
+                <p>Debounced alerts for slouch, gaze, fidgeting, nervousness, blink rate, frozen head — 15s cooldown.
+                </p>
+            </div>
+            <div class="fc reveal">
+                <div class="ficon" style="background:rgba(139,92,246,.15);">🤖</div>
+                <h3>Context-Aware AI Coach</h3>
+                <p>Coach receives your live scores — gives advice specific to what it sees right now.</p>
+            </div>
+            <div class="fc reveal">
+                <div class="ficon" style="background:rgba(245,158,11,.15);">⌨️</div>
+                <h3>Keyboard Shortcuts</h3>
+                <p>Space = pause, B = breathing, P = PDF, M = mic, E = end, H = history. Full keyboard workflow.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats">
+        <div class="stat reveal">
+            <div class="sv">33</div>
+            <div class="sl">Body landmarks</div>
+        </div>
+        <div class="stat reveal">
+            <div class="sv">12</div>
+            <div class="sl">Live signals</div>
+        </div>
+        <div class="stat reveal">
+            <div class="sv">5</div>
+            <div class="sl">Interview modes</div>
+        </div>
+        <div class="stat reveal">
+            <div class="sv">A+</div>
+            <div class="sl">Max grade</div>
+        </div>
+    </div>
+
+    <section class="cta-s">
+        <h2 class="reveal">Ready to level up?</h2>
+        <p class="reveal">Pick your mode and start your AI-powered session now.</p>
+        <a href="#modes" class="bp reveal" style="display:inline-flex;justify-content:center;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10,8 16,12 10,16" />
+            </svg>
+            Choose Your Mode
+        </a>
+    </section>
+
+    <footer>
+        <div class="logo" style="font-size:1rem;">PoseSense AI</div>
+        <div style="font-size: medium;">Made by <b>Web Warriors</b></div>
+    </footer>
+
+    <script>
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach((el, i) => {
+                if (el.isIntersecting) setTimeout(() => el.target.classList.add('visible'), i * 65);
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+    </script>
+</body>
+
+</html>

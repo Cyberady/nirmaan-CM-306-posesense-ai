@@ -1,0 +1,523 @@
+[
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "render_template",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "send_file",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "cv2",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "cv2",
+        "description": "cv2",
+        "detail": "cv2",
+        "documentation": {}
+    },
+    {
+        "label": "mediapipe",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "mediapipe",
+        "description": "mediapipe",
+        "detail": "mediapipe",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "math,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math.",
+        "description": "math.",
+        "detail": "math.",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "letter",
+        "importPath": "reportlab.lib.pagesizes",
+        "description": "reportlab.lib.pagesizes",
+        "isExtraImport": true,
+        "detail": "reportlab.lib.pagesizes",
+        "documentation": {}
+    },
+    {
+        "label": "colors",
+        "importPath": "reportlab.lib",
+        "description": "reportlab.lib",
+        "isExtraImport": true,
+        "detail": "reportlab.lib",
+        "documentation": {}
+    },
+    {
+        "label": "getSampleStyleSheet",
+        "importPath": "reportlab.lib.styles",
+        "description": "reportlab.lib.styles",
+        "isExtraImport": true,
+        "detail": "reportlab.lib.styles",
+        "documentation": {}
+    },
+    {
+        "label": "ParagraphStyle",
+        "importPath": "reportlab.lib.styles",
+        "description": "reportlab.lib.styles",
+        "isExtraImport": true,
+        "detail": "reportlab.lib.styles",
+        "documentation": {}
+    },
+    {
+        "label": "SimpleDocTemplate",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
+        "label": "Paragraph",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
+        "label": "Spacer",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
+        "label": "Table",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
+        "label": "TableStyle",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
+        "label": "HRFlowable",
+        "importPath": "reportlab.platypus",
+        "description": "reportlab.platypus",
+        "isExtraImport": true,
+        "detail": "reportlab.platypus",
+        "documentation": {}
+    },
+    {
+        "label": "inch",
+        "importPath": "reportlab.lib.units",
+        "description": "reportlab.lib.units",
+        "isExtraImport": true,
+        "detail": "reportlab.lib.units",
+        "documentation": {}
+    },
+    {
+        "label": "os,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os.",
+        "description": "os.",
+        "detail": "os.",
+        "documentation": {}
+    },
+    {
+        "label": "load_history",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def load_history():\n    try:\n        if HISTORY_FILE.exists():\n            return json.loads(HISTORY_FILE.read_text())\n    except Exception:\n        pass\n    return []\ndef save_history(history):\n    try:\n        HISTORY_FILE.write_text(json.dumps(history, indent=2))",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "save_history",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def save_history(history):\n    try:\n        HISTORY_FILE.write_text(json.dumps(history, indent=2))\n    except Exception as e:\n        print(f\"[PoseSense] Could not save history: {e}\")\nmp_pose      = mp.solutions.pose\nmp_face_mesh = mp.solutions.face_mesh\nmp_drawing   = mp.solutions.drawing_utils\npose      = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)\nface_mesh = mp_face_mesh.FaceMesh(",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_camera",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_camera():\n    global camera\n    if camera is None or not camera.isOpened():\n        camera = cv2.VideoCapture(0)\n        camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)\n        camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)\n    return camera\ndef d2(a, b):\n    return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\ndef lpt(lm, i, w, h):",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "d2",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def d2(a, b):\n    return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)\ndef lpt(lm, i, w, h):\n    p = lm[i]\n    return (p.x * w, p.y * h)\n# ── Analysis functions ────────────────────────────────────────────────────────\ndef analyze_posture(lm, w, h):\n    try:\n        ls = lpt(lm, mp_pose.PoseLandmark.LEFT_SHOULDER.value, w, h)\n        rs = lpt(lm, mp_pose.PoseLandmark.RIGHT_SHOULDER.value, w, h)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "lpt",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def lpt(lm, i, w, h):\n    p = lm[i]\n    return (p.x * w, p.y * h)\n# ── Analysis functions ────────────────────────────────────────────────────────\ndef analyze_posture(lm, w, h):\n    try:\n        ls = lpt(lm, mp_pose.PoseLandmark.LEFT_SHOULDER.value, w, h)\n        rs = lpt(lm, mp_pose.PoseLandmark.RIGHT_SHOULDER.value, w, h)\n        le = lpt(lm, mp_pose.PoseLandmark.LEFT_EAR.value, w, h)\n        re = lpt(lm, mp_pose.PoseLandmark.RIGHT_EAR.value, w, h)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "analyze_posture",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def analyze_posture(lm, w, h):\n    try:\n        ls = lpt(lm, mp_pose.PoseLandmark.LEFT_SHOULDER.value, w, h)\n        rs = lpt(lm, mp_pose.PoseLandmark.RIGHT_SHOULDER.value, w, h)\n        le = lpt(lm, mp_pose.PoseLandmark.LEFT_EAR.value, w, h)\n        re = lpt(lm, mp_pose.PoseLandmark.RIGHT_EAR.value, w, h)\n        sw = max(d2(ls, rs), 1)\n        slope  = abs(ls[1] - rs[1]) / sw\n        offset = abs((le[0] + re[0]) / 2 - (ls[0] + rs[0]) / 2) / sw\n        tilt   = abs(le[1] - re[1]) / sw",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "analyze_movement",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def analyze_movement(lm, prev):\n    if prev is None:\n        return 50, \"natural\", []\n    try:\n        idxs = [\n            mp_pose.PoseLandmark.LEFT_WRIST.value,\n            mp_pose.PoseLandmark.RIGHT_WRIST.value,\n            mp_pose.PoseLandmark.LEFT_ELBOW.value,\n            mp_pose.PoseLandmark.RIGHT_ELBOW.value,\n        ]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "analyze_eye_contact",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def analyze_eye_contact(fl, w, h):\n    try:\n        L = [362, 385, 387, 263, 373, 380]\n        R = [33, 160, 158, 133, 153, 144]\n        lep = [(fl.landmark[i].x * w, fl.landmark[i].y * h) for i in L]\n        rep = [(fl.landmark[i].x * w, fl.landmark[i].y * h) for i in R]\n        def ear(p):\n            return (d2(p[1], p[5]) + d2(p[2], p[4])) / (2 * max(d2(p[0], p[3]), 0.001))\n        avg_ear = (ear(lep) + ear(rep)) / 2\n        nt = fl.landmark[4]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "detect_blink",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def detect_blink(avg_ear):\n    \"\"\"\n    Detects blinks from EAR values. Updates global blink counters.\n    Returns per-minute blink rate and status string.\n    \"\"\"\n    global blink_in_blink, blink_total, blink_ts\n    BLINK_THRESH = 0.18\n    blink_frame_buf.append(avg_ear)\n    # Detect blink onset (EAR drops below threshold)\n    if avg_ear < BLINK_THRESH and not blink_in_blink:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "detect_head_nod",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def detect_head_nod(fl):\n    \"\"\"\n    Tracks nose-tip Y position over time to classify head nod pattern.\n    Returns nod state and label.\n    \"\"\"\n    try:\n        nose_y = fl.landmark[4].y\n        nose_y_window.append(nose_y)\n        if len(nose_y_window) < 10:\n            return \"stable\", \"Stable\"",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "detect_emotion",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def detect_emotion(fl, posture_s, eye_s, nervousness):\n    \"\"\"\n    Robust 6-emotion classifier using normalised face landmarks.\n    \"\"\"\n    try:\n        lmc = fl.landmark[61]\n        rmc = fl.landmark[291]\n        mouth_w = abs(rmc.x - lmc.x)\n        lc  = fl.landmark[234]\n        rc  = fl.landmark[454]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "check_alerts",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def check_alerts(ps, es, ms, nv, blink_rate, head_nod):\n    now = time.time()\n    C = 15\n    alerts = []\n    def may(key, msg, sev=\"warning\"):\n        if now - alert_cd.get(key, 0) > C:\n            alert_cd[key] = now\n            alerts.append({\"key\": key, \"msg\": msg, \"severity\": sev, \"ts\": int(now)})\n    if ps < 55:         may(\"slouch\",  \"⚠ You've been slouching — sit up straight!\")\n    if es < 45:         may(\"gaze\",    \"👁 Maintain eye contact with the camera\")",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "generate_frames",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def generate_frames():\n    global prev_lm, session_data, last_frame_raw\n    cam = get_camera()\n    while True:\n        if session_data.get(\"paused\", False):\n            time.sleep(0.1)\n            if last_frame_raw is not None:\n                ret, buf = cv2.imencode('.jpg', last_frame_raw, [cv2.IMWRITE_JPEG_QUALITY, 78])\n                if ret:\n                    yield (b'--frame\\r\\nContent-Type: image/jpeg\\r\\n\\r\\n' + buf.tobytes() + b'\\r\\n')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "index",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def index():\n    return render_template('index.html')\n@app.route('/dashboard')\ndef dashboard():\n    mode = request.args.get('mode', 'general')\n    session_data.update({\n        \"session_start\":      datetime.now().strftime(\"%Y-%m-%d %H:%M\"),\n        \"confidence_history\": [],\n        \"posture_history\":    [],\n        \"eye_history\":        [],",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "dashboard",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def dashboard():\n    mode = request.args.get('mode', 'general')\n    session_data.update({\n        \"session_start\":      datetime.now().strftime(\"%Y-%m-%d %H:%M\"),\n        \"confidence_history\": [],\n        \"posture_history\":    [],\n        \"eye_history\":        [],\n        \"heatmap_history\":    [],\n        \"frame_count\":        0,\n        \"alerts\":             [],",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "video_feed",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def video_feed():\n    return Response(\n        generate_frames(),\n        mimetype='multipart/x-mixed-replace; boundary=frame',\n    )\n@app.route('/metrics')\ndef metrics():\n    return jsonify(session_data)\n# ── Snapshot ─────────────────────────────────────────────────────────────────\n@app.route('/snapshot')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "metrics",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def metrics():\n    return jsonify(session_data)\n# ── Snapshot ─────────────────────────────────────────────────────────────────\n@app.route('/snapshot')\ndef snapshot():\n    global last_frame_raw\n    if last_frame_raw is None:\n        return jsonify({\"error\": \"No frame available\"}), 404\n    frame = last_frame_raw.copy()\n    h, w = frame.shape[:2]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "snapshot",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def snapshot():\n    global last_frame_raw\n    if last_frame_raw is None:\n        return jsonify({\"error\": \"No frame available\"}), 404\n    frame = last_frame_raw.copy()\n    h, w = frame.shape[:2]\n    d = session_data\n    overlay = frame.copy()\n    cv2.rectangle(overlay, (10, 10), (340, 130), (0, 0, 0), -1)\n    frame = cv2.addWeighted(overlay, 0.6, frame, 0.4, 0)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "add_note",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def add_note():\n    note = request.json.get('note', '').strip()\n    if note:\n        session_data[\"session_notes\"].append({\n            \"time\":       datetime.now().strftime(\"%H:%M:%S\"),\n            \"note\":       note,\n            \"confidence\": session_data[\"confidence_score\"],\n        })\n    return jsonify({\"ok\": True, \"notes\": session_data[\"session_notes\"]})\n@app.route('/get_notes')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_notes",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_notes():\n    return jsonify(session_data[\"session_notes\"])\n# ── Goal achieved ─────────────────────────────────────────────────────────────\n@app.route('/goal_hit', methods=['POST'])\ndef goal_hit():\n    g = request.json.get('goal', '')\n    if g not in session_data[\"goals_hit\"]:\n        session_data[\"goals_hit\"].append(g)\n    return jsonify({\"ok\": True})\n# ── Filler word count ─────────────────────────────────────────────────────────",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "goal_hit",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def goal_hit():\n    g = request.json.get('goal', '')\n    if g not in session_data[\"goals_hit\"]:\n        session_data[\"goals_hit\"].append(g)\n    return jsonify({\"ok\": True})\n# ── Filler word count ─────────────────────────────────────────────────────────\n@app.route('/update_fillers', methods=['POST'])\ndef update_fillers():\n    session_data[\"filler_count\"] = request.json.get('count', 0)\n    return jsonify({\"ok\": True})",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "update_fillers",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def update_fillers():\n    session_data[\"filler_count\"] = request.json.get('count', 0)\n    return jsonify({\"ok\": True})\n# ── Pause toggle ──────────────────────────────────────────────────────────────\n@app.route('/pause', methods=['POST'])\ndef pause():\n    session_data['paused'] = not session_data.get('paused', False)\n    return jsonify({\"paused\": session_data['paused']})\n# ── PDF Report ────────────────────────────────────────────────────────────────\n@app.route('/generate_report', methods=['POST'])",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "pause",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def pause():\n    session_data['paused'] = not session_data.get('paused', False)\n    return jsonify({\"paused\": session_data['paused']})\n# ── PDF Report ────────────────────────────────────────────────────────────────\n@app.route('/generate_report', methods=['POST'])\ndef generate_report():\n    d = request.json or {}\n    buf = io.BytesIO()\n    doc = SimpleDocTemplate(\n        buf, pagesize=letter,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "generate_report",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def generate_report():\n    d = request.json or {}\n    buf = io.BytesIO()\n    doc = SimpleDocTemplate(\n        buf, pagesize=letter,\n        rightMargin=60, leftMargin=60, topMargin=60, bottomMargin=40,\n    )\n    styles = getSampleStyleSheet()\n    PURPLE = colors.HexColor('#7C3AED')\n    PL     = colors.HexColor('#A78BFA')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "save_session",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def save_session():\n    d = request.json or {}\n    history = load_history()\n    entry = {\n        \"date\":          datetime.now().strftime(\"%b %d, %Y %H:%M\"),\n        \"mode\":          d.get(\"mode\", \"general\"),\n        \"confidence\":    d.get(\"confidence\", 0),\n        \"posture\":       d.get(\"posture\", 0),\n        \"eye_contact\":   d.get(\"eye_contact\", 0),\n        \"nervousness\":   d.get(\"nervousness\", 0),",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "history",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def history():\n    return jsonify(load_history())\n@app.route('/clear_history', methods=['POST'])\ndef clear_history():\n    save_history([])\n    return jsonify({\"ok\": True})\nif __name__ == '__main__':\n    app.run(debug=False, host='0.0.0.0', port=5000)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "clear_history",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def clear_history():\n    save_history([])\n    return jsonify({\"ok\": True})\nif __name__ == '__main__':\n    app.run(debug=False, host='0.0.0.0', port=5000)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\n# ── Persistent history stored in a JSON file next to app.py ──────────────────\nHISTORY_FILE = pathlib.Path(__file__).parent / \"session_history.json\"\ndef load_history():\n    try:\n        if HISTORY_FILE.exists():\n            return json.loads(HISTORY_FILE.read_text())\n    except Exception:\n        pass\n    return []",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "HISTORY_FILE",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "HISTORY_FILE = pathlib.Path(__file__).parent / \"session_history.json\"\ndef load_history():\n    try:\n        if HISTORY_FILE.exists():\n            return json.loads(HISTORY_FILE.read_text())\n    except Exception:\n        pass\n    return []\ndef save_history(history):\n    try:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "mp_face_mesh",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "mp_face_mesh = mp.solutions.face_mesh\nmp_drawing   = mp.solutions.drawing_utils\npose      = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)\nface_mesh = mp_face_mesh.FaceMesh(\n    min_detection_confidence=0.5,\n    min_tracking_confidence=0.5,\n    refine_landmarks=True,\n    max_num_faces=1\n)\n# ── Session state ────────────────────────────────────────────────────────────",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "face_mesh",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "face_mesh = mp_face_mesh.FaceMesh(\n    min_detection_confidence=0.5,\n    min_tracking_confidence=0.5,\n    refine_landmarks=True,\n    max_num_faces=1\n)\n# ── Session state ────────────────────────────────────────────────────────────\nsession_data = {\n    \"posture_score\": 0,\n    \"movement_score\": 0,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "session_data",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "session_data = {\n    \"posture_score\": 0,\n    \"movement_score\": 0,\n    \"eye_contact_score\": 0,\n    \"nervousness_level\": 0,\n    \"confidence_score\": 0,\n    \"presentation_score\": 0,\n    \"emotion\": \"neutral\",\n    \"emotion_emoji\": \"😐\",\n    \"gesture\": \"natural\",",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "posture_window",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "posture_window = deque(maxlen=300)\neye_window     = deque(maxlen=300)\nmove_window    = deque(maxlen=30)\nheatmap_win    = deque(maxlen=7200)   # ~2hrs at 1fps\nprev_lm        = None\nalert_cd       = {}\ncamera         = None\nlast_frame_raw = None\n# ── Blink & head-nod tracking state ─────────────────────────────────────────\nblink_counter   = 0",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "last_frame_raw",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "last_frame_raw = None\n# ── Blink & head-nod tracking state ─────────────────────────────────────────\nblink_counter   = 0\nblink_total     = 0\nblink_window    = deque(maxlen=60)   # last 60 seconds of per-second counts\nblink_frame_buf = deque(maxlen=5)    # EAR values for blink detection\nblink_in_blink  = False\nblink_ts        = time.time()        # timestamp for per-second counting\nnose_y_window   = deque(maxlen=30)   # nose Y for head-nod detection\nEMOTION_MAP = {",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "blink_frame_buf",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "blink_frame_buf = deque(maxlen=5)    # EAR values for blink detection\nblink_in_blink  = False\nblink_ts        = time.time()        # timestamp for per-second counting\nnose_y_window   = deque(maxlen=30)   # nose Y for head-nod detection\nEMOTION_MAP = {\n    \"confident\": \"😎\",\n    \"happy\": \"😊\",\n    \"neutral\": \"😐\",\n    \"nervous\": \"😰\",\n    \"stressed\": \"😟\",",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "EMOTION_MAP",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "EMOTION_MAP = {\n    \"confident\": \"😎\",\n    \"happy\": \"😊\",\n    \"neutral\": \"😐\",\n    \"nervous\": \"😰\",\n    \"stressed\": \"😟\",\n    \"focused\": \"🧐\",\n}\n# ── Camera ───────────────────────────────────────────────────────────────────\ndef get_camera():",
+        "detail": "app",
+        "documentation": {}
+    }
+]
