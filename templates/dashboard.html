@@ -10,15 +10,13 @@
     rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    /* ═══════════════════════════════════════════════
-   TOKENS
-═══════════════════════════════════════════════ */
     :root {
-      --bg: #06060B;
-      --surface: rgba(255, 255, 255, .04);
-      --surface2: rgba(255, 255, 255, .07);
-      --border: rgba(255, 255, 255, .09);
-      --border2: rgba(124, 58, 237, .3);
+      --bg: #07070F;
+      --bg2: #0D0D1A;
+      --surface: rgba(255, 255, 255, .045);
+      --surface2: rgba(255, 255, 255, .08);
+      --border: rgba(255, 255, 255, .08);
+      --border2: rgba(124, 58, 237, .35);
       --v: #7C3AED;
       --vl: #A78BFA;
       --cy: #06B6D4;
@@ -27,21 +25,15 @@
       --rd: #EF4444;
       --pk: #EC4899;
       --tx: #F1F5F9;
-      --mu: rgba(241, 245, 249, .48);
+      --mu: rgba(241, 245, 249, .45);
       --mono: 'JetBrains Mono', monospace;
       --sans: 'DM Sans', sans-serif;
       --head: 'Syne', sans-serif;
-      --topbar: 48px;
-      --goalbar: 32px;
-      --rc-width: 300px;
-      /* right column width desktop */
-      --mob-nav: 58px;
-      /* bottom nav height mobile */
+      --topbar-h: 52px;
+      --sidebar-w: 340px;
+      --mob-nav: 60px;
     }
 
-    /* ═══════════════════════════════════════════════
-   RESET & BASE
-═══════════════════════════════════════════════ */
     * {
       margin: 0;
       padding: 0;
@@ -49,65 +41,69 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html {
+    html,
+    body {
       height: 100%;
     }
 
     body {
-      height: 100%;
       background: var(--bg);
       color: var(--tx);
       font-family: var(--sans);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      height: 100%;
     }
 
-    /* ═══════════════════════════════════════════════
-   TOP BAR
-═══════════════════════════════════════════════ */
+    /* ── TOP BAR ── */
     .topbar {
-      height: var(--topbar);
+      height: var(--topbar-h);
       flex-shrink: 0;
-      background: rgba(6, 6, 11, .97);
+      background: rgba(7, 7, 15, .97);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 0 12px;
+      gap: 10px;
+      padding: 0 16px;
       z-index: 50;
     }
 
     .tb-logo {
       font-family: var(--head);
       font-weight: 800;
-      font-size: .9rem;
+      font-size: .95rem;
       white-space: nowrap;
       background: linear-gradient(135deg, #A78BFA, #22D3EE);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-decoration: none;
+      letter-spacing: -.3px;
+    }
+
+    .tb-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
     }
 
     .tb-center {
       flex: 1;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      overflow: hidden;
+      gap: 8px;
       min-width: 0;
     }
 
-    .tb-live {
-      width: 6px;
-      height: 6px;
+    .tb-live-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--gr);
-      flex-shrink: 0;
-      box-shadow: 0 0 6px var(--gr);
+      box-shadow: 0 0 8px var(--gr);
       animation: pulse 2s infinite;
+      flex-shrink: 0;
     }
 
     @keyframes pulse {
@@ -124,54 +120,53 @@
 
     .tb-timer {
       font-family: var(--mono);
-      font-size: .82rem;
+      font-size: .85rem;
       font-weight: 600;
       color: var(--vl);
-      white-space: nowrap;
+      letter-spacing: 1px;
     }
 
     .tb-badge {
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 100px;
-      font-size: .6rem;
+      font-size: .62rem;
       font-weight: 700;
       letter-spacing: .4px;
       border: 1px solid;
-      white-space: nowrap;
     }
 
     .tb-best {
       display: flex;
       align-items: center;
-      gap: 3px;
-      padding: 2px 7px;
+      gap: 4px;
+      padding: 3px 9px;
       background: rgba(16, 185, 129, .1);
-      border: 1px solid rgba(16, 185, 129, .25);
-      border-radius: 5px;
-      font-size: .58rem;
+      border: 1px solid rgba(16, 185, 129, .22);
+      border-radius: 6px;
+      font-size: .6rem;
       color: var(--gr);
-      white-space: nowrap;
+      font-weight: 700;
     }
 
     .tb-right {
       display: flex;
-      gap: 3px;
+      gap: 5px;
       align-items: center;
       flex-shrink: 0;
     }
 
     .tbtn {
-      padding: 5px 9px;
-      border-radius: 6px;
+      padding: 6px 11px;
+      border-radius: 7px;
       font-family: var(--sans);
-      font-size: .65rem;
+      font-size: .67rem;
       font-weight: 600;
       cursor: pointer;
       border: none;
       transition: all .15s;
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       white-space: nowrap;
     }
 
@@ -207,48 +202,38 @@
       color: var(--gr);
     }
 
-    .tbtn-rd {
-      background: rgba(239, 68, 68, .12);
-      border: 1px solid rgba(239, 68, 68, .28);
-      color: var(--rd);
-    }
-
-    /* hide labels on medium screens, keep icons */
     .tbtn-lbl {
       display: inline;
     }
 
-    @media(max-width:860px) {
+    @media(max-width:900px) {
       .tbtn-lbl {
         display: none;
       }
     }
 
-    /* pause banner */
     .pause-banner {
       flex-shrink: 0;
       display: none;
       background: rgba(245, 158, 11, .1);
-      border-bottom: 1px solid rgba(245, 158, 11, .22);
-      padding: 4px;
+      border-bottom: 1px solid rgba(245, 158, 11, .2);
+      padding: 5px;
       text-align: center;
-      font-size: .65rem;
+      font-size: .66rem;
       font-weight: 600;
       color: var(--am);
     }
 
-    /* ═══════════════════════════════════════════════
-   GOALS BAR
-═══════════════════════════════════════════════ */
+    /* ── GOALS BAR ── */
     .goalbar {
-      height: var(--goalbar);
+      height: 36px;
       flex-shrink: 0;
-      background: rgba(124, 58, 237, .05);
-      border-bottom: 1px solid rgba(124, 58, 237, .14);
-      padding: 0 12px;
+      background: rgba(124, 58, 237, .04);
+      border-bottom: 1px solid rgba(124, 58, 237, .12);
+      padding: 0 16px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       z-index: 9;
     }
 
@@ -261,7 +246,7 @@
 
     .goals-row {
       display: flex;
-      gap: 4px;
+      gap: 5px;
       flex: 1;
       overflow-x: auto;
       scrollbar-width: none;
@@ -272,9 +257,9 @@
     }
 
     .goal-chip {
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 100px;
-      font-size: .58rem;
+      font-size: .59rem;
       font-weight: 600;
       border: 1px solid;
       white-space: nowrap;
@@ -296,15 +281,15 @@
     .goalbar-set {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       font-size: .6rem;
       color: var(--mu);
       flex-shrink: 0;
     }
 
     .goalbar-set input {
-      width: 36px;
-      padding: 1px 4px;
+      width: 38px;
+      padding: 2px 5px;
       background: rgba(255, 255, 255, .06);
       border: 1px solid var(--border);
       border-radius: 4px;
@@ -314,56 +299,42 @@
       text-align: center;
     }
 
-    /* ═══════════════════════════════════════════════
-   MAIN GRID  — 2 columns on desktop
-═══════════════════════════════════════════════ */
+    /* ══════════════════════════════════════
+       MAIN LAYOUT — 3 column
+       Left: analytics/charts | Center: camera+scores | Right: panels
+    ══════════════════════════════════════ */
     .main {
       flex: 1;
       min-height: 0;
       display: grid;
-      grid-template-columns: 1fr var(--rc-width);
+      grid-template-columns: 320px 1fr var(--sidebar-w);
       overflow: hidden;
     }
 
-    /* ─── LEFT COLUMN ─── */
+    /* ── LEFT: Analytics/Charts ── */
     .left-col {
       display: flex;
       flex-direction: column;
       border-right: 1px solid var(--border);
       overflow: hidden;
       min-height: 0;
+      gap: 0;
     }
 
-    /* ─── RIGHT COLUMN ─── */
-    .right-col {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      min-height: 0;
-    }
-
-    /* ═══════════════════════════════════════════════
-   VIDEO ROW  (camera + bio strip side-by-side)
-═══════════════════════════════════════════════ */
-    .video-row {
+    /* Camera */
+    .cam-section {
+      padding: 12px 12px 8px;
       flex-shrink: 0;
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      /* camera fixed 220px, rest = metrics */
-      gap: 8px;
-      padding: 8px 10px 6px;
-      align-items: start;
     }
 
-    /* Camera wrapper */
     .cam-wrap {
       position: relative;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       background: #000;
       border: 1px solid var(--border2);
       aspect-ratio: 4/3;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, .6);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .6), 0 0 0 1px rgba(124, 58, 237, .15);
     }
 
     .cam-wrap img {
@@ -377,30 +348,30 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, .7));
+      background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, .75));
     }
 
     .cam-live {
       position: absolute;
-      top: 5px;
-      left: 5px;
-      padding: 2px 6px;
+      top: 8px;
+      left: 8px;
+      padding: 3px 8px;
       background: rgba(0, 0, 0, .7);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(239, 68, 68, .5);
-      border-radius: 4px;
-      font-size: .5rem;
+      border: 1px solid rgba(239, 68, 68, .45);
+      border-radius: 5px;
+      font-size: .52rem;
       font-weight: 700;
       color: var(--rd);
-      letter-spacing: 1px;
+      letter-spacing: .8px;
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
     }
 
     .rec-dot {
-      width: 4px;
-      height: 4px;
+      width: 5px;
+      height: 5px;
       background: var(--rd);
       border-radius: 50%;
       animation: blink 1s infinite;
@@ -420,52 +391,54 @@
 
     .cam-emotion {
       position: absolute;
-      top: 5px;
-      right: 5px;
-      padding: 2px 7px;
+      top: 8px;
+      right: 8px;
+      padding: 3px 9px;
       background: rgba(0, 0, 0, .7);
       backdrop-filter: blur(8px);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: .65rem;
+      border-radius: 12px;
+      font-size: .7rem;
     }
 
     .cam-paused {
       position: absolute;
       inset: 0;
-      background: rgba(6, 6, 11, .7);
+      background: rgba(7, 7, 15, .7);
       display: none;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 2.5rem;
     }
 
     .cam-paused.on {
       display: flex;
     }
 
+    /* cam quick stats */
     .cam-stats {
       position: absolute;
-      bottom: 4px;
-      left: 4px;
-      right: 36px;
-      display: flex;
-      gap: 2px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 6px 7px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px;
     }
 
     .cstat {
-      flex: 1;
-      padding: 2px 3px;
+      padding: 3px 2px;
       background: rgba(0, 0, 0, .75);
       backdrop-filter: blur(6px);
-      border: 1px solid var(--border);
-      border-radius: 3px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 4px;
       text-align: center;
     }
 
     .cstat-v {
       font-family: var(--mono);
-      font-size: .6rem;
+      font-size: .62rem;
       font-weight: 600;
     }
 
@@ -477,22 +450,22 @@
 
     .cam-btns {
       position: absolute;
-      bottom: 4px;
-      right: 4px;
+      bottom: 40px;
+      right: 7px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
     }
 
     .cbtn {
-      width: 24px;
-      height: 24px;
-      border-radius: 5px;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
       border: 1px solid var(--border);
       cursor: pointer;
       background: rgba(0, 0, 0, .75);
       backdrop-filter: blur(6px);
-      font-size: .72rem;
+      font-size: .75rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -512,174 +485,293 @@
     .cam-error {
       position: absolute;
       inset: 0;
-      background: rgba(6, 6, 11, .9);
+      background: rgba(7, 7, 15, .9);
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .cam-error p {
       color: var(--mu);
-      font-size: .68rem;
+      font-size: .7rem;
     }
 
-    /* ═══════════════════════════════════════════════
-   METRICS PANEL  (right side of video row)
-═══════════════════════════════════════════════ */
-    .metrics-panel {
+    /* ── CENTER: Camera + Scores ── */
+    .center-col {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      min-width: 0;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+      min-height: 0;
+      background: linear-gradient(180deg, rgba(124, 58, 237, .03) 0%, transparent 40%);
     }
 
-    /* 3×2 grid of score cards */
-    .scores-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    /* Big camera in center */
+    .center-cam-wrap {
+      padding: 14px 16px 10px;
+      flex-shrink: 0;
+    }
+
+    .center-cam-inner {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border2);
+      aspect-ratio: 16/9;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, .7), 0 0 0 1px rgba(124, 58, 237, .18), inset 0 0 60px rgba(0, 0, 0, .3);
+    }
+
+    .center-cam-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .center-cam-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, transparent 55%, rgba(0, 0, 0, .8));
+    }
+
+    .center-cam-live {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 10px;
+      background: rgba(0, 0, 0, .75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(239, 68, 68, .5);
+      border-radius: 6px;
+      font-size: .55rem;
+      font-weight: 700;
+      color: var(--rd);
+      letter-spacing: .8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .center-cam-emotion {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 11px;
+      background: rgba(0, 0, 0, .75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 14px;
+      font-size: .75rem;
+    }
+
+    .center-cam-paused {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 7, 15, .75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .center-cam-paused.on {
+      display: flex;
+    }
+
+    .center-cam-btns {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
       gap: 5px;
     }
 
-    .score-card {
-      padding: 8px 9px;
+    /* Scores grid below camera — 3x2 */
+    .center-scores {
+      flex: 1;
+      min-height: 0;
+      padding: 0 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .center-scores::-webkit-scrollbar {
+      display: none;
+    }
+
+    .center-scores-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .cscore-card {
+      padding: 10px 12px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 9px;
+      border-radius: 10px;
       position: relative;
       overflow: hidden;
       transition: border-color .3s;
     }
 
-    .score-card::after {
+    .cscore-card:hover {
+      border-color: rgba(255, 255, 255, .14);
+    }
+
+    .cscore-card::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       height: 2px;
-      border-radius: 0 0 9px 9px;
+      border-radius: 0 0 10px 10px;
     }
 
-    .sc-lbl {
+    .cscore-card.cs-posture::after {
+      background: linear-gradient(90deg, var(--v), #6D28D9);
+    }
+
+    .cscore-card.cs-movement::after {
+      background: linear-gradient(90deg, var(--cy), #0891B2);
+    }
+
+    .cscore-card.cs-eye::after {
+      background: linear-gradient(90deg, var(--gr), #059669);
+    }
+
+    .cscore-card.cs-nerv::after {
+      background: linear-gradient(90deg, var(--rd), #DC2626);
+    }
+
+    .cscore-card.cs-conf::after {
+      background: linear-gradient(90deg, var(--am), #D97706);
+    }
+
+    .cscore-card.cs-pres::after {
+      background: linear-gradient(90deg, var(--pk), #BE185D);
+    }
+
+    .cscore-lbl {
       font-size: .52rem;
       color: var(--mu);
       font-weight: 700;
-      letter-spacing: .5px;
+      letter-spacing: .4px;
       text-transform: uppercase;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
-    .sc-val {
+    .cscore-val {
       font-family: var(--mono);
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 700;
       line-height: 1;
+      margin-bottom: 6px;
     }
 
-    .sc-bar {
+    .cscore-bar {
       height: 3px;
-      background: rgba(255, 255, 255, .07);
+      background: rgba(255, 255, 255, .06);
       border-radius: 2px;
-      margin-top: 5px;
       overflow: hidden;
     }
 
-    .sc-fill {
+    .cscore-fill {
       height: 100%;
       border-radius: 2px;
       transition: width .9s cubic-bezier(.4, 0, .2, 1);
     }
 
-    /* card accent colors */
-    .sc-posture::after {
-      background: linear-gradient(90deg, var(--v), #6D28D9);
-    }
-
-    .sc-movement::after {
-      background: linear-gradient(90deg, var(--cy), #0891B2);
-    }
-
-    .sc-eye::after {
-      background: linear-gradient(90deg, var(--gr), #059669);
-    }
-
-    .sc-nerv::after {
-      background: linear-gradient(90deg, var(--rd), #DC2626);
-    }
-
-    .sc-conf::after {
-      background: linear-gradient(90deg, var(--am), #D97706);
-    }
-
-    .sc-pres::after {
-      background: linear-gradient(90deg, var(--pk), #BE185D);
-    }
-
-    /* Bio strip: blink / head / gesture */
-    .bio-strip {
+    /* Bio row below scores */
+    .center-bio {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 5px;
+      gap: 7px;
     }
 
-    .bio-card {
-      padding: 6px 8px;
+    .center-bio-card {
+      padding: 8px 10px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 9px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
 
-    .bio-icon {
+    .center-bio-icon {
       font-size: .9rem;
       flex-shrink: 0;
     }
 
-    .bio-lbl {
-      font-size: .48rem;
+    .center-bio-lbl {
+      font-size: .47rem;
       color: var(--mu);
       text-transform: uppercase;
       letter-spacing: .5px;
       font-weight: 700;
     }
 
-    .bio-val {
+    .center-bio-val {
       font-family: var(--mono);
-      font-size: .72rem;
+      font-size: .73rem;
       font-weight: 700;
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
-    /* ═══════════════════════════════════════════════
-   CHARTS SECTION  (fills remaining left column)
-═══════════════════════════════════════════════ */
-    .charts-section {
-      flex: 1;
-      min-height: 0;
-      padding: 0 10px 8px;
-      display: flex;
+    /* Center cam error */
+    .center-cam-error {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 7, 15, .9);
+      display: none;
       flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    /* Chart tab row */
-    .chart-tabs {
+    .center-cam-error p {
+      color: var(--mu);
+      font-size: .7rem;
+    }
+
+    /* ── LEFT: Charts/Analytics ── */
+    .charts-header {
+      padding: 14px 14px 0;
       display: flex;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      overflow: hidden;
+      align-items: center;
+      justify-content: space-between;
       flex-shrink: 0;
     }
 
+    .charts-title {
+      font-family: var(--head);
+      font-weight: 800;
+      font-size: .85rem;
+    }
+
+    .chart-tabs {
+      display: flex;
+      gap: 2px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
     .chart-tab {
-      flex: 1;
-      padding: 5px 0;
-      text-align: center;
-      font-size: .62rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: .6rem;
       font-weight: 700;
       cursor: pointer;
       color: var(--mu);
@@ -691,17 +783,24 @@
       color: #fff;
     }
 
-    /* Chart card */
+    .chart-area {
+      flex: 1;
+      min-height: 0;
+      padding: 10px 14px 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
     .chart-card {
       flex: 1;
       min-height: 0;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 13px 14px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .chart-head {
@@ -711,27 +810,27 @@
       flex-shrink: 0;
     }
 
-    .chart-title {
-      font-family: var(--head);
-      font-weight: 800;
-      font-size: .76rem;
+    .chart-head-title {
+      font-size: .68rem;
+      font-weight: 700;
+      color: var(--mu);
     }
 
     .chart-legend {
       display: flex;
-      gap: 8px;
+      gap: 9px;
     }
 
     .chart-leg-item {
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       font-size: .56rem;
       color: var(--mu);
     }
 
     .chart-leg-dot {
-      width: 8px;
+      width: 10px;
       height: 2px;
       border-radius: 2px;
     }
@@ -747,7 +846,7 @@
       flex: 1;
       display: none;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .hm-wrap.active {
@@ -755,22 +854,22 @@
     }
 
     #hmC {
-      border-radius: 4px;
+      border-radius: 6px;
       width: 100%;
-      height: 36px;
+      height: 48px;
     }
 
     .hm-legend {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: .54rem;
+      font-size: .56rem;
       color: var(--mu);
     }
 
     .hm-grad {
-      width: 80px;
-      height: 4px;
+      width: 90px;
+      height: 5px;
       border-radius: 3px;
       background: linear-gradient(90deg, #EF4444, #F59E0B, #10B981);
     }
@@ -778,26 +877,28 @@
     .hm-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
+      gap: 6px;
+      margin-top: 4px;
     }
 
     .hm-stat {
       text-align: center;
-      padding: 5px;
+      padding: 8px;
       background: rgba(255, 255, 255, .03);
-      border-radius: 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
     }
 
     .hm-stat-v {
       font-family: var(--mono);
-      font-size: .9rem;
+      font-size: 1rem;
       font-weight: 700;
     }
 
     .hm-stat-l {
-      font-size: .5rem;
+      font-size: .52rem;
       color: var(--mu);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     /* radar */
@@ -812,32 +913,38 @@
       display: flex;
     }
 
-    /* trend (default visible) */
+    /* trend */
     .trend-wrap {
       flex: 1;
       min-height: 0;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
     .trend-wrap.hidden {
       display: none;
     }
 
-    /* ═══════════════════════════════════════════════
-   RIGHT PANEL
-═══════════════════════════════════════════════ */
+    /* ── RIGHT: Panels ── */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+      background: rgba(7, 7, 15, .5);
+    }
+
     .panel-tabs {
       display: flex;
       flex-shrink: 0;
       border-bottom: 1px solid var(--border);
-      background: rgba(6, 6, 11, .6);
+      padding: 0 4px;
     }
 
     .panel-tab {
       flex: 1;
-      padding: 8px 0;
+      padding: 10px 0;
       text-align: center;
       font-size: .6rem;
       font-weight: 700;
@@ -858,7 +965,7 @@
       flex: 1;
       flex-direction: column;
       overflow: hidden;
-      padding: 10px;
+      padding: 14px;
     }
 
     .panel-pane.active {
@@ -868,16 +975,16 @@
     .pane-title {
       font-family: var(--head);
       font-weight: 800;
-      font-size: .75rem;
-      margin-bottom: 7px;
+      font-size: .78rem;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       flex-shrink: 0;
     }
 
     .pane-pill {
-      padding: 1px 7px;
+      padding: 2px 8px;
       background: rgba(124, 58, 237, .14);
       border: 1px solid rgba(124, 58, 237, .28);
       border-radius: 100px;
@@ -886,19 +993,19 @@
       font-weight: 700;
     }
 
-    /* ── ALERTS ── */
+    /* Alerts */
     .alerts-area {
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      margin-bottom: 6px;
+      gap: 4px;
+      margin-bottom: 8px;
       flex-shrink: 0;
     }
 
     .alert-item {
-      padding: 6px 9px;
-      border-radius: 7px;
-      font-size: .65rem;
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: .66rem;
       font-weight: 600;
       animation: alertIn .35s cubic-bezier(.34, 1.56, .64, 1);
     }
@@ -933,13 +1040,13 @@
       color: var(--gr);
     }
 
-    /* ── GESTURE CARD ── */
+    /* Gesture card */
     .gest-card {
-      padding: 9px 10px;
+      padding: 11px 13px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 6px;
+      border-radius: 10px;
+      margin-bottom: 8px;
       flex-shrink: 0;
     }
 
@@ -949,28 +1056,29 @@
       text-transform: uppercase;
       letter-spacing: .4px;
       font-weight: 700;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
     }
 
     .gest-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
     }
 
     .gest-ico {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       flex-shrink: 0;
     }
 
     .gest-name {
-      font-size: .72rem;
+      font-size: .75rem;
       font-weight: 700;
     }
 
     .gest-sub {
-      font-size: .58rem;
+      font-size: .6rem;
       color: var(--mu);
+      margin-top: 2px;
     }
 
     .emotion-block {
@@ -980,21 +1088,21 @@
     }
 
     .emotion-ico {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
     }
 
     .emotion-lbl {
-      font-size: .54rem;
+      font-size: .55rem;
       color: var(--mu);
     }
 
-    /* ── PROGRESS CARD ── */
+    /* Progress */
     .progress-card {
-      padding: 8px 10px;
+      padding: 10px 13px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 6px;
+      border-radius: 10px;
+      margin-bottom: 8px;
       flex-shrink: 0;
       display: none;
     }
@@ -1005,7 +1113,7 @@
       text-transform: uppercase;
       letter-spacing: .4px;
       font-weight: 700;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
     }
 
     .progress-row {
@@ -1016,19 +1124,19 @@
 
     .prog-val {
       font-family: var(--mono);
-      font-size: .95rem;
+      font-size: 1rem;
       font-weight: 700;
     }
 
     .prog-arrow {
-      font-size: .5rem;
+      font-size: .52rem;
       color: var(--mu);
     }
 
     .prog-badge {
-      font-size: .65rem;
-      padding: 2px 7px;
-      border-radius: 4px;
+      font-size: .66rem;
+      padding: 3px 9px;
+      border-radius: 5px;
     }
 
     .prog-up {
@@ -1046,13 +1154,13 @@
       color: #6B7280;
     }
 
-    /* ── FILLER PANEL ── */
+    /* Filler */
     .filler-panel {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      margin-bottom: 6px;
+      border-radius: 10px;
+      padding: 10px 13px;
+      margin-bottom: 8px;
       flex-shrink: 0;
       display: none;
     }
@@ -1060,34 +1168,34 @@
     .filler-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-      margin-top: 5px;
+      gap: 5px;
+      margin-top: 7px;
     }
 
     .filler-item {
-      padding: 4px 5px;
-      border-radius: 5px;
+      padding: 6px 5px;
+      border-radius: 6px;
       background: rgba(255, 255, 255, .03);
       text-align: center;
     }
 
     .filler-word {
-      font-size: .52rem;
+      font-size: .54rem;
       color: var(--mu);
     }
 
     .filler-count {
       font-family: var(--mono);
-      font-size: .92rem;
+      font-size: .95rem;
       font-weight: 700;
       color: var(--am);
     }
 
-    /* ── FEEDBACK LIST ── */
+    /* Feedback list */
     .feedback-list {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
       flex: 1;
       overflow-y: auto;
       min-height: 0;
@@ -1103,11 +1211,11 @@
     }
 
     .fb-item {
-      padding: 6px 9px;
+      padding: 8px 11px;
       background: rgba(255, 255, 255, .03);
       border-left: 3px solid var(--v);
-      border-radius: 0 6px 6px 0;
-      font-size: .67rem;
+      border-radius: 0 7px 7px 0;
+      font-size: .68rem;
       font-weight: 500;
       line-height: 1.55;
       animation: slideIn .3s ease;
@@ -1133,21 +1241,21 @@
       border-left-color: var(--am);
     }
 
-    /* ── COACH CHAT ── */
+    /* Chat */
     .chat-suggestions {
       display: flex;
       flex-wrap: wrap;
-      gap: 3px;
-      margin-bottom: 5px;
+      gap: 4px;
+      margin-bottom: 7px;
       flex-shrink: 0;
     }
 
     .sug-btn {
-      padding: 3px 7px;
+      padding: 4px 9px;
       border-radius: 100px;
       background: rgba(255, 255, 255, .04);
       border: 1px solid var(--border);
-      font-size: .57rem;
+      font-size: .58rem;
       color: var(--mu);
       cursor: pointer;
       transition: all .2s;
@@ -1163,7 +1271,7 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
       padding-bottom: 3px;
       min-height: 0;
     }
@@ -1179,9 +1287,9 @@
 
     .chat-msg {
       max-width: 93%;
-      padding: 7px 10px;
-      border-radius: 8px;
-      font-size: .67rem;
+      padding: 8px 11px;
+      border-radius: 9px;
+      font-size: .68rem;
       line-height: 1.6;
       animation: chatIn .3s ease;
     }
@@ -1202,18 +1310,18 @@
       align-self: flex-end;
       background: var(--v);
       color: #fff;
-      border-radius: 8px 8px 3px 8px;
+      border-radius: 9px 9px 3px 9px;
     }
 
     .chat-msg.ai {
       align-self: flex-start;
       background: rgba(255, 255, 255, .06);
       border: 1px solid var(--border);
-      border-radius: 8px 8px 8px 3px;
+      border-radius: 9px 9px 9px 3px;
     }
 
     .ai-label {
-      font-size: .48rem;
+      font-size: .49rem;
       color: var(--vl);
       font-weight: 700;
       margin-bottom: 3px;
@@ -1222,19 +1330,19 @@
 
     .chat-input-row {
       position: relative;
-      margin-top: 6px;
+      margin-top: 7px;
       flex-shrink: 0;
     }
 
     .chat-input {
       width: 100%;
-      padding: 7px 28px 7px 9px;
+      padding: 8px 32px 8px 11px;
       background: rgba(255, 255, 255, .05);
       border: 1px solid var(--border);
-      border-radius: 7px;
+      border-radius: 8px;
       color: var(--tx);
       font-family: var(--sans);
-      font-size: .67rem;
+      font-size: .68rem;
       outline: none;
       transition: border-color .2s;
     }
@@ -1245,13 +1353,13 @@
 
     .chat-send {
       position: absolute;
-      right: 5px;
+      right: 6px;
       top: 50%;
       transform: translateY(-50%);
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
       background: var(--v);
       color: #fff;
       cursor: pointer;
@@ -1274,11 +1382,11 @@
     }
 
     .td:nth-child(2) {
-      animation-delay: .2s;
+      animation-delay: .2s
     }
 
     .td:nth-child(3) {
-      animation-delay: .4s;
+      animation-delay: .4s
     }
 
     @keyframes td {
@@ -1294,48 +1402,48 @@
       }
     }
 
-    /* ── SIMULATOR ── */
+    /* Sim */
     .sim-card {
       background: rgba(245, 158, 11, .06);
       border: 1px solid rgba(245, 158, 11, .2);
-      border-radius: 8px;
-      padding: 10px 11px;
-      margin-bottom: 6px;
+      border-radius: 10px;
+      padding: 12px 13px;
+      margin-bottom: 8px;
       flex-shrink: 0;
     }
 
     .sim-header {
-      font-size: .63rem;
+      font-size: .64rem;
       font-weight: 700;
       color: var(--am);
-      margin-bottom: 5px;
+      margin-bottom: 7px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
     .sim-question {
-      font-size: .7rem;
+      font-size: .72rem;
       font-weight: 500;
       line-height: 1.55;
-      margin-bottom: 5px;
-      min-height: 34px;
+      margin-bottom: 7px;
+      min-height: 38px;
     }
 
     .sim-timer {
       font-family: var(--mono);
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: var(--am);
       text-align: center;
-      margin: 2px 0;
+      margin: 4px 0;
     }
 
     .sim-bar {
-      height: 3px;
+      height: 4px;
       background: rgba(255, 255, 255, .08);
       border-radius: 2px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       overflow: hidden;
     }
 
@@ -1348,24 +1456,24 @@
 
     .sim-btns {
       display: flex;
-      gap: 5px;
+      gap: 6px;
     }
 
     .q-mode-label {
       font-size: .58rem;
       color: var(--mu);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       text-align: center;
-      padding: 2px 6px;
+      padding: 3px 8px;
       background: var(--surface);
-      border-radius: 5px;
+      border-radius: 6px;
       border: 1px solid var(--border);
     }
 
     .q-list {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
       overflow-y: auto;
       flex: 1;
       min-height: 0;
@@ -1381,11 +1489,11 @@
     }
 
     .q-item {
-      padding: 7px 9px;
+      padding: 8px 11px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 7px;
-      font-size: .67rem;
+      border-radius: 8px;
+      font-size: .68rem;
       line-height: 1.5;
       cursor: pointer;
       transition: all .2s;
@@ -1404,20 +1512,20 @@
       font-family: var(--mono);
     }
 
-    /* ── NOTES ── */
+    /* Notes */
     .notes-textarea {
       width: 100%;
-      padding: 7px 9px;
+      padding: 8px 11px;
       background: rgba(255, 255, 255, .05);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       color: var(--tx);
       font-family: var(--sans);
-      font-size: .67rem;
+      font-size: .68rem;
       outline: none;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
       resize: none;
-      height: 54px;
+      height: 60px;
       flex-shrink: 0;
     }
 
@@ -1428,7 +1536,7 @@
     .notes-list {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
       overflow-y: auto;
       flex: 1;
       min-height: 0;
@@ -1439,11 +1547,11 @@
     }
 
     .note-item {
-      padding: 6px 9px;
+      padding: 7px 11px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: .65rem;
+      border-radius: 7px;
+      font-size: .66rem;
       line-height: 1.5;
     }
 
@@ -1455,16 +1563,16 @@
     }
 
     .note-conf {
-      font-size: .52rem;
+      font-size: .53rem;
       color: var(--mu);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
-    /* ── HISTORY ── */
+    /* History */
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
       overflow-y: auto;
       flex: 1;
       min-height: 0;
@@ -1480,34 +1588,34 @@
     }
 
     .hist-item {
-      padding: 8px 10px;
+      padding: 10px 12px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 7px;
+      border-radius: 9px;
     }
 
     .hist-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .hist-date {
-      font-size: .54rem;
+      font-size: .55rem;
       color: var(--mu);
     }
 
     .hist-grade {
       font-family: var(--mono);
-      font-size: .95rem;
+      font-size: 1rem;
       font-weight: 700;
     }
 
     .hist-bars {
       display: flex;
-      gap: 4px;
-      margin-bottom: 3px;
+      gap: 5px;
+      margin-bottom: 4px;
     }
 
     .hist-bw {
@@ -1515,13 +1623,13 @@
     }
 
     .hist-bl {
-      font-size: .47rem;
+      font-size: .48rem;
       color: var(--mu);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .hist-bb {
-      height: 3px;
+      height: 4px;
       background: rgba(255, 255, 255, .06);
       border-radius: 3px;
       overflow: hidden;
@@ -1533,18 +1641,18 @@
     }
 
     .hist-mode {
-      font-size: .52rem;
+      font-size: .53rem;
       color: var(--mu);
     }
 
     .hist-empty {
       color: var(--mu);
-      font-size: .67rem;
+      font-size: .68rem;
       text-align: center;
-      padding: 16px 0;
+      padding: 20px 0;
     }
 
-    /* ── SHARED UTILS ── */
+    /* utils */
     .btn-full {
       width: 100%;
       justify-content: center;
@@ -1554,8 +1662,8 @@
       border: 2px solid var(--border);
       border-top-color: var(--v);
       border-radius: 50%;
-      width: 12px;
-      height: 12px;
+      width: 13px;
+      height: 13px;
       animation: spin .8s linear infinite;
     }
 
@@ -1568,14 +1676,11 @@
     .section-divider {
       height: 1px;
       background: var(--border);
-      margin: 4px 0;
+      margin: 5px 0;
       flex-shrink: 0;
     }
 
-    /* ═══════════════════════════════════════════════
-   OVERLAYS
-═══════════════════════════════════════════════ */
-    /* snapshot */
+    /* ── OVERLAYS ── */
     .snap-ov {
       position: fixed;
       inset: 0;
@@ -1585,7 +1690,7 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       backdrop-filter: blur(8px);
       padding: 20px;
     }
@@ -1595,13 +1700,12 @@
     }
 
     .snap-img {
-      border-radius: 10px;
+      border-radius: 12px;
       max-width: min(80vw, 600px);
       max-height: 70vh;
       border: 2px solid var(--v);
     }
 
-    /* focus mode */
     .focus-ov {
       position: fixed;
       inset: 0;
@@ -1611,7 +1715,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 16px;
       padding: 20px;
     }
 
@@ -1619,17 +1723,16 @@
       display: flex;
     }
 
-    /* breathing */
     .breath-ov {
       position: fixed;
       inset: 0;
       z-index: 80;
-      background: rgba(6, 6, 11, .97);
+      background: rgba(7, 7, 15, .97);
       display: none;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
       backdrop-filter: blur(16px);
       padding: 20px;
       text-align: center;
@@ -1696,12 +1799,12 @@
 
     .breath-dots {
       display: flex;
-      gap: 6px;
+      gap: 7px;
     }
 
     .breath-dot {
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: rgba(255, 255, 255, .15);
       transition: background .4s;
@@ -1711,7 +1814,6 @@
       background: var(--vl);
     }
 
-    /* grade modal */
     .modal-ov {
       position: fixed;
       inset: 0;
@@ -1732,8 +1834,8 @@
       background: linear-gradient(135deg, rgba(18, 8, 38, .98), rgba(8, 8, 18, .98));
       border: 1px solid rgba(124, 58, 237, .3);
       border-radius: 20px;
-      padding: clamp(18px, 4vw, 28px);
-      max-width: min(430px, 100%);
+      padding: clamp(20px, 5vw, 32px);
+      max-width: min(440px, 100%);
       width: 100%;
       animation: modalPop .45s cubic-bezier(.34, 1.56, .64, 1);
       max-height: 90vh;
@@ -1766,67 +1868,67 @@
 
     .modal-grade-lbl {
       text-align: center;
-      font-size: .7rem;
+      font-size: .72rem;
       font-weight: 600;
       color: var(--mu);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .modal-title {
       font-family: var(--head);
-      font-size: clamp(.95rem, 3vw, 1.15rem);
+      font-size: clamp(.95rem, 3vw, 1.2rem);
       font-weight: 800;
       text-align: center;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     .modal-sub {
       text-align: center;
       color: var(--mu);
       font-size: clamp(.68rem, 2vw, .76rem);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .modal-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 16px;
     }
 
     .modal-stat {
-      padding: 7px;
+      padding: 9px;
       background: rgba(255, 255, 255, .04);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 9px;
       text-align: center;
     }
 
     .modal-stat-v {
       font-family: var(--mono);
-      font-size: clamp(.82rem, 2.5vw, 1rem);
+      font-size: clamp(.85rem, 2.5vw, 1rem);
       font-weight: 700;
     }
 
     .modal-stat-l {
-      font-size: .52rem;
+      font-size: .53rem;
       color: var(--mu);
       margin-top: 2px;
     }
 
     .modal-btns {
       display: flex;
-      gap: 6px;
+      gap: 7px;
       flex-wrap: wrap;
     }
 
     .modal-btn {
       flex: 1;
       min-width: 120px;
-      padding: 9px;
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 9px;
       font-family: var(--sans);
-      font-size: .73rem;
+      font-size: .74rem;
       font-weight: 600;
       cursor: pointer;
       border: none;
@@ -1853,7 +1955,6 @@
       border-color: var(--border2);
     }
 
-    /* confetti */
     .confetti-wrap {
       position: fixed;
       inset: 0;
@@ -1863,8 +1964,8 @@
 
     .conf-piece {
       position: absolute;
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 2px;
       animation: confettiFall 2.5s ease-in forwards;
     }
@@ -1881,9 +1982,7 @@
       }
     }
 
-    /* ═══════════════════════════════════════════════
-   MOBILE BOTTOM NAV
-═══════════════════════════════════════════════ */
+    /* ── MOBILE ── */
     .mob-nav {
       display: none;
       position: fixed;
@@ -1891,7 +1990,7 @@
       left: 0;
       right: 0;
       z-index: 40;
-      background: rgba(6, 6, 11, .97);
+      background: rgba(7, 7, 15, .97);
       backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
       padding: 6px 0 env(safe-area-inset-bottom, 6px);
@@ -1913,7 +2012,7 @@
       background: none;
       border: none;
       color: var(--mu);
-      font-size: .5rem;
+      font-size: .51rem;
       font-weight: 600;
       transition: color .2s;
     }
@@ -1923,11 +2022,10 @@
     }
 
     .mob-nav-btn .icon {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       line-height: 1;
     }
 
-    /* MOBILE SLIDE-UP DRAWER */
     .drawer-backdrop {
       display: none;
       position: fixed;
@@ -1977,7 +2075,7 @@
 
     .drawer-tab {
       flex: 1;
-      padding: 8px 0;
+      padding: 9px 0;
       text-align: center;
       font-size: .6rem;
       font-weight: 700;
@@ -1998,40 +2096,35 @@
       flex: 1;
       flex-direction: column;
       overflow: hidden;
-      padding: 10px;
+      padding: 12px;
     }
 
     .drawer-pane.active {
       display: flex;
     }
 
-    /* ═══════════════════════════════════════════════
-   RESPONSIVE BREAKPOINTS
-═══════════════════════════════════════════════ */
-
-    /* Tablet: shrink right column */
-    @media(max-width:1024px) {
+    /* RESPONSIVE */
+    @media(max-width:1200px) {
       :root {
-        --rc-width: 270px;
+        --sidebar-w: 300px;
       }
     }
 
-    /* Small desktop: tighten camera */
-    @media(max-width:860px) {
-      .video-row {
-        grid-template-columns: 190px 1fr;
+    @media(max-width:1000px) {
+      :root {
+        --sidebar-w: 270px;
+      }
+
+      .main {
+        grid-template-columns: 280px 1fr var(--sidebar-w);
       }
     }
 
-    /* ── TABLET / MOBILE PIVOT (≤768px) ── */
     @media(max-width:768px) {
-
-      /* Body scrollable */
       body {
         overflow: hidden;
       }
 
-      /* Main: single column, left col only, scrollable */
       .main {
         grid-template-columns: 1fr;
         overflow-y: auto;
@@ -2040,53 +2133,23 @@
       }
 
       .left-col {
-        overflow: visible;
         border-right: none;
-        /* do NOT set height — let content breathe */
+        height: 280px;
+        flex-shrink: 0;
+      }
+
+      .center-col {
+        border-right: none;
       }
 
       .right-col {
         display: none;
       }
 
-      /* replaced by drawer */
-
-      /* Video row: stack vertically */
-      .video-row {
-        grid-template-columns: 1fr;
-        padding: 8px 10px 6px;
-      }
-
-      .cam-wrap {
-        width: 100%;
-        max-width: 360px;
-        margin: 0 auto;
-        aspect-ratio: 16/9;
-      }
-
-      .metrics-panel {
-        margin-top: 2px;
-      }
-
-      .scores-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      /* Charts section: auto height on mobile so content shows */
-      .charts-section {
-        height: 260px;
-        flex: none;
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        padding: 8px 10px;
-      }
-
-      /* Bottom nav shown */
       .mob-nav {
         display: block;
       }
 
-      /* Topbar: hide non-essential buttons */
       .tb-best {
         display: none;
       }
@@ -2100,31 +2163,15 @@
 
     @media(max-width:480px) {
       :root {
-        --topbar: 44px;
+        --topbar-h: 46px;
       }
 
-      .video-row {
-        padding: 6px 8px 5px;
+      .center-scores-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .scores-grid {
-        gap: 4px;
-      }
-
-      .sc-val {
-        font-size: 1.15rem;
-      }
-
-      .bio-strip {
-        gap: 4px;
-      }
-
-      .chart-tabs .chart-tab {
-        font-size: .58rem;
-      }
-
-      .charts-section {
-        height: 240px;
+      .cscore-val {
+        font-size: 1.1rem;
       }
     }
   </style>
@@ -2132,15 +2179,14 @@
 
 <body>
 
-  <!-- ══════════════ TOP BAR ══════════════ -->
+  <!-- ══════ TOP BAR ══════ -->
   <div class="topbar">
     <a href="/" class="tb-logo">PoseSense</a>
+    <div class="tb-divider"></div>
     <div class="tb-center">
-      <div class="tb-live" id="liveDot"></div>
+      <div class="tb-live-dot" id="liveDot"></div>
       <span style="color:var(--mu);font-size:.62rem;" id="liveText">LIVE</span>
-      <span style="color:var(--mu);font-size:.62rem;">·</span>
       <span class="tb-timer" id="tmr">00:00</span>
-      <span style="color:var(--mu);font-size:.62rem;">·</span>
       <span class="tb-badge" id="modeBadge">General</span>
       <span class="tb-best" id="bestBadge">🏆 --</span>
     </div>
@@ -2152,40 +2198,100 @@
       <button class="tbtn tbtn-gr" id="btnReport" onclick="dlReport()">📄 <span class="tbtn-lbl">PDF</span></button>
       <button class="tbtn tbtn-v" onclick="showModal()">⏹ <span class="tbtn-lbl">End</span></button>
       <a href="/" class="tbtn tbtn-g" style="text-decoration:none">← <span class="tbtn-lbl">Back</span></a>
-      <!-- mobile: extra buttons accessible via drawer -->
       <button class="tbtn tbtn-g" style="display:none;" id="mobMenuBtn" onclick="openDrawer('fb')"
         aria-label="Menu">☰</button>
     </div>
   </div>
   <div class="pause-banner" id="pauseBanner">⏸ PAUSED — press Space or tap Resume to continue</div>
 
-  <!-- ══════════════ GOALS BAR ══════════════ -->
+  <!-- ══════ GOALS BAR ══════ -->
   <div class="goalbar">
     <span class="goalbar-lbl">🎯 Goals</span>
     <div class="goals-row" id="goalsRow"></div>
     <div class="goalbar-set">
       <input type="number" id="goalInput" value="75" min="50" max="100">%
-      <button class="tbtn tbtn-g" style="padding:2px 6px;font-size:.56rem;" onclick="setGoal()">Set</button>
+      <button class="tbtn tbtn-g" style="padding:2px 7px;font-size:.57rem;" onclick="setGoal()">Set</button>
     </div>
   </div>
 
-  <!-- ══════════════ MAIN GRID ══════════════ -->
+  <!-- ══════ MAIN GRID ══════ -->
   <div class="main">
 
-    <!-- ─── LEFT COLUMN ─── -->
+    <!-- ── LEFT: Performance Analytics / Charts ── -->
     <div class="left-col">
+      <div class="charts-header">
+        <span class="charts-title">Performance Analytics</span>
+        <div class="chart-tabs">
+          <div class="chart-tab active" onclick="switchChart('trend')">📈 Trend</div>
+          <div class="chart-tab" onclick="switchChart('heat')">🔥 Heat</div>
+          <div class="chart-tab" onclick="switchChart('radar')">🕸️ Radar</div>
+        </div>
+      </div>
+      <div class="chart-area">
+        <div class="chart-card">
+          <!-- Trend -->
+          <div class="trend-wrap" id="trendWrap">
+            <div class="chart-head">
+              <span class="chart-head-title">Confidence · Posture · Eye Contact over time</span>
+              <div class="chart-legend">
+                <div class="chart-leg-item">
+                  <div class="chart-leg-dot" style="background:#A78BFA"></div>Conf
+                </div>
+                <div class="chart-leg-item">
+                  <div class="chart-leg-dot" style="background:#7C3AED"></div>Post
+                </div>
+                <div class="chart-leg-item">
+                  <div class="chart-leg-dot" style="background:#22D3EE"></div>Eye
+                </div>
+              </div>
+            </div>
+            <div class="chart-body"><canvas id="trendCanvas"></canvas></div>
+          </div>
+          <!-- Heatmap -->
+          <div class="hm-wrap" id="heatWrap">
+            <div class="chart-head">
+              <span class="chart-head-title">Confidence Heatmap</span>
+              <span style="font-size:.56rem;color:var(--mu)">time →</span>
+            </div>
+            <canvas id="hmC" height="48"></canvas>
+            <div class="hm-legend"><span>Low</span>
+              <div class="hm-grad"></div><span>High</span>
+            </div>
+            <div class="hm-stats">
+              <div class="hm-stat">
+                <div class="hm-stat-v" id="hmAvg">--</div>
+                <div class="hm-stat-l">Average</div>
+              </div>
+              <div class="hm-stat">
+                <div class="hm-stat-v" id="hmPeak">--</div>
+                <div class="hm-stat-l">Peak</div>
+              </div>
+              <div class="hm-stat">
+                <div class="hm-stat-v" id="hmLow">--</div>
+                <div class="hm-stat-l">Low</div>
+              </div>
+            </div>
+          </div>
+          <!-- Radar -->
+          <div class="radar-wrap" id="radarWrap">
+            <canvas id="radarCanvas" width="220" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <!-- VIDEO ROW: camera + metrics side by side -->
-      <div class="video-row">
-
-        <!-- Camera -->
-        <div class="cam-wrap">
+    <!-- ── CENTER: Camera (big) + Scores + Bio ── -->
+    <div class="center-col">
+      <!-- BIG Camera -->
+      <div class="center-cam-wrap">
+        <div class="center-cam-inner">
           <img id="camFeed" src="/video_feed" alt="Camera feed"
             onerror="document.getElementById('camError').style.display='flex';this.style.display='none'" />
-          <div class="cam-overlay"></div>
-          <div class="cam-live"><span class="rec-dot"></span>REC</div>
-          <div class="cam-emotion" id="camEmotion">😐 Neutral</div>
-          <div class="cam-paused" id="camPaused">⏸</div>
+          <div class="center-cam-overlay"></div>
+          <div class="center-cam-live"><span class="rec-dot"></span>REC</div>
+          <div class="center-cam-emotion" id="camEmotion">😐 Neutral</div>
+          <div class="center-cam-paused" id="camPaused">⏸</div>
+          <!-- Cam quick overlay stats -->
           <div class="cam-stats">
             <div class="cstat">
               <div class="cstat-v" id="ov1" style="color:#A78BFA">--</div>
@@ -2208,151 +2314,92 @@
               <div class="cstat-l">Nerv</div>
             </div>
           </div>
-          <div class="cam-btns">
+          <div class="center-cam-btns">
             <button class="cbtn" id="micBtn" onclick="toggleMic()" title="Mic (M)">🎙️</button>
             <button class="cbtn" onclick="toggleFocus()" title="Focus (F)">⛶</button>
           </div>
-          <div id="camError" class="cam-error">
-            <div style="font-size:1.6rem;opacity:.3">📷</div>
+          <div id="camError" class="center-cam-error">
+            <div style="font-size:2rem;opacity:.3">📷</div>
             <p>Start Flask server first</p>
           </div>
         </div>
+      </div>
 
-        <!-- Metrics panel -->
-        <div class="metrics-panel">
-          <div class="scores-grid">
-            <div class="score-card sc-posture">
-              <div class="sc-lbl">Posture</div>
-              <div class="sc-val" id="scPosture">--</div>
-              <div class="sc-bar">
-                <div class="sc-fill" id="sfPosture" style="width:0%;background:var(--v)"></div>
-              </div>
-            </div>
-            <div class="score-card sc-movement">
-              <div class="sc-lbl">Movement</div>
-              <div class="sc-val" id="scMovement">--</div>
-              <div class="sc-bar">
-                <div class="sc-fill" id="sfMovement" style="width:0%;background:var(--cy)"></div>
-              </div>
-            </div>
-            <div class="score-card sc-eye">
-              <div class="sc-lbl">Eye Contact</div>
-              <div class="sc-val" id="scEye">--</div>
-              <div class="sc-bar">
-                <div class="sc-fill" id="sfEye" style="width:0%;background:var(--gr)"></div>
-              </div>
-            </div>
-            <div class="score-card sc-nerv">
-              <div class="sc-lbl">Nervousness</div>
-              <div class="sc-val" id="scNerv">--</div>
-              <div class="sc-bar">
-                <div class="sc-fill" id="sfNerv" style="width:0%;background:var(--rd)"></div>
-              </div>
-            </div>
-            <div class="score-card sc-conf">
-              <div class="sc-lbl">Confidence</div>
-              <div class="sc-val" id="scConf">--</div>
-              <div class="sc-bar">
-                <div class="sc-fill" id="sfConf" style="width:0%;background:var(--am)"></div>
-              </div>
-            </div>
-            <div class="score-card sc-pres">
-              <div class="sc-lbl">Presentation</div>
-              <div class="sc-val" id="scPres">--</div>
-              <div class="sc-bar">
-                <div class="sc-fill" id="sfPres" style="width:0%;background:var(--pk)"></div>
-              </div>
+      <!-- Score cards 3x2 grid -->
+      <div class="center-scores">
+        <div class="center-scores-grid">
+          <div class="cscore-card cs-posture">
+            <div class="cscore-lbl">Posture</div>
+            <div class="cscore-val" id="scPosture">--</div>
+            <div class="cscore-bar">
+              <div class="cscore-fill" id="sfPosture" style="width:0%;background:var(--v)"></div>
             </div>
           </div>
-
-          <!-- Bio strip -->
-          <div class="bio-strip">
-            <div class="bio-card">
-              <span class="bio-icon">👁️</span>
-              <div>
-                <div class="bio-lbl">Blink Rate</div>
-                <div class="bio-val" id="bioBlink">--/min</div>
-              </div>
+          <div class="cscore-card cs-movement">
+            <div class="cscore-lbl">Movement</div>
+            <div class="cscore-val" id="scMovement">--</div>
+            <div class="cscore-bar">
+              <div class="cscore-fill" id="sfMovement" style="width:0%;background:var(--cy)"></div>
             </div>
-            <div class="bio-card">
-              <span class="bio-icon">🗿</span>
-              <div>
-                <div class="bio-lbl">Head Motion</div>
-                <div class="bio-val" id="bioHead">Stable</div>
-              </div>
+          </div>
+          <div class="cscore-card cs-eye">
+            <div class="cscore-lbl">Eye Contact</div>
+            <div class="cscore-val" id="scEye">--</div>
+            <div class="cscore-bar">
+              <div class="cscore-fill" id="sfEye" style="width:0%;background:var(--gr)"></div>
             </div>
-            <div class="bio-card">
-              <span class="bio-icon">✋</span>
-              <div>
-                <div class="bio-lbl">Gesture</div>
-                <div class="bio-val" id="bioGest">Natural</div>
-              </div>
+          </div>
+          <div class="cscore-card cs-nerv">
+            <div class="cscore-lbl">Nervousness</div>
+            <div class="cscore-val" id="scNerv">--</div>
+            <div class="cscore-bar">
+              <div class="cscore-fill" id="sfNerv" style="width:0%;background:var(--rd)"></div>
+            </div>
+          </div>
+          <div class="cscore-card cs-conf">
+            <div class="cscore-lbl">Confidence</div>
+            <div class="cscore-val" id="scConf">--</div>
+            <div class="cscore-bar">
+              <div class="cscore-fill" id="sfConf" style="width:0%;background:var(--am)"></div>
+            </div>
+          </div>
+          <div class="cscore-card cs-pres">
+            <div class="cscore-lbl">Presentation</div>
+            <div class="cscore-val" id="scPres">--</div>
+            <div class="cscore-bar">
+              <div class="cscore-fill" id="sfPres" style="width:0%;background:var(--pk)"></div>
             </div>
           </div>
         </div>
-      </div><!-- /video-row -->
 
-      <!-- CHARTS -->
-      <div class="charts-section">
-        <div class="chart-tabs">
-          <div class="chart-tab active" onclick="switchChart('trend')">📈 Trend</div>
-          <div class="chart-tab" onclick="switchChart('heat')">🔥 Heatmap</div>
-          <div class="chart-tab" onclick="switchChart('radar')">🕸️ Radar</div>
-        </div>
-        <div class="chart-card">
-          <!-- Trend chart -->
-          <div class="trend-wrap" id="trendWrap">
-            <div class="chart-head">
-              <span class="chart-title">Performance Trend</span>
-              <div class="chart-legend">
-                <div class="chart-leg-item">
-                  <div class="chart-leg-dot" style="background:#A78BFA"></div>Conf
-                </div>
-                <div class="chart-leg-item">
-                  <div class="chart-leg-dot" style="background:#7C3AED"></div>Post
-                </div>
-                <div class="chart-leg-item">
-                  <div class="chart-leg-dot" style="background:#22D3EE"></div>Eye
-                </div>
-              </div>
-            </div>
-            <div class="chart-body"><canvas id="trendCanvas"></canvas></div>
-          </div>
-          <!-- Heatmap -->
-          <div class="hm-wrap" id="heatWrap">
-            <div class="chart-head">
-              <span class="chart-title">Confidence Heatmap</span>
-              <span style="font-size:.54rem;color:var(--mu)">time →</span>
-            </div>
-            <canvas id="hmC" height="36"></canvas>
-            <div class="hm-legend"><span>Low</span>
-              <div class="hm-grad"></div><span>High</span>
-            </div>
-            <div class="hm-stats">
-              <div class="hm-stat">
-                <div class="hm-stat-v" id="hmAvg">--</div>
-                <div class="hm-stat-l">Average</div>
-              </div>
-              <div class="hm-stat">
-                <div class="hm-stat-v" id="hmPeak">--</div>
-                <div class="hm-stat-l">Peak</div>
-              </div>
-              <div class="hm-stat">
-                <div class="hm-stat-v" id="hmLow">--</div>
-                <div class="hm-stat-l">Low</div>
-              </div>
+        <!-- Bio row -->
+        <div class="center-bio">
+          <div class="center-bio-card">
+            <span class="center-bio-icon">👁️</span>
+            <div>
+              <div class="center-bio-lbl">Blink Rate</div>
+              <div class="center-bio-val" id="bioBlink">--/min</div>
             </div>
           </div>
-          <!-- Radar -->
-          <div class="radar-wrap" id="radarWrap">
-            <canvas id="radarCanvas" width="180" height="180"></canvas>
+          <div class="center-bio-card">
+            <span class="center-bio-icon">🗿</span>
+            <div>
+              <div class="center-bio-lbl">Head Motion</div>
+              <div class="center-bio-val" id="bioHead">Stable</div>
+            </div>
+          </div>
+          <div class="center-bio-card">
+            <span class="center-bio-icon">✋</span>
+            <div>
+              <div class="center-bio-lbl">Gesture</div>
+              <div class="center-bio-val" id="bioGest">Natural</div>
+            </div>
           </div>
         </div>
-      </div><!-- /charts-section -->
+      </div>
+    </div>
 
-    </div><!-- /left-col -->
-
-    <!-- ─── RIGHT COLUMN (desktop only) ─── -->
+    <!-- ── RIGHT: Panels ── -->
     <div class="right-col" id="rightCol">
       <div class="panel-tabs" id="panelTabs">
         <div class="panel-tab active" onclick="switchPane('live','d')">Live</div>
@@ -2396,7 +2443,7 @@
           </div>
         </div>
         <div class="filler-panel" id="d-filler">
-          <div class="pane-title" style="margin-bottom:4px;">🎙️ Filler Words <span class="pane-pill">MIC ON</span>
+          <div class="pane-title" style="margin-bottom:5px;">🎙️ Filler Words <span class="pane-pill">MIC ON</span>
           </div>
           <div class="filler-grid">
             <div class="filler-item">
@@ -2417,7 +2464,7 @@
             </div>
           </div>
         </div>
-        <div class="pane-title">AI Feedback <span class="pane-pill">LIVE</span></div>
+        <div class="pane-title" style="margin-top:4px;">AI Feedback <span class="pane-pill">LIVE</span></div>
         <div class="feedback-list" id="d-feedback">
           <div class="fb-item fb-ok">Waiting for analysis…</div>
         </div>
@@ -2456,7 +2503,7 @@
         <div class="sim-card">
           <div class="sim-header">
             <span id="simStatus">Ready</span>
-            <button class="tbtn tbtn-am" style="font-size:.6rem;padding:3px 8px;" id="simBtn" onclick="startSim()">▶
+            <button class="tbtn tbtn-am" style="font-size:.6rem;padding:3px 9px;" id="simBtn" onclick="startSim()">▶
               Start</button>
           </div>
           <div class="sim-question" id="simQuestion">Hit Start for a 2-minute timed session with real interview
@@ -2467,22 +2514,24 @@
           </div>
           <div class="sim-btns">
             <button class="tbtn tbtn-g btn-full" onclick="skipQ()">Next →</button>
-            <button class="tbtn tbtn-rd btn-full" onclick="endSim()">End</button>
+            <button class="tbtn tbtn-g"
+              style="background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.28);color:var(--rd);"
+              onclick="endSim()">End</button>
           </div>
         </div>
         <div class="q-mode-label" id="qModeLabel"></div>
         <div class="q-list" id="qList"></div>
-        <button class="tbtn tbtn-g btn-full" style="margin-top:6px;" onclick="loadQs()">↻ Shuffle</button>
+        <button class="tbtn tbtn-g btn-full" style="margin-top:8px;flex-shrink:0;" onclick="loadQs()">↻ Shuffle</button>
       </div>
 
       <!-- NOTES PANE -->
       <div class="panel-pane" id="d-notes">
         <div class="pane-title">Session Notes <span class="pane-pill">TIMESTAMPED</span></div>
         <textarea class="notes-textarea" id="d-note-inp" placeholder="Type a note… (Ctrl+Enter saves)"></textarea>
-        <button class="tbtn tbtn-g btn-full" style="margin-bottom:6px;" onclick="addNote('d-note-inp')">+ Add
-          Note</button>
+        <button class="tbtn tbtn-g btn-full" style="margin-bottom:8px;flex-shrink:0;" onclick="addNote('d-note-inp')">+
+          Add Note</button>
         <div class="notes-list" id="d-notes-list">
-          <div style="color:var(--mu);font-size:.65rem;text-align:center;padding:10px;">No notes yet.</div>
+          <div style="color:var(--mu);font-size:.66rem;text-align:center;padding:12px;">No notes yet.</div>
         </div>
       </div>
 
@@ -2492,14 +2541,15 @@
         <div class="history-list" id="d-hist-list">
           <div class="hist-empty">Complete a session to see history here.</div>
         </div>
-        <button class="tbtn tbtn-rd btn-full" style="margin-top:6px;font-size:.6rem;" onclick="clearHist()">🗑 Clear
-          History</button>
+        <button class="tbtn btn-full"
+          style="margin-top:8px;font-size:.61rem;flex-shrink:0;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--rd);"
+          onclick="clearHist()">🗑 Clear History</button>
       </div>
-    </div><!-- /right-col -->
+    </div>
 
   </div><!-- /main -->
 
-  <!-- ══════════════ MOBILE BOTTOM NAV ══════════════ -->
+  <!-- ══════ MOBILE BOTTOM NAV ══════ -->
   <div class="mob-nav">
     <div class="mob-nav-row">
       <button class="mob-nav-btn active" id="mn-live" onclick="openDrawer('live')"><span
@@ -2511,7 +2561,7 @@
     </div>
   </div>
 
-  <!-- ══════════════ MOBILE DRAWER ══════════════ -->
+  <!-- ══════ MOBILE DRAWER ══════ -->
   <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
   <div class="drawer-panel" id="drawerPanel">
     <div class="drawer-handle"></div>
@@ -2522,8 +2572,6 @@
       <div class="drawer-tab" onclick="switchDrawerPane('notes')">Notes</div>
       <div class="drawer-tab" onclick="switchDrawerPane('hist')">History</div>
     </div>
-
-    <!-- LIVE -->
     <div class="drawer-pane active" id="m-live">
       <div class="pane-title">Live Feedback <span class="pane-pill">REAL-TIME</span></div>
       <div class="alerts-area" id="m-alerts"></div>
@@ -2546,8 +2594,6 @@
         <div class="fb-item fb-ok">Waiting for analysis…</div>
       </div>
     </div>
-
-    <!-- COACH -->
     <div class="drawer-pane" id="m-coach">
       <div class="pane-title">Interview Coach <span class="pane-pill">AI</span></div>
       <div class="chat-suggestions">
@@ -2572,16 +2618,11 @@
         </button>
       </div>
     </div>
-
-    <!-- SIM -->
     <div class="drawer-pane" id="m-sim">
       <div class="pane-title">Simulator <span class="pane-pill">TIMED</span></div>
       <div class="sim-card">
-        <div class="sim-header">
-          <span id="mSimStatus">Ready</span>
-          <button class="tbtn tbtn-am" style="font-size:.6rem;padding:3px 8px;" id="mSimBtn" onclick="startSim()">▶
-            Start</button>
-        </div>
+        <div class="sim-header"><span id="mSimStatus">Ready</span><button class="tbtn tbtn-am"
+            style="font-size:.6rem;padding:3px 9px;" id="mSimBtn" onclick="startSim()">▶ Start</button></div>
         <div class="sim-question" id="mSimQuestion">Tap Start for a 2-minute timed session.</div>
         <div class="sim-timer" id="mSimTimer">2:00</div>
         <div class="sim-bar">
@@ -2589,48 +2630,47 @@
         </div>
         <div class="sim-btns">
           <button class="tbtn tbtn-g btn-full" onclick="skipQ()">Next →</button>
-          <button class="tbtn tbtn-rd btn-full" onclick="endSim()">End</button>
+          <button class="tbtn tbtn-g"
+            style="background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.28);color:var(--rd);"
+            onclick="endSim()">End</button>
         </div>
       </div>
       <div class="q-list" id="mQList"></div>
     </div>
-
-    <!-- NOTES -->
     <div class="drawer-pane" id="m-notes">
       <div class="pane-title">Notes <span class="pane-pill">TIMESTAMPED</span></div>
       <textarea class="notes-textarea" id="m-note-inp" placeholder="Type a note…"></textarea>
-      <button class="tbtn tbtn-g btn-full" style="margin-bottom:6px;" onclick="addNote('m-note-inp')">+ Add
+      <button class="tbtn tbtn-g btn-full" style="margin-bottom:7px;" onclick="addNote('m-note-inp')">+ Add
         Note</button>
       <div class="notes-list" id="m-notes-list">
         <div style="color:var(--mu);font-size:.65rem;text-align:center;padding:10px;">No notes yet.</div>
       </div>
     </div>
-
-    <!-- HISTORY -->
     <div class="drawer-pane" id="m-hist">
       <div class="pane-title">History <span class="pane-pill" id="m-hist-pill">0 sessions</span></div>
       <div class="history-list" id="m-hist-list">
         <div class="hist-empty">No sessions yet.</div>
       </div>
-      <button class="tbtn tbtn-rd btn-full" style="margin-top:6px;font-size:.6rem;" onclick="clearHist()">🗑
-        Clear</button>
+      <button class="tbtn btn-full"
+        style="margin-top:7px;font-size:.61rem;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--rd);"
+        onclick="clearHist()">🗑 Clear</button>
     </div>
   </div>
 
-  <!-- ══════════════ OVERLAYS ══════════════ -->
+  <!-- ══════ OVERLAYS ══════ -->
   <div class="snap-ov" id="snapOv">
     <img class="snap-img" id="snapImg" src="" alt="Snapshot" />
-    <div style="display:flex;gap:8px;">
+    <div style="display:flex;gap:9px;">
       <button class="tbtn tbtn-v" onclick="dlSnap()">⬇ Download</button>
       <button class="tbtn tbtn-g" onclick="document.getElementById('snapOv').classList.remove('on')">✕ Close</button>
     </div>
   </div>
 
   <div class="focus-ov" id="focusOv">
-    <div style="width:min(90vw,640px);border-radius:14px;overflow:hidden;border:2px solid var(--border2);">
+    <div style="width:min(90vw,700px);border-radius:14px;overflow:hidden;border:2px solid var(--border2);">
       <img src="/video_feed" style="width:100%;display:block;" />
     </div>
-    <div id="focusStats" style="display:flex;gap:20px;"></div>
+    <div id="focusStats" style="display:flex;gap:24px;"></div>
     <button class="tbtn tbtn-g" onclick="toggleFocus()">Exit Focus (Esc)</button>
   </div>
 
@@ -2693,9 +2733,7 @@
   <div class="confetti-wrap" id="confettiWrap"></div>
 
   <script>
-    // ═══════════════════════════════════════════════
-    //  MODE
-    // ═══════════════════════════════════════════════
+    // ═══ MODE ═══
     const MODE = new URLSearchParams(location.search).get('mode') || 'general';
     const MODES = {
       general: { l: 'General', c: 'rgba(167,139,250,.2)', t: '#A78BFA', e: '🎯' },
@@ -2709,9 +2747,7 @@
     bdg.textContent = md.e + ' ' + md.l;
     bdg.style.background = md.c; bdg.style.color = md.t; bdg.style.borderColor = md.t + '55';
 
-    // ═══════════════════════════════════════════════
-    //  TIMER
-    // ═══════════════════════════════════════════════
+    // ═══ TIMER ═══
     let secs = 0, paused = false, autoSaved = false;
     setInterval(() => {
       if (paused) return; secs++;
@@ -2731,10 +2767,7 @@
       fetch('/pause', { method: 'POST' }).catch(() => { });
     }
 
-    // ═══════════════════════════════════════════════
-    //  CHARTS
-    // ═══════════════════════════════════════════════
-    // Trend
+    // ═══ CHARTS ═══
     const tCtx = document.getElementById('trendCanvas').getContext('2d');
     const tData = {
       labels: [], datasets: [
@@ -2749,16 +2782,11 @@
         plugins: { legend: { display: false } },
         scales: {
           x: { display: false },
-          y: {
-            min: 0, max: 100, grid: { color: 'rgba(255,255,255,.04)' },
-            ticks: { color: 'rgba(241,245,249,.25)', font: { size: 8, family: 'JetBrains Mono' }, callback: v => v + '%' },
-            border: { display: false }
-          }
+          y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: 'rgba(241,245,249,.25)', font: { size: 9, family: 'JetBrains Mono' }, callback: v => v + '%' }, border: { display: false } }
         }
       }
     });
 
-    // Radar
     const rCtx = document.getElementById('radarCanvas').getContext('2d');
     const rChart = new Chart(rCtx, {
       type: 'radar', data: {
@@ -2767,19 +2795,13 @@
       }, options: {
         responsive: false, maintainAspectRatio: false, animation: { duration: 350 },
         plugins: { legend: { display: false } },
-        scales: {
-          r: {
-            min: 0, max: 100, ticks: { display: false }, grid: { color: 'rgba(255,255,255,.1)' },
-            pointLabels: { color: 'rgba(241,245,249,.55)', font: { size: 8, family: 'DM Sans' } },
-            angleLines: { color: 'rgba(255,255,255,.07)' }
-          }
-        }
+        scales: { r: { min: 0, max: 100, ticks: { display: false }, grid: { color: 'rgba(255,255,255,.1)' }, pointLabels: { color: 'rgba(241,245,249,.55)', font: { size: 9, family: 'DM Sans' } }, angleLines: { color: 'rgba(255,255,255,.07)' } } }
       }
     });
 
     function drawHM(data) {
       const c = document.getElementById('hmC'), ctx = c.getContext('2d');
-      c.width = c.offsetWidth || 300;
+      c.width = c.offsetWidth || 400;
       if (!data || !data.length) return;
       const w = c.width, h = c.height, sw = w / data.length;
       ctx.clearRect(0, 0, w, h);
@@ -2804,34 +2826,19 @@
       if (n === 'radar') rChart.resize();
     }
 
-    // ═══════════════════════════════════════════════
-    //  PANEL / DRAWER TABS
-    // ═══════════════════════════════════════════════
+    // ═══ PANEL TABS ═══
     const PANES = ['live', 'coach', 'sim', 'notes', 'hist'];
-
     function switchPane(n, prefix) {
-      const tabSel = prefix === 'd' ? '#panelTabs .panel-tab' : '#drawerPanel .drawer-tabs .drawer-tab';
-      document.querySelectorAll(tabSel).forEach((t, i) => t.classList.toggle('active', PANES[i] === n));
-      PANES.forEach(id => {
-        const el = document.getElementById(prefix === '-d' ? `d-${id}` : `d-${id}`);
-        if (el) el.classList.toggle('active', id === n);
-      });
-      // desktop
-      PANES.forEach(id => {
-        const el = document.getElementById(`d-${id}`);
-        if (el) el.classList.toggle('active', id === n);
-      });
+      document.querySelectorAll('#panelTabs .panel-tab').forEach((t, i) => t.classList.toggle('active', PANES[i] === n));
+      PANES.forEach(id => { const el = document.getElementById(`d-${id}`); if (el) el.classList.toggle('active', id === n); });
       if (n === 'hist') loadHistory();
     }
-
-    // Mobile drawer
     function openDrawer(pane) {
       document.getElementById('drawerBackdrop').classList.add('open');
       document.getElementById('drawerPanel').classList.add('open');
       switchDrawerPane(pane);
       document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
-      const btn = document.getElementById('mn-' + pane);
-      if (btn) btn.classList.add('active');
+      const btn = document.getElementById('mn-' + pane); if (btn) btn.classList.add('active');
     }
     function closeDrawer() {
       document.getElementById('drawerBackdrop').classList.remove('open');
@@ -2839,35 +2846,22 @@
     }
     function switchDrawerPane(n) {
       document.querySelectorAll('.drawer-tab').forEach((t, i) => t.classList.toggle('active', PANES[i] === n));
-      PANES.forEach(id => {
-        const el = document.getElementById(`m-${id}`);
-        if (el) el.classList.toggle('active', id === n);
-      });
+      PANES.forEach(id => { const el = document.getElementById(`m-${id}`); if (el) el.classList.toggle('active', id === n); });
       if (n === 'hist') loadHistory();
     }
-    // swipe to close
     let _ty = 0;
     document.getElementById('drawerPanel').addEventListener('touchstart', e => { _ty = e.touches[0].clientY; }, { passive: true });
     document.getElementById('drawerPanel').addEventListener('touchmove', e => { if (e.touches[0].clientY - _ty > 65) closeDrawer(); }, { passive: true });
+    if (window.innerWidth <= 768) document.getElementById('mobMenuBtn').style.display = 'flex';
 
-    // show mobile menu btn on small screens
-    if (window.innerWidth <= 768) {
-      document.getElementById('mobMenuBtn').style.display = 'flex';
-    }
-
-    // ═══════════════════════════════════════════════
-    //  METRICS POLL
-    // ═══════════════════════════════════════════════
+    // ═══ METRICS POLL ═══
     let ld = {}, prevAlerts = new Set();
     const scoreColor = v => v >= 75 ? '#10B981' : v >= 50 ? '#F59E0B' : '#EF4444';
-
     function setScore(id, fillId, val, color) {
-      const e = document.getElementById(id);
-      const f = document.getElementById(fillId);
+      const e = document.getElementById(id), f = document.getElementById(fillId);
       if (e) { e.textContent = val + '%'; e.style.color = scoreColor(val); }
       if (f) { f.style.width = val + '%'; f.style.background = color; }
     }
-
     function poll() {
       if (paused) return;
       fetch('/metrics').then(r => r.json()).then(d => {
@@ -2878,19 +2872,13 @@
         setScore('scNerv', 'sfNerv', d.nervousness_level, 'var(--rd)');
         setScore('scConf', 'sfConf', d.confidence_score, 'var(--am)');
         setScore('scPres', 'sfPres', d.presentation_score, 'var(--pk)');
-
-        // overlay stats
         document.getElementById('ov1').textContent = d.posture_score + '%';
         document.getElementById('ov2').textContent = d.eye_contact_score + '%';
         document.getElementById('ov3').textContent = d.confidence_score + '%';
         document.getElementById('ov5').textContent = d.nervousness_level + '%';
         const gMap = { natural: '✓ Nat', excessive: 'Active', still: 'Still', active: 'Move' };
         document.getElementById('ov4').textContent = gMap[d.gesture] || '--';
-
-        // emotion badge on cam
         document.getElementById('camEmotion').textContent = (d.emotion_emoji || '😐') + ' ' + (d.emotion || 'neutral');
-
-        // bio strip
         const blEl = document.getElementById('bioBlink');
         blEl.textContent = (d.blink_rate || 0) + '/min';
         blEl.style.color = d.blink_status === 'low' ? 'var(--am)' : d.blink_status === 'high' ? 'var(--rd)' : 'var(--gr)';
@@ -2900,77 +2888,43 @@
         const geEl = document.getElementById('bioGest');
         geEl.textContent = d.gesture_label || 'Natural';
         geEl.style.color = d.gesture === 'natural' ? 'var(--gr)' : d.gesture === 'excessive' ? 'var(--rd)' : 'var(--am)';
-
-        // gesture + emotion cards (desktop + mobile)
         const gIco = { natural: '✋', excessive: '🙌', still: '🤲', active: '👐' };
         const gSub = { natural: 'Natural — great!', excessive: 'Reduce hand movement', still: 'Add some gestures', active: 'Slightly reduce' };
-        [['d', 'dGestIco', 'dGestName', 'dGestSub', 'dEmIco', 'dEmTxt'],
-        ['m', 'mGestIco', 'mGestName', 'mGestSub', 'mEmIco', 'mEmTxt']
-        ].forEach(([_, gi, gn, gs, ei, et]) => {
-          const a = document.getElementById(gi), b = document.getElementById(gn),
-            c = document.getElementById(gs), x = document.getElementById(ei), y = document.getElementById(et);
-          if (a) a.textContent = gIco[d.gesture] || '✋';
-          if (b) b.textContent = d.gesture_label || 'Natural';
-          if (c) c.textContent = gSub[d.gesture] || '';
-          if (x) x.textContent = d.emotion_emoji || '😐';
-          if (y) y.textContent = d.emotion || 'neutral';
+        [['d', 'dGestIco', 'dGestName', 'dGestSub', 'dEmIco', 'dEmTxt'], ['m', 'mGestIco', 'mGestName', 'mGestSub', 'mEmIco', 'mEmTxt']].forEach(([_, gi, gn, gs, ei, et]) => {
+          const a = document.getElementById(gi), b = document.getElementById(gn), c = document.getElementById(gs), x = document.getElementById(ei), y = document.getElementById(et);
+          if (a) a.textContent = gIco[d.gesture] || '✋'; if (b) b.textContent = d.gesture_label || 'Natural';
+          if (c) c.textContent = gSub[d.gesture] || ''; if (x) x.textContent = d.emotion_emoji || '😐'; if (y) y.textContent = d.emotion || 'neutral';
         });
-
-        // feedback lists
-        const fbHtml = (d.feedback && d.feedback.length)
-          ? d.feedback.map(f => `<div class="fb-item fb-warn">⚠ ${f}</div>`).join('')
-          : '<div class="fb-item fb-ok">✓ Looking solid. Keep it up!</div>';
+        const fbHtml = (d.feedback && d.feedback.length) ? d.feedback.map(f => `<div class="fb-item fb-warn">⚠ ${f}</div>`).join('') : '<div class="fb-item fb-ok">✓ Looking solid. Keep it up!</div>';
         ['d-feedback', 'm-feedback'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = fbHtml; });
-
-        // alerts
-        (d.alerts || []).forEach(a => {
-          const k = a.key + (a.ts || '');
-          if (!prevAlerts.has(k)) { prevAlerts.add(k); showAlert(a.msg, a.severity); playTone(a.severity); }
-        });
-
-        // charts update
-        tData.labels.push('');
-        tData.datasets[0].data.push(d.confidence_score);
-        tData.datasets[1].data.push(d.posture_score);
-        tData.datasets[2].data.push(d.eye_contact_score);
+        (d.alerts || []).forEach(a => { const k = a.key + (a.ts || ''); if (!prevAlerts.has(k)) { prevAlerts.add(k); showAlert(a.msg, a.severity); playTone(a.severity); } });
+        tData.labels.push(''); tData.datasets[0].data.push(d.confidence_score); tData.datasets[1].data.push(d.posture_score); tData.datasets[2].data.push(d.eye_contact_score);
         if (tData.labels.length > 60) { tData.labels.shift(); tData.datasets.forEach(ds => ds.data.shift()); }
         tChart.update('none');
-
         rChart.data.datasets[0].data = [d.posture_score, d.movement_score, d.eye_contact_score, d.confidence_score, d.presentation_score, 100 - d.nervousness_level];
         rChart.update('none');
         if (d.heatmap_history) drawHM(d.heatmap_history);
-
-        // progress card
         if (d.first_30_avg && d.last_30_avg) {
           document.getElementById('d-progress').style.display = 'block';
           document.getElementById('dProgStart').textContent = d.first_30_avg + '%';
           document.getElementById('dProgNow').textContent = d.last_30_avg + '%';
-          const delta = d.last_30_avg - d.first_30_avg;
-          const pb = document.getElementById('dProgBadge');
+          const delta = d.last_30_avg - d.first_30_avg, pb = document.getElementById('dProgBadge');
           if (delta > 0) { pb.textContent = '↑ +' + delta + '%'; pb.className = 'prog-badge prog-up'; }
           else if (delta < 0) { pb.textContent = '↓ ' + delta + '%'; pb.className = 'prog-badge prog-dn'; }
           else { pb.textContent = '→ Stable'; pb.className = 'prog-badge prog-eq'; }
         }
-
-        // focus mode stats
         document.getElementById('focusStats').innerHTML =
-          `<div style="text-align:center;color:#A78BFA;font-family:var(--mono);font-size:1.1rem;">${d.confidence_score}%<br><span style="font-size:.54rem;opacity:.6">CONF</span></div>` +
-          `<div style="text-align:center;color:#22D3EE;font-family:var(--mono);font-size:1.1rem;">${d.eye_contact_score}%<br><span style="font-size:.54rem;opacity:.6">EYE</span></div>` +
-          `<div style="text-align:center;color:#10B981;font-family:var(--mono);font-size:1.1rem;">${d.posture_score}%<br><span style="font-size:.54rem;opacity:.6">POST</span></div>` +
-          `<div style="text-align:center;font-family:var(--mono);font-size:1.1rem;">${d.emotion_emoji || '😐'}<br><span style="font-size:.54rem;opacity:.6">MOOD</span></div>`;
-
-        if (d.nervousness_level > 75 && !breathOn && secs > 30)
-          showAlert('💙 High nervousness — try Breathe', 'info');
-
+          `<div style="text-align:center;color:#A78BFA;font-family:var(--mono);font-size:1.15rem;">${d.confidence_score}%<br><span style="font-size:.56rem;opacity:.6">CONF</span></div>` +
+          `<div style="text-align:center;color:#22D3EE;font-family:var(--mono);font-size:1.15rem;">${d.eye_contact_score}%<br><span style="font-size:.56rem;opacity:.6">EYE</span></div>` +
+          `<div style="text-align:center;color:#10B981;font-family:var(--mono);font-size:1.15rem;">${d.posture_score}%<br><span style="font-size:.56rem;opacity:.6">POST</span></div>` +
+          `<div style="text-align:center;font-family:var(--mono);font-size:1.15rem;">${d.emotion_emoji || '😐'}<br><span style="font-size:.56rem;opacity:.6">MOOD</span></div>`;
+        if (d.nervousness_level > 75 && !breathOn && secs > 30) showAlert('💙 High nervousness — try Breathe', 'info');
         checkGoals(d);
       }).catch(() => { });
     }
-    setInterval(poll, 1000);
-    poll();
+    setInterval(poll, 1000); poll();
 
-    // ═══════════════════════════════════════════════
-    //  ALERTS
-    // ═══════════════════════════════════════════════
+    // ═══ ALERTS ═══
     function showAlert(msg, type) {
       const cls = type === 'success' ? 'alert-ok' : type === 'info' ? 'alert-info' : 'alert-warn';
       ['d-alerts', 'm-alerts'].forEach(id => {
@@ -2982,9 +2936,7 @@
       });
     }
 
-    // ═══════════════════════════════════════════════
-    //  GOALS
-    // ═══════════════════════════════════════════════
+    // ═══ GOALS ═══
     let goalTarget = 75, goalsHit = new Set();
     const GOALS = [
       { id: 'p80', l: 'Posture 80+', fn: d => d.posture_score >= 80 },
@@ -2994,42 +2946,26 @@
       { id: 'c90', l: 'Conf 90+', fn: d => d.confidence_score >= 90 },
     ];
     function renderGoals() {
-      document.getElementById('goalsRow').innerHTML = GOALS.map(g =>
-        `<div class="goal-chip ${goalsHit.has(g.id) ? 'hit' : 'pending'}">${goalsHit.has(g.id) ? '✓ ' : ''}${g.l}</div>`
-      ).join('');
+      document.getElementById('goalsRow').innerHTML = GOALS.map(g => `<div class="goal-chip ${goalsHit.has(g.id) ? 'hit' : 'pending'}">${goalsHit.has(g.id) ? '✓ ' : ''}${g.l}</div>`).join('');
     }
     function checkGoals(d) {
-      GOALS.forEach(g => {
-        if (!goalsHit.has(g.id) && g.fn(d)) {
-          goalsHit.add(g.id); renderGoals(); fireCelebration(); showAlert('🎯 Goal hit: ' + g.l + '!', 'success');
-        }
-      });
+      GOALS.forEach(g => { if (!goalsHit.has(g.id) && g.fn(d)) { goalsHit.add(g.id); renderGoals(); fireCelebration(); showAlert('🎯 Goal hit: ' + g.l + '!', 'success'); } });
     }
-    function setGoal() {
-      goalTarget = parseInt(document.getElementById('goalInput').value) || 75;
-      GOALS[2].l = 'Conf ' + goalTarget + '+'; GOALS[2].fn = d => d.confidence_score >= goalTarget; renderGoals();
-    }
+    function setGoal() { goalTarget = parseInt(document.getElementById('goalInput').value) || 75; GOALS[2].l = 'Conf ' + goalTarget + '+'; GOALS[2].fn = d => d.confidence_score >= goalTarget; renderGoals(); }
     renderGoals();
 
-    // ═══════════════════════════════════════════════
-    //  HISTORY
-    // ═══════════════════════════════════════════════
+    // ═══ HISTORY ═══
     function gradeOf(c) { return c >= 85 ? 'A+' : c >= 78 ? 'A' : c >= 70 ? 'B+' : c >= 62 ? 'B' : c >= 55 ? 'C+' : c >= 48 ? 'C' : 'D'; }
     async function saveSc(v) {
       try {
         const entry = { d: new Date().toLocaleDateString(), v, m: MODE, posture: ld.posture_score || 0, eye: ld.eye_contact_score || 0, nervousness: ld.nervousness_level || 0, emotion: ld.emotion || 'neutral', emotion_emoji: ld.emotion_emoji || '😐', duration_s: secs, filler_count: totFillers, grade: gradeOf(v) };
         const h = JSON.parse(localStorage.getItem('ps_h') || '[]'); h.push(entry); if (h.length > 50) h.shift();
         localStorage.setItem('ps_h', JSON.stringify(h));
-        const best = Math.max(...h.map(x => x.v));
-        document.getElementById('bestBadge').textContent = '🏆 ' + best + '%';
+        const best = Math.max(...h.map(x => x.v)); document.getElementById('bestBadge').textContent = '🏆 ' + best + '%';
         await fetch('/save_session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: MODE, confidence: v, posture: ld.posture_score || 0, eye_contact: ld.eye_contact_score || 0, nervousness: ld.nervousness_level || 0, emotion: ld.emotion || 'neutral', emotion_emoji: ld.emotion_emoji || '😐', duration_s: secs, filler_count: totFillers }) });
       } catch (e) { console.warn(e); }
     }
-    try {
-      const h = JSON.parse(localStorage.getItem('ps_h') || '[]');
-      if (h.length) document.getElementById('bestBadge').textContent = '🏆 ' + Math.max(...h.map(x => x.v)) + '%';
-    } catch (e) { }
-
+    try { const h = JSON.parse(localStorage.getItem('ps_h') || '[]'); if (h.length) document.getElementById('bestBadge').textContent = '🏆 ' + Math.max(...h.map(x => x.v)) + '%'; } catch (e) { }
     async function loadHistory() {
       let combined = [];
       try { combined = JSON.parse(localStorage.getItem('ps_h') || '[]'); } catch (e) { }
@@ -3038,28 +2974,17 @@
         srv.forEach(s => { if (!combined.find(c => c.d === (s.date || s.d))) combined.push({ d: s.date || s.d, v: s.confidence || s.v || 0, m: s.mode || s.m, posture: s.posture || 0, eye: s.eye_contact || s.eye || 0, grade: s.grade || gradeOf(s.confidence || 0), duration_s: s.duration_s || 0, emotion: s.emotion || 'neutral', emotion_emoji: s.emotion_emoji || '😐' }); });
       } catch (e) { }
       const gc = g => g.startsWith('A') ? 'var(--gr)' : g.startsWith('B') ? 'var(--am)' : 'var(--rd)';
-      const html = combined.length ? [...combined].reverse().map(s =>
-        `<div class="hist-item">
-      <div class="hist-top"><span class="hist-date">${s.d} · ${s.m || 'general'}</span><span class="hist-grade" style="color:${gc(s.grade || 'C')}">${s.grade || gradeOf(s.v || 0)}</span></div>
-      <div class="hist-bars">
-        <div class="hist-bw"><div class="hist-bl">Conf ${s.v || 0}%</div><div class="hist-bb"><div class="hist-bf" style="width:${s.v || 0}%;background:var(--am)"></div></div></div>
-        <div class="hist-bw"><div class="hist-bl">Post ${s.posture || 0}%</div><div class="hist-bb"><div class="hist-bf" style="width:${s.posture || 0}%;background:var(--v)"></div></div></div>
-      </div>
-      <div class="hist-mode">${Math.floor((s.duration_s || 0) / 60)}m ${(s.duration_s || 0) % 60}s · ${s.emotion || 'neutral'} ${s.emotion_emoji || '😐'}</div>
-    </div>`
-      ).join('') : '<div class="hist-empty">No sessions saved yet.</div>';
+      const html = combined.length ? [...combined].reverse().map(s => `<div class="hist-item"><div class="hist-top"><span class="hist-date">${s.d} · ${s.m || 'general'}</span><span class="hist-grade" style="color:${gc(s.grade || 'C')}">${s.grade || gradeOf(s.v || 0)}</span></div><div class="hist-bars"><div class="hist-bw"><div class="hist-bl">Conf ${s.v || 0}%</div><div class="hist-bb"><div class="hist-bf" style="width:${s.v || 0}%;background:var(--am)"></div></div></div><div class="hist-bw"><div class="hist-bl">Post ${s.posture || 0}%</div><div class="hist-bb"><div class="hist-bf" style="width:${s.posture || 0}%;background:var(--v)"></div></div></div></div><div class="hist-mode">${Math.floor((s.duration_s || 0) / 60)}m ${(s.duration_s || 0) % 60}s · ${s.emotion || 'neutral'} ${s.emotion_emoji || '😐'}</div></div>`).join('') : '<div class="hist-empty">No sessions saved yet.</div>';
       ['d-hist-list', 'm-hist-list'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
       ['d-hist-pill', 'm-hist-pill'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = combined.length + ' session' + (combined.length !== 1 ? 's' : ''); });
     }
     function clearHist() { if (!confirm('Clear all history?')) return; localStorage.removeItem('ps_h'); fetch('/clear_history', { method: 'POST' }).catch(() => { }); loadHistory(); }
 
-    // ═══════════════════════════════════════════════
-    //  GRADE MODAL
-    // ═══════════════════════════════════════════════
+    // ═══ GRADE MODAL ═══
     function showModal() {
       const conf = ld.confidence_score || 0, g = gradeOf(conf);
       const T = { 'A+': 'Outstanding!', 'A': 'Excellent!', 'B+': 'Very Good!', 'B': 'Good Job!', 'C+': 'Keep Going!', 'C': 'Keep Practicing', 'D': "Don't Stop!" };
-      const S = { 'A+': "You're interview-ready.", 'A': 'Strong across all metrics.', 'B+': "A few tweaks and you'll nail it.", 'B': 'Daily practice will get you there.', 'C+': 'Consistency is the key.', 'C': 'Focus on one metric at a time.', 'D': 'Every rep counts.' };
+      const S = { 'A+': 'You\'re interview-ready.', 'A': 'Strong across all metrics.', 'B+': 'A few tweaks and you\'ll nail it.', 'B': 'Daily practice will get you there.', 'C+': 'Consistency is the key.', 'C': 'Focus on one metric at a time.', 'D': 'Every rep counts.' };
       document.getElementById('modalGrade').textContent = g;
       document.getElementById('modalTitle').textContent = T[g] || 'Well Done!';
       document.getElementById('modalSub').textContent = S[g] || 'Keep practicing!';
@@ -3075,9 +3000,7 @@
     function closeModal() { document.getElementById('modalOv').classList.remove('on'); }
     async function doSave() { await saveSc(ld.confidence_score || 0); closeModal(); switchPane('hist', 'd'); }
 
-    // ═══════════════════════════════════════════════
-    //  SNAPSHOT
-    // ═══════════════════════════════════════════════
+    // ═══ SNAPSHOT ═══
     let snapUrl = '';
     async function takeSnap() {
       try { const r = await fetch('/snapshot'); const data = await r.json(); if (data.image) { snapUrl = data.image; document.getElementById('snapImg').src = data.image; document.getElementById('snapOv').classList.add('on'); } }
@@ -3085,15 +3008,11 @@
     }
     function dlSnap() { const a = document.createElement('a'); a.href = snapUrl; a.download = 'posesense_' + Date.now() + '.jpg'; a.click(); }
 
-    // ═══════════════════════════════════════════════
-    //  FOCUS MODE
-    // ═══════════════════════════════════════════════
+    // ═══ FOCUS MODE ═══
     let focusOn = false;
     function toggleFocus() { focusOn = !focusOn; document.getElementById('focusOv').classList.toggle('on', focusOn); }
 
-    // ═══════════════════════════════════════════════
-    //  BREATHING
-    // ═══════════════════════════════════════════════
+    // ═══ BREATHING ═══
     const BPHASES = [
       { lbl: 'Inhale', dur: 4, step: 'Breathe in slowly and deeply through your nose…', scale: 1.8, bg: 'rgba(124,58,237,.55)' },
       { lbl: 'Hold', dur: 7, step: 'Hold gently. Let your body absorb the oxygen…', scale: 1.8, bg: 'rgba(6,182,212,.45)' },
@@ -3113,17 +3032,11 @@
       if (bIv) clearInterval(bIv);
       bIv = setInterval(() => {
         c--; if (c > 0) { document.getElementById('breathNum').textContent = c; }
-        else {
-          clearInterval(bIv); bIdx = (bIdx + 1) % 3; if (bIdx === 0) bCycles++;
-          if (bCycles >= 3) { document.getElementById('breathLbl').textContent = 'Done!'; document.getElementById('breathStep').textContent = '3 cycles complete. You should feel calmer now.'; document.getElementById('breathNum').textContent = '✓'; inner.style.background = 'rgba(16,185,129,.4)'; }
-          else setTimeout(runBreath, 400);
-        }
+        else { clearInterval(bIv); bIdx = (bIdx + 1) % 3; if (bIdx === 0) bCycles++; if (bCycles >= 3) { document.getElementById('breathLbl').textContent = 'Done!'; document.getElementById('breathStep').textContent = '3 cycles complete. You should feel calmer now.'; document.getElementById('breathNum').textContent = '✓'; inner.style.background = 'rgba(16,185,129,.4)'; } else setTimeout(runBreath, 400); }
       }, 1000);
     }
 
-    // ═══════════════════════════════════════════════
-    //  FILLER WORDS / MIC
-    // ═══════════════════════════════════════════════
+    // ═══ FILLER WORDS / MIC ═══
     let micOn = false, recog = null, totFillers = 0;
     const fc = { um: 0, uh: 0, like: 0, yk: 0 };
     function toggleMic() {
@@ -3131,8 +3044,7 @@
       if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) { showAlert('Speech recognition needs Chrome', 'warn'); return; }
       if (micOn) {
         recog && recog.stop(); micOn = false; btn.textContent = '🎙️'; btn.classList.remove('active');
-        document.getElementById('d-filler').style.display = 'none';
-        showAlert('Mic off', 'info');
+        document.getElementById('d-filler').style.display = 'none'; showAlert('Mic off', 'info');
       } else {
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         recog = new SR(); recog.continuous = true; recog.interimResults = true; recog.lang = 'en-US';
@@ -3140,14 +3052,11 @@
         recog.onerror = e => { if (e.error !== 'no-speech') showAlert('Mic: ' + e.error, 'warn'); };
         recog.onend = () => { if (micOn) setTimeout(() => { try { recog.start(); } catch (e) { } }, 500); };
         recog.start(); micOn = true; btn.textContent = '🔴'; btn.classList.add('active');
-        document.getElementById('d-filler').style.display = 'block';
-        showAlert('🎙️ Mic on — counting filler words', 'success');
+        document.getElementById('d-filler').style.display = 'block'; showAlert('🎙️ Mic on — counting filler words', 'success');
       }
     }
 
-    // ═══════════════════════════════════════════════
-    //  COACH CHAT
-    // ═══════════════════════════════════════════════
+    // ═══ COACH CHAT ═══
     let chatBusy = false;
     async function sendChat(prefix) {
       if (chatBusy) return;
@@ -3180,38 +3089,28 @@
       box.appendChild(el); box.scrollTop = box.scrollHeight; return el;
     }
 
-    // ═══════════════════════════════════════════════
-    //  SIMULATOR
-    // ═══════════════════════════════════════════════
+    // ═══ SIMULATOR ═══
     const QS = {
       general: ['Tell me about yourself.', 'What are your greatest strengths?', 'Where do you see yourself in 5 years?', 'Why do you want this role?', 'Describe a challenge you overcame.', 'How do you handle pressure?'],
       technical: ['Explain the difference between a stack and a queue.', 'How would you optimize a slow database query?', 'Describe your debugging process.', 'What is Big O notation?', 'Explain REST vs GraphQL.', 'What is a race condition?'],
       hr: ['Describe a conflict with a coworker you resolved.', 'Tell me about a time you led a team.', 'How do you handle critical feedback?', 'Give an example of working under pressure.', 'Describe your ideal work culture.'],
-      case: ["Estimate the market size for EVs in India.", "A client's revenue dropped 20% — where do you start?", 'How would you enter a new market?', 'Walk me through turning around a struggling team.', 'How would you price a new SaaS product?'],
-      sales: ['How do you handle a tough objection?', 'Tell me about your biggest deal win.', 'How do you research a prospect?', "What's your follow-up strategy after a no?", 'What makes a pitch truly memorable?'],
+      case: ['Estimate the market size for EVs in India.', 'A client\'s revenue dropped 20% — where do you start?', 'How would you enter a new market?', 'Walk me through turning around a struggling team.', 'How would you price a new SaaS product?'],
+      sales: ['How do you handle a tough objection?', 'Tell me about your biggest deal win.', 'How do you research a prospect?', 'What\'s your follow-up strategy after a no?', 'What makes a pitch truly memorable?'],
     };
     let simOn = false, simIv = null, simSecs = 120, simIdx = 0, simQs = [];
     function loadQs() {
       simQs = (QS[MODE] || QS.general).sort(() => Math.random() - .5);
       const html = simQs.slice(0, 5).map((q, i) => `<div class="q-item" onclick="qa('Help me answer: ${q.replace(/'/g, "\\'")}')"><div class="q-num">Q${i + 1} · ${md.l}</div>${q}</div>`).join('');
       ['qList', 'mQList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
-      const qml = document.getElementById('qModeLabel');
-      if (qml) qml.textContent = md.e + ' ' + md.l + ' — click any question for AI coaching';
+      const qml = document.getElementById('qModeLabel'); if (qml) qml.textContent = md.e + ' ' + md.l + ' — click any question for AI coaching';
     }
     function updSim() {
-      const t = Math.floor(simSecs / 60) + ':' + String(simSecs % 60).padStart(2, '0');
-      const w = (simSecs / 120 * 100) + '%';
-      [['simTimer', 'simProg'], ['mSimTimer', 'mSimProg']].forEach(([ti, pi]) => {
-        const te = document.getElementById(ti), pe = document.getElementById(pi);
-        if (te) te.textContent = t; if (pe) pe.style.width = w;
-      });
+      const t = Math.floor(simSecs / 60) + ':' + String(simSecs % 60).padStart(2, '0'), w = (simSecs / 120 * 100) + '%';
+      [['simTimer', 'simProg'], ['mSimTimer', 'mSimProg']].forEach(([ti, pi]) => { const te = document.getElementById(ti), pe = document.getElementById(pi); if (te) te.textContent = t; if (pe) pe.style.width = w; });
     }
     function showQ() {
       const q = simQs[simIdx % simQs.length], st = 'Q' + ((simIdx % simQs.length) + 1) + '/' + simQs.length;
-      [['simQuestion', 'simStatus'], ['mSimQuestion', 'mSimStatus']].forEach(([qi, si]) => {
-        const qe = document.getElementById(qi), se = document.getElementById(si);
-        if (qe) qe.textContent = q; if (se) se.textContent = st;
-      });
+      [['simQuestion', 'simStatus'], ['mSimQuestion', 'mSimStatus']].forEach(([qi, si]) => { const qe = document.getElementById(qi), se = document.getElementById(si); if (qe) qe.textContent = q; if (se) se.textContent = st; });
     }
     function startSim() {
       if (simOn) return; simOn = true; simSecs = 120;
@@ -3222,36 +3121,26 @@
     function skipQ() { clearInterval(simIv); simIdx++; simSecs = 120; updSim(); if (simIdx >= simQs.length) { endSim(); return; } showQ(); simIv = setInterval(() => { simSecs--; updSim(); if (simSecs <= 0) skipQ(); }, 1000); }
     function endSim() {
       clearInterval(simIv); simOn = false;
-      [['simQuestion', 'simStatus'], ['mSimQuestion', 'mSimStatus']].forEach(([qi, si]) => {
-        const qe = document.getElementById(qi), se = document.getElementById(si);
-        if (qe) qe.textContent = 'Simulation complete!'; if (se) se.textContent = 'Done ✓';
-      });
+      [['simQuestion', 'simStatus'], ['mSimQuestion', 'mSimStatus']].forEach(([qi, si]) => { const qe = document.getElementById(qi), se = document.getElementById(si); if (qe) qe.textContent = 'Simulation complete!'; if (se) se.textContent = 'Done ✓'; });
       ['simBtn', 'mSimBtn'].forEach(id => { const el = document.getElementById(id); if (el) { el.textContent = '▶ Restart'; el.style.pointerEvents = 'auto'; } });
       showAlert('✓ Simulation complete!', 'success');
       if (ld.confidence_score > 0) saveSc(ld.confidence_score);
     }
     loadQs();
 
-    // ═══════════════════════════════════════════════
-    //  NOTES
-    // ═══════════════════════════════════════════════
+    // ═══ NOTES ═══
     document.getElementById('d-note-inp').addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') addNote('d-note-inp'); });
     function addNote(inputId) {
       const inp = document.getElementById(inputId);
       const note = inp.value.trim(); if (!note) return; inp.value = '';
-      fetch('/add_note', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) })
-        .then(r => r.json()).then(d => renderNotes(d.notes)).catch(() => { });
+      fetch('/add_note', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) }).then(r => r.json()).then(d => renderNotes(d.notes)).catch(() => { });
     }
     function renderNotes(notes) {
-      const html = (!notes || !notes.length) ?
-        '<div style="color:var(--mu);font-size:.65rem;text-align:center;padding:10px;">No notes yet.</div>'
-        : [...notes].reverse().map(n => `<div class="note-item"><div class="note-time">${n.time}</div>${n.note}<div class="note-conf">Confidence: ${n.confidence}%</div></div>`).join('');
+      const html = (!notes || !notes.length) ? '<div style="color:var(--mu);font-size:.66rem;text-align:center;padding:12px;">No notes yet.</div>' : [...notes].reverse().map(n => `<div class="note-item"><div class="note-time">${n.time}</div>${n.note}<div class="note-conf">Confidence: ${n.confidence}%</div></div>`).join('');
       ['d-notes-list', 'm-notes-list'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
     }
 
-    // ═══════════════════════════════════════════════
-    //  PDF REPORT
-    // ═══════════════════════════════════════════════
+    // ═══ PDF REPORT ═══
     async function dlReport() {
       const btn = document.getElementById('btnReport'), orig = btn.innerHTML;
       btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true;
@@ -3264,25 +3153,19 @@
       btn.innerHTML = orig; btn.disabled = false;
     }
 
-    // ═══════════════════════════════════════════════
-    //  CONFETTI
-    // ═══════════════════════════════════════════════
+    // ═══ CONFETTI ═══
     function fireCelebration() {
       const wrap = document.getElementById('confettiWrap');
       const colors = ['#A78BFA', '#22D3EE', '#10B981', '#F59E0B', '#EC4899'];
-      for (let i = 0; i < 45; i++) {
+      for (let i = 0; i < 50; i++) {
         const el = document.createElement('div'); el.className = 'conf-piece';
-        el.style.left = Math.random() * 100 + 'vw';
-        el.style.background = colors[i % colors.length];
-        el.style.animationDelay = Math.random() * .7 + 's';
-        el.style.animationDuration = (1.5 + Math.random()) + 's';
+        el.style.left = Math.random() * 100 + 'vw'; el.style.background = colors[i % colors.length];
+        el.style.animationDelay = Math.random() * .7 + 's'; el.style.animationDuration = (1.5 + Math.random()) + 's';
         wrap.appendChild(el); setTimeout(() => el.remove(), 3500);
       }
     }
 
-    // ═══════════════════════════════════════════════
-    //  AUDIO
-    // ═══════════════════════════════════════════════
+    // ═══ AUDIO ═══
     let audioCtx = null;
     function playTone(type) {
       try {
@@ -3295,9 +3178,7 @@
       } catch (e) { }
     }
 
-    // ═══════════════════════════════════════════════
-    //  KEYBOARD SHORTCUTS
-    // ═══════════════════════════════════════════════
+    // ═══ KEYBOARD SHORTCUTS ═══
     document.addEventListener('keydown', e => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       switch (e.key) {
@@ -3311,11 +3192,7 @@
         case '1': switchChart('trend'); break;
         case '2': switchChart('heat'); break;
         case '3': switchChart('radar'); break;
-        case 'Escape':
-          closeModal(); hideBreath();
-          if (focusOn) toggleFocus();
-          document.getElementById('snapOv').classList.remove('on');
-          closeDrawer(); break;
+        case 'Escape': closeModal(); hideBreath(); if (focusOn) toggleFocus(); document.getElementById('snapOv').classList.remove('on'); closeDrawer(); break;
       }
     });
   </script>
