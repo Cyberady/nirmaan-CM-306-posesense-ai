@@ -4,19 +4,10 @@
 echo "🚀 Starting PoseSense AI..."
 echo ""
 
-# Install dependencies
-echo "📦 Installing dependencies..."
-pip install flask opencv-python mediapipe reportlab --break-system-packages -q
-
-echo ""
-echo "✅ Dependencies installed"
-echo ""
-echo "🌐 Starting server at http://localhost:5000"
-echo ""
-echo "📌 Routes:"
-echo "   Landing Page : http://localhost:5000/"
-echo "   Dashboard    : http://localhost:5000/dashboard"
-echo ""
-
+# Go to project directory
 cd "$(dirname "$0")"
-python app.py
+
+echo "🌐 Starting server..."
+
+# Start the Flask app using Gunicorn (production server)
+gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0
